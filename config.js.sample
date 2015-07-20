@@ -16,14 +16,14 @@ Add yourself in the mod array (twitch username) if you need to play with the mod
 */
 switch (args[0]) {
 	case 'dev':
-		config.app.port = ""; 																							// port that nodejs should run on
-		config.app.baseurl = "http://localhost:"+config.app.port+"/"; 			// can be changed, be sure your twitch app settings reflect the correct path for authentication
-		config.app.rethink.host = "";																				// host that rethinkdb runs on, default localhost
-		config.app.rethink.port = "";																				// port that rethinkdb runs on, default 28015
-		config.app.cache = false;                                           // expressjs app cache
-		config.app.cachetype = false;                                       // cache type, can be false or memory
-		config.twitch.cid = "";                                             // twitch app client id
-		config.twitch.secret = "";                                          // twitch app secret
+		config.app.port = ""; // port that nodejs should run on
+		config.app.baseurl = "http://localhost:"+config.app.port+"/"; // can be changed, be sure your twitch app settings reflect the correct path for authentication
+		config.app.rethink.host = ""; // host that rethinkdb runs on, default localhost
+		config.app.rethink.port = ""; // port that rethinkdb runs on, default 28015
+		config.app.cache = false; // expressjs app cache
+		config.app.cachetype = false; // cache type, can be false or memory
+		config.twitch.cid = ""; // twitch app client id
+		config.twitch.secret = ""; // twitch app secret
 	break;
 	default:
 		throw "must select dev, beta, or production";
