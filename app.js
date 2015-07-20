@@ -33,7 +33,7 @@ swig.setDefaults({ cache: config.app.cachetype });
 var needleoptions = { timeout: 5000 };
 
 
-var UserModel = thinky.createModel("users", config.app.rethink.schema);
+var UserModel = thinky.createModel("users", config.app.rethink.schema, config.app.rethink.pk);
 
 
 function checkAuth(req, res, next) {

@@ -7,7 +7,7 @@ var config = require('./config'),
 	oboe = require('oboe'),
 	jsonfile = require('jsonfile');
 
-var UserModel = thinky.createModel("users", config.app.rethink.schema);
+var UserModel = thinky.createModel("users", config.app.rethink.schema, config.app.rethink.pk);
 
 var AdminGetIntroStatus = function(status, cb) {
 	UserModel.run().then(function(dbres) {

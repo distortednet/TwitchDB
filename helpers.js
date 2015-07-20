@@ -20,7 +20,7 @@ var shuffle = function(sourceArray) {
         sourceArray[n] = temp;
     }
 }
-// refractor so /streams can paginate instead of bulk processing all the data at once. this will likely solve memory issues.
+
 var getliveusers = function(array, cb) {
   var userlist = [];
 	var chunked = chunks(array, 100);
