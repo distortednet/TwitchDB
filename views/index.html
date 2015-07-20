@@ -1,0 +1,51 @@
+{% include "./header.html" %}
+
+<div class="container-fluid" id="frontpage">
+{%if data %}
+
+	<div class="featured">
+		<center>
+{%for streams in data%}
+					<object type="application/x-shockwave-flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{streams.channel.name}}" bgcolor="#000000" class="featuredstreamer">
+					  <param  name="allowFullScreen" value="true" />
+					  <param  name="allowScriptAccess" value="always" />
+					  <param  name="allowNetworking" value="all" />
+					  <param  name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
+					  <param  name="flashvars" value="hostname=www.twitch.tv&channel={{streams.channel.name}}&auto_play=true&start_volume=0" />
+					</object>
+{%endfor%}
+				<div class="frontpagestreams">
+{%for streams in data%}
+				<img src="{{ streams.preview }}" class="featuredimgpreview">
+{%endfor%}
+				</div>
+		</center>
+	</div>
+{%else%}
+<h1>something broke D:</h1>
+{%endif%}
+</div>
+<hr>
+<div class="container-fluid">
+
+	<div class="container">
+	<h1>jul 09, 2015</h1><br>
+	<strong>Delicious updates!</strong><br>
+		TwitchDB has recieved many updates including a new profile look. If you have not create an introduction or have a legacy introduction, feel free to make one! We now have a public database search.
+		This search system is extremely basic, you can search by any field in the database so it will sometimes bring up some false positives. For example, if you search "LoL" for leauge, and someone has lol in their name
+		it will bring up results for both. Eventually catagories may be added, and a complete revamp of the front page shall be done. Before that, the Feedback system needs to be re-integrated.
+
+	<hr>
+
+	<h1>June 10, 2015</h1><br>
+	<strong>The Rewrite</strong><br>
+		I have redone TwitchDB from scratch to fix a vast array of bugs that everyone has been reporting. Thanks so much for all the feedback! Speaking of feedback, the streamer feedback system has TEMPORARILY been taken offline while I work out a much better system.
+		<br> This rewrite is a very good thing, it will allow me to extend features much, much easier. the code has been simplified a great deal, and better design practices have been put in place.
+	<hr>
+
+
+	</div>
+
+</div>
+<script src="/js/featured.js?r={{rng}}"></script>
+{% include "./footer.html" %}

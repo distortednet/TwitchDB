@@ -1,0 +1,30 @@
+{% include "./header.html" %}
+<div class="container">
+<strong><center>DB Search</center></strong><br>
+<p>If you search by game, for example "Leauge of legends" and there are no results, try different variations, such as "leauge" or "LoL". This system is not perfect yet, and has lots of room for improvement
+</p>
+<hr>
+	<table class="table table-striped table-hover table-condensed" id="pubdb">
+		<thead>
+			<tr>
+        <th>Intro date</th>
+				<th>Intro URL</th>
+				<th>Twitchname</th>
+
+				<th>games</th>
+			</tr>
+		</thead>
+		<tbody>
+    {%for approved in data %}
+			<tr>
+        <td>{{approved.intro_date}}</td>
+				<td><a href="/profile/u/{{approved.twitchname}}" target="_blank">View Intro</a></td>
+        <td><a href="http://www.twitch.tv/{{approved.twitchname}}" target="_blank">{{approved.twitchname}}</a></td>
+				<td style="width: 500px">{{approved.profile_data.intro_games}}</td>
+      </tr>
+    {%endfor%}
+		</tbody>
+	</table><br><br><br>
+</div>
+<script src="/js/pubdb.js?r={{rng}}"></script>
+{% include "./footer.html" %}

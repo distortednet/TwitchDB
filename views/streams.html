@@ -1,0 +1,56 @@
+{% include "./header.html" %}
+<div class="container-fluid">
+{%if data %}
+<center><strong>{{data.length}} streamers currently online</strong></center>
+<div class="filterbar">
+Games: <select class="gamefilter">
+<option value="all">All</option>
+{% for list in filter %}
+  <option value="{{list.game}}">{{list.game}}</option>
+{% endfor %}
+</select>
+
+ Viewers: <select class="viewfilter">
+<option value="all">All</option>
+{% for list in filter %}
+  <option value="{{list.viewers}}">{{list.viewers}}</option>
+{% endfor %}
+</select>
+
+ Video: <select class="videofilter">
+<option value="all">All</option>
+{% for list in filter %}
+  <option value="{{list.video_height}}">{{list.video_height}}</option>
+{% endfor %}
+</select>
+</div>
+
+{% for stream in data %}
+<div class="col-md-4 livestream" data-game="{{stream.game}}" data-viewers="{{stream.viewers}}" data-video="{{stream.video_height}}">
+	<div class="thumbnail">
+		<div class="caption">
+			<h4>
+				{{stream.channel.name}}
+					<span class="label label-default pull-right">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<small class="viewcount">{{stream.viewers}}</small>
+					</span>
+					<small>playing: <b>{{stream.game}}</b></small>
+			</h4>
+		</div>
+		<img src="{{stream.preview}}" class="img-rounded">
+		<div class="caption"><small class="status">{{stream.channel.status}}</small></div><hr>
+		<a href="http://www.twitch.tv/{{stream.channel.name}}" class="btn btn-default" role="button" target="_Blank">View Stream {%if stream.channel.mature%}<small style="color: red"> [M]</small>{%endif%}</a>
+	  <a href="/profile/u/{{stream.channel.name}}" class="btn btn-default" role="button" target="_Blank" style="float: right;">View Intro</a>
+	</div>
+</div>
+
+{% endfor %}
+{%else%}
+<h1>something broke D:</h1>
+{%endif%}
+</div>
+
+
+<script src="/js/streams.js?r={{rng}}"></script>
+{% include "./footer.html" %}

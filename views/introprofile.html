@@ -1,0 +1,58 @@
+{% include "./header.html" %}
+<div class="container">
+{%if data && data.profile_data%}
+  <div class="row">
+  	<div class="col-md-12">
+      <div class="panel panel-default">
+			<div class="panel-body">
+						<div class="row">
+						 <div class="col-xs-12 col-sm-4">
+                            <h2><strong>{{krakken.followers}}</strong></h2>
+                            <p><small>Followers</small></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <h2><strong>{{krakken.views}}</strong></h2>
+                            <p><small>Total Views</small></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <h2><strong>{{krakken.mature}}</strong></h2>
+                            <p><small>Mature Status</small></p>
+                            <!--<button type="button" class="btn btn-primary btn-block"><span class="fa fa-gear"></span> Options </button> -->
+						</div>
+              		</div>
+              		<div class="row">
+					<hr>
+                        <div class="col-xs-12 col-sm-10">
+                            <h2><a href="http://www.twitch.tv/{{data.twitchname}}" target="_blank">{{krakken.display_name}}</a></h2><br>
+                            <p class="linebreak"><strong>About<br></strong> {{data.profile_data.intro_about}}</p><br>
+                            <p class="linebreak"><strong>Goals<br></strong> {{data.profile_data.intro_goals}}</p><br>
+							<p class="linebreak"><strong>My schedule<br></strong> {{data.profile_data.intro_schedule}}</p><br>
+							<p class="linebreak"><strong>Games I play<br></strong> {{data.profile_data.intro_games}}</p><br>
+							<p class="linebreak"><strong>My Background: </strong> {{data.profile_data.intro_background}}</p><br>
+                        </div>
+                        <div class="col-xs-12 col-sm-2 text-center">
+                                <img src="{{krakken.logo}}" alt="" class="center-block img-circle img-responsive"><br>
+                        </div>
+
+                        </div>
+              </div>
+          </div>
+    </div>
+  </div>
+{%else%}
+	{%if data && data.intro_id%}
+  <center>
+    <h3>Oops...a legacy intro!</h3><br>
+		<a href="https://www.reddit.com/r/Twitch/comments/{{data.intro_id}}" class="btn btn-default" target="_blank">Click to view intro on Reddit</a>
+  <hr>
+  <strong>What is a legacy intro?</strong><br><br>
+  <p>A legacy intro is our old intro system where you would post an intro on the Twitch subreddit. We moved away from this system to have something better integrated</p>
+  <p>If you are the owner of this intro, log in and go to your profile to create a new, updated intro...<a href="http://i.imgur.com/qB9C1YK.png" target="_blank">They look fancy!</a></p>
+  </center>
+	{%else%}
+		user does not exist or has not created an introduction profile.
+	{%endif%}
+{%endif%}
+
+</div>
+{% include "./footer.html" %}
