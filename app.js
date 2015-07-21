@@ -28,11 +28,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view cache', config.app.cache);
-swig.setDefaults({cache: config.app.cachetype});
+swig.setDefaults({ cache: config.app.cachetype });
 
-var needleoptions = {timeout: 5000};
-
-var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
+var UserModel = thinky.createModel("users", config.app.rethink.schema, config.app.rethink.pk);
 
 function checkAuth(req, res, next) {
 	if(!req.session.name) {
@@ -230,9 +228,6 @@ app.get('/profile', checkAuth, function(req, res) {
 	});
 });
 
-//app.get('/random', checkAuth, function(req, res, next) {
-//});
-
 app.get('/logout', checkAuth, function(req, res) {
 	req.session.destroy(function() {
 		res.redirect('/');
@@ -241,27 +236,33 @@ app.get('/logout', checkAuth, function(req, res) {
 
 /* posts */
 app.post('/admin/submit', checkAuth, function(req, res, next) {
-	req.body.intro_approved = (req.body.intro_approved == 'true'); //transform string into bool
-	req.body.intro_rejected = (req.body.intro_rejected == 'true'); //transform string into bool
-
-	if(req.body.profile_data === null || req.body.profile_data === '') {
-		req.body.profile_data = null;
-	}
-
-	UserModel.get(req.body.twitchname).run().then(function(dbuser) {
-		dbuser.merge(req.body).save().then(function(dbres) {
-			res.status(200).send('changes made to: ' + req.body.twitchname);
+	if(ismod(req.session.name)) {
+		req.body.intro_approved = (req.body.intro_approved == "true"); //transform string into bool
+		req.body.intro_rejected = (req.body.intro_rejected == "true"); //transform string into bool
+		if(req.body.profile_data === null || req.body.profile_data === '') {
+			req.body.profile_data = null;
+		}
+		UserModel.get(req.body.twitchname).run().then(function(dbuser) {
+			dbuser.merge(req.body).save().then(function(dbres) {
+				res.status(200).send("changes made to: " + req.body.twitchname);
+			});
 		});
-	});
+	} else {
+		res.status(404).send('no mod access');
+	}
 });
 app.post('/admin/searchuser', checkAuth, function(req, res, next) {
-	db.SelectUser(req.body.twitchname, function(dbres) {
-		if(dbres) {
-			res.json(dbres);
-		}else{
-			res.json({'error': 'could not find a user by that account'});
-		}
-	});
+	if(ismod(req.session.name)) {
+		db.SelectUser(req.body.twitchname, function(dbres) {
+			if(dbres) {
+				res.json(dbres);
+			} else {
+				res.json({"error": "could not find a user by that account"});
+			}
+		});
+	} else {
+		res.status(404).send('no mod access');
+	}
 });
 app.post('/createintro/submit', checkAuth, function(req, res, next) {
 	var date = new Date();
