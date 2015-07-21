@@ -1,5 +1,9 @@
 var config = require('./config'),
-	thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
+	thinky = require('thinky')({
+		host: config.app.rethink.host,
+		port: config.app.rethink.port,
+		db: config.app.rethink.db
+	}),
 	r = thinky.r,
 	type = thinky.type,
 	Query = thinky.Query,
@@ -20,7 +24,7 @@ var AdminGetIntroStatus = function(status, cb) {
 					}
 				}
 				cb(statusarray);
-			break;
+				break;
 			case "approved":
 				for(var i in dbres) {
 					if(dbres[i].intro_approved == true && dbres[i].intro_rejected == false) {
@@ -28,7 +32,7 @@ var AdminGetIntroStatus = function(status, cb) {
 					}
 				}
 				cb(statusarray);
-			break;
+				break;
 			case "rejected":
 				for(var i in dbres) {
 					if(dbres[i].intro_approved == false && dbres[i].intro_rejected == true) {
@@ -36,9 +40,9 @@ var AdminGetIntroStatus = function(status, cb) {
 					}
 				}
 				cb(statusarray);
-			break;
+				break;
 			default:
-			cb("no status selected");
+				cb("no status selected");
 		}
 	});
 }
@@ -46,7 +50,9 @@ var GetOnlineUsers = function(cb) {
 	UserModel.filter(r.row("intro_approved")).run().then(function(users) {
 		var userarray = [];
 		var online = [];
-		for(var i in users) { userarray.push(users[i].twitchname); }
+		for(var i in users) {
+			userarray.push(users[i].twitchname);
+		}
 		helpers.getliveusers(userarray, function(jsonlist) {
 			if(jsonlist) {
 				var jsonurl = config.app.baseurl + "api/streams/json";
@@ -67,15 +73,15 @@ var GetOnlineUsers = function(cb) {
 						}
 					}
 					return streamobj;
-				}).on('node', '*._links', function(droplinks){
+				}).on('node', '*._links', function(droplinks) {
 					return oboe.drop;
-				}).done(function(things){
-						var streams = [];
-						for(var i in things) {
-							for(var x in things[i].streams) {
+				}).done(function(things) {
+					var streams = [];
+					for(var i in things) {
+						for(var x in things[i].streams) {
 							streams.push(things[i].streams[x]);
-							}
 						}
+					}
 					cb(streams);
 					things = null;
 					streams = null;
