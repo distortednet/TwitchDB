@@ -88,9 +88,7 @@ app.get('/streams', routeCache.cacheSeconds(300), function(req, res) {
 app.get('/api/streams/json', routeCache.cacheSeconds(300), function(req, res) {
 	jsonfile.readFile('data.json', function(err, obj) {
 		var result = {'error': 'no file found'};
-
-		if(!err) res.json(obj);
-
+		if(!err) result = obj;
 		res.json(result);
 	});
 });
