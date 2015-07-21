@@ -1,23 +1,24 @@
 # TwitchDB
-the codebase for http://www.twitchdb.tv
+
+The codebase for [TwitchDB](http://www.twitchdb.tv/)
 
 Bugs. Memoryleaks. Whateva.
 
-if you know what you're doing, feel free to do stuff.
+If you know what you're doing, feel free to do stuff.
 
-Dev enviroment requirements
+Dev Enviroment Requirements:
 
-- nodejs
-- rethinkdb
+- [Node.js](https://nodejs.org/)
+- [RethinkDB](http://rethinkdb.com/)
 
-once installed, and you've added a Twitch app to your Twitch account, configure config.js.
+Once installed, and you've added a Twitch app to your Twitch account, configure config.js.
 
-from the directory of the TwitchDB node app type:
+In the directory you've cloned TwitchDB in to run:
 
-npm install
+`npm install`
 
-then to launch TwitchDB in a dev enviroment type:
+Then to run TwitchDB in a Dev Enviroment run:
 
-node app dev
+`node app dev`
 
-if successful, you should see something similar to "listening on localhost:8080"
+If successful, you should see something similar to "listening on localhost:8080".

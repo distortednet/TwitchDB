@@ -7,7 +7,6 @@ var express = require('express'),
 	cookieParser = require('cookie-parser'),
 	needle = require('needle'),
 	swig = require('swig'),
-	validator = require('validator'),
 	async = require('async'),
 	thinky = require('thinky')({
 		host: config.app.rethink.host,
@@ -16,8 +15,6 @@ var express = require('express'),
 	}),
 	r = thinky.r,
 	type = thinky.type,
-	Query = thinky.Query,
-	helpers = require('./helpers.js'),
 	db = require('./db.js'),
 	jsonfile = require('jsonfile');
 
@@ -35,7 +32,7 @@ swig.setDefaults({cache: config.app.cachetype});
 
 var needleoptions = {timeout: 5000};
 
-var UserModel = thinky.createModel("users", config.app.rethink.schema, config.app.rethink.pk);
+var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
 
 function checkAuth(req, res, next) {
 	if(!req.session.name) {
@@ -219,13 +216,13 @@ app.get('/profile/u/:username', function(req, res, next) {
 		}
 	});
 });
-app.get('/profile', checkAuth, function(req, res, next) {
+app.get('/profile', checkAuth, function(req, res) {
 	UserModel.get(req.session.name).run().then(function(dbres) {
 		res.render('profile', {data: dbres, ismod: ismod(req.session.name)});
-	}).catch(thinky.Errors.DocumentNotFound, function(err) {
+	}).catch(thinky.Errors.DocumentNotFound, function() {
 		var UserData = new UserModel({twitchname: req.session.name});
 
-		UserData.save(function(err, dbres) {
+		UserData.save(function(err) {
 			if(err) throw err;
 
 			res.status(200).send('New profile created! <a href="/profile">Continue to Profile</a>');
@@ -237,7 +234,7 @@ app.get('/profile', checkAuth, function(req, res, next) {
 //});
 
 app.get('/logout', checkAuth, function(req, res) {
-	req.session.destroy(function(err) {
+	req.session.destroy(function() {
 		res.redirect('/');
 	});
 });
