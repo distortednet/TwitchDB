@@ -6,8 +6,7 @@ var config = require('./config'),
 	}),
 	r = thinky.r,
 	type = thinky.type,
-	helpers = require('./helpers'),
-	oboe = require('oboe');
+	helpers = require('./helpers');
 
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
 
