@@ -60,39 +60,13 @@ var getOnlineUsers = function(cb) {
 
 		helpers.getLiveUsers(userarray, function(jsonlist) {
 			if(jsonlist) {
-				var jsonurl = config.app.baseurl + 'api/streams/json';
-
-				oboe(jsonurl).node('streams.*', function(streams) {
-					return {
-						'game': streams.game,
-						'viewers': streams.viewers,
-						'preview': streams.preview.large,
-						'video_height': streams.video_height,
-						'channel': {
-							'logo': streams.channel.logo,
-							'mature': streams.channel.mature,
-							'status': streams.channel.status,
-							'url': streams.channel.url,
-							'name': streams.channel.name,
-							'followers': streams.channel.followers,
-							'views': streams.channel.views,
-						}
-					};
-				}).on('node', '*._links', function() {
-					return oboe.drop;
-				}).done(function(things) {
-					var streams = [];
-
-					for(var i in things) {
-						for(var x in things[i].streams) {
-							streams.push(things[i].streams[x]);
-						}
+				var streams = [];
+				for(var i in jsonlist) {
+					for(var x in jsonlist[i].streams) {
+						streams.push(jsonlist[i].streams[x]);
 					}
-
-					cb(streams);
-					things = null;
-					streams = null;
-				});
+				}
+				cb(streams);
 			}
 		});
 	});

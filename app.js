@@ -16,8 +16,7 @@ var express = require('express'),
 	}),
 	r = thinky.r,
 	type = thinky.type,
-	db = require('./db.js'),
-	jsonfile = require('jsonfile');
+	db = require('./db.js');
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
@@ -72,13 +71,6 @@ app.get('/streams', routeCache.cacheSeconds(300), function(req, res) {
 
 		res.render('streams', {data: dbres, filter: filterlist});
 		filterlist = null;
-	});
-});
-app.get('/api/streams/json', routeCache.cacheSeconds(300), function(req, res) {
-	jsonfile.readFile('data.json', function(err, obj) {
-		var result = {'error': 'no file found'};
-		if(!err) result = obj;
-		res.json(result);
 	});
 });
 app.get('/database', function(req, res) {

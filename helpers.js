@@ -47,12 +47,7 @@ var getLiveUsers = function(array, cb) {
 
 	jsonraver(userlist, function(err, data) {
 		if(!err) {
-			jsonfile.writeFile('data.json', data, function(err) {
-				userlist = null;
-				chunked = null;
-
-				cb(!err);
-			});
+			cb(data);
 		}else{
 			cb(false);
 		}
