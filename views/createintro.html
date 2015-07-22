@@ -2,26 +2,28 @@
 <div class="container">
 {%if !error %}
 	{%if !data.profile_data %}
-		<h1>Create your Intro Profile</h1>
-		<p>An introduction profile will allow you to appear on the public introduction database to help get your name out there more.</p>
-		<p>posts with minimal effort WILL BE REMOVED and your entery will be rejected. please try to put some thought into it :D</p><hr>
-			<div id="step-1">
-				<strong>About Me: </strong> a brief summary of who you are and what you are about!<br>
-				<textarea id="intro-about" required></textarea><br><br>
-				<input type="text" id="redditname"><strong> Reddit Username: </strong> Your Reddit username, to recieve broadcaster flair on /r/twitch (optional)<br><br>
-				<input type="hidden" id="intro-channel" value="{{data.twitchname}}" required>
-				<input type="text" id="intro-schedule" required> <strong>Schedule: </strong> What dates/times do you stream? What timezone?<br><br>
-				<input type="text" id="intro-games" required> <strong>Games: </strong> What games do you stream, what type of streamer are you?<br><br>
-				<strong>Goals: </strong> What sort of goals do you have? What unique "flair" do you have that would attract people?<br>
-				<textarea id="intro-goals" required></textarea><br><br>
-				<strong>Background: </strong> What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?<br>
-				<textarea  id="intro-background" required></textarea><br><br>
-				<a href="#" class="btn btn-default btn-submit-intro">Submit Intro</a>
-			</div>
-			<div id="done">
-			</div>
+	<h1>Create your Intro Profile</h1>
+	<p>An introduction profile will allow you to appear on the public introduction database to help get your name out there more.</p>
+	<p>Posts with minimal effort <em>WILL BE REMOVED</em> and your entery will be rejected. Please try to put some thought into it :D</p>
+	<hr />
+	<div id="step-1">
+		<strong>About Me: </strong> a brief summary of who you are and what you are about!<br>
+		<textarea id="intro-about" required></textarea><br><br>
+		<input type="text" id="redditname"><strong> Reddit Username: </strong> Your Reddit username, to recieve broadcaster flair on /r/twitch (optional)<br><br>
+		<input type="hidden" id="intro-channel" value="{{data.twitchname}}" required>
+		<input type="text" id="intro-schedule" required>
+		<strong>Schedule: </strong> What dates/times do you stream? What timezone?<br><br>
+		<input type="text" id="intro-games" required>
+		<strong>Games: </strong> What games do you stream, what type of streamer are you?<br><br>
+		<strong>Goals: </strong> What sort of goals do you have? What unique "flair" do you have that would attract people?<br>
+		<textarea id="intro-goals" required></textarea><br><br>
+		<strong>Background: </strong> What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?<br>
+		<textarea id="intro-background" required></textarea><br><br>
+		<a href="#" class="btn btn-default btn-submit-intro">Submit Intro</a>
+	</div>
+	<div id="done"></div>
 	{%else%}
-		<h3>You have already submitted an intro.</h3>
+	<h3>You have already submitted an intro.</h3>
 	{%endif%}
 {%else%}
 	<h3>A nasty error has occured.</h3>

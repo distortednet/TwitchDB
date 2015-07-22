@@ -1,6 +1,7 @@
 var express = require('express'),
 	routeCache = require('route-cache'),
 	config = require('./config'),
+	helpers = require('./helpers'),
 	bodyParser = require('body-parser'),
 	app = express(),
 	session = require('express-session'),
@@ -28,22 +29,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view cache', config.app.cache);
-swig.setDefaults({ cache: config.app.cachetype });
+swig.setDefaults({cache: config.app.cachetype});
 
 var UserModel = thinky.createModel("users", config.app.rethink.schema, config.app.rethink.pk);
-
-function checkAuth(req, res, next) {
-	if(!req.session.name) {
-		res.render('message', {data: 'Please log in to access this page'});
-	}else{
-		next();
-	}
-
-}
-
-function ismod(username) {
-	return config.twitch.mods.indexOf(username) > -1;
-}
 
 app.locals = {
 	title: 'twitchdb',
@@ -51,7 +39,8 @@ app.locals = {
 	clientid: config.twitch.cid,
 	authurl: 'https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=' + config.twitch.cid + '&redirect_uri=' + config.app.baseurl + 'auth/&scope=user_read',
 	rng: Math.floor((Math.random() * 900000) + 10000)
-}
+};
+
 /* gets */
 app.get('*', function(req, res, next) {
 	app.locals.loggedin = req.session.name;
@@ -61,7 +50,7 @@ app.get('*', function(req, res, next) {
 app.get('/', routeCache.cacheSeconds(300), function(req, res) {
 	async.waterfall([
 		function(callback) {
-			db.GetOnlineUsers(function(dbres) {
+			db.getOnlineUsers(function(dbres) {
 				callback(dbres);
 			});
 		}
@@ -70,7 +59,7 @@ app.get('/', routeCache.cacheSeconds(300), function(req, res) {
 	});
 });
 app.get('/streams', routeCache.cacheSeconds(300), function(req, res) {
-	db.GetOnlineUsers(function(dbres) {
+	db.getOnlineUsers(function(dbres) {
 		var filterlist = [];
 
 		for(var i in dbres) {
@@ -93,26 +82,26 @@ app.get('/api/streams/json', routeCache.cacheSeconds(300), function(req, res) {
 	});
 });
 app.get('/database', function(req, res) {
-	db.AdminGetIntroStatus('approved', function(dbres) {
+	db.adminGetIntroStatus('approved', function(dbres) {
 		res.render('database', {data: dbres});
 	});
 });
-app.get('/contact', function(req, res, next) {
+app.get('/contact', function(req, res) {
 	res.render('contact');
 });
-app.get('/faq', function(req, res, next) {
+app.get('/faq', function(req, res) {
 	res.render('faq');
 });
-app.get('/about', function(req, res, next) {
+app.get('/about', function(req, res) {
 	res.render('about');
 });
-app.get('/disclaimer', function(req, res, next) {
+app.get('/disclaimer', function(req, res) {
 	res.render('disclaimer');
 });
-app.get('/createintro', checkAuth, function(req, res, next) {
+app.get('/createintro', helpers.checkAuth, function(req, res) {
 	UserModel.get(req.session.name).run().then(function(dbres) {
 		res.render('createintro', {data: dbres});
-	}).catch(thinky.Errors.DocumentNotFound, function(err) {
+	}).catch(thinky.Errors.DocumentNotFound, function() {
 		res.render('createintro', {error: true});
 	});
 });
@@ -139,17 +128,17 @@ app.get('/auth', function(req, res) {
 		}
 	});
 });
-app.get('/feedback/:id', checkAuth, function(req, res, next) {
+app.get('/feedback/:id', helpers.checkAuth, function(req, res) {
 	res.status(404).send('The feedback section is being overhauled. Sorry! D:');
 });
 
-app.get('/admin/:type/:status', checkAuth, function(req, res, next) {
-	if(ismod(req.session.name)) {
+app.get('/admin/:type/:status', helpers.checkAuth, function(req, res) {
+	if(helpers.isMod(req.session.name)) {
 		switch(req.params.type) {
 			case 'intro':
 				switch(req.params.status) {
 					case 'pending':
-						db.AdminGetIntroStatus('pending', function(dbres) {
+						db.adminGetIntroStatus('pending', function(dbres) {
 							res.render('admin', {
 								view: 'pending',
 								data: dbres
@@ -157,7 +146,7 @@ app.get('/admin/:type/:status', checkAuth, function(req, res, next) {
 						});
 						break;
 					case 'approved':
-						db.AdminGetIntroStatus('approved', function(dbres) {
+						db.adminGetIntroStatus('approved', function(dbres) {
 							res.render('admin', {
 								view: 'approved',
 								data: dbres
@@ -165,7 +154,7 @@ app.get('/admin/:type/:status', checkAuth, function(req, res, next) {
 						});
 						break;
 					case 'rejected':
-						db.AdminGetIntroStatus('rejected', function(dbres) {
+						db.adminGetIntroStatus('rejected', function(dbres) {
 							res.render('admin', {
 								view: 'rejected',
 								data: dbres
@@ -188,15 +177,15 @@ app.get('/admin/:type/:status', checkAuth, function(req, res, next) {
 		res.redirect('/logout');
 	}
 });
-app.get('/admin/', checkAuth, function(req, res, next) {
-	if(ismod(req.session.name)) {
+app.get('/admin/', helpers.checkAuth, function(req, res) {
+	if(helpers.isMod(req.session.name)) {
 		res.render('admintools');
 	}else{
 		res.redirect('/logout');
 	}
 });
-app.get('/profile/u/:username', function(req, res, next) {
-	db.SelectUser(req.params.username, function(dbres) {
+app.get('/profile/u/:username', function(req, res) {
+	db.selectUser(req.params.username, function(dbres) {
 		if(dbres) {
 			needle.get('https://api.twitch.tv/kraken/channels/' + req.params.username, function(error, krakken) {
 				var data = {data: dbres};
@@ -212,9 +201,9 @@ app.get('/profile/u/:username', function(req, res, next) {
 		}
 	});
 });
-app.get('/profile', checkAuth, function(req, res) {
+app.get('/profile', helpers.checkAuth, function(req, res) {
 	UserModel.get(req.session.name).run().then(function(dbres) {
-		res.render('profile', {data: dbres, ismod: ismod(req.session.name)});
+		res.render('profile', {data: dbres, ismod: helpers.isMod(req.session.name)});
 	}).catch(thinky.Errors.DocumentNotFound, function() {
 		var UserData = new UserModel({twitchname: req.session.name});
 
@@ -226,43 +215,43 @@ app.get('/profile', checkAuth, function(req, res) {
 	});
 });
 
-app.get('/logout', checkAuth, function(req, res) {
+app.get('/logout', helpers.checkAuth, function(req, res) {
 	req.session.destroy(function() {
 		res.redirect('/');
 	});
 });
 
 /* posts */
-app.post('/admin/submit', checkAuth, function(req, res, next) {
-	if(ismod(req.session.name)) {
+app.post('/admin/submit', helpers.checkAuth, function(req, res) {
+	if(helpers.isMod(req.session.name)) {
 		req.body.intro_approved = (req.body.intro_approved == "true"); //transform string into bool
 		req.body.intro_rejected = (req.body.intro_rejected == "true"); //transform string into bool
 		if(req.body.profile_data === null || req.body.profile_data === '') {
 			req.body.profile_data = null;
 		}
 		UserModel.get(req.body.twitchname).run().then(function(dbuser) {
-			dbuser.merge(req.body).save().then(function(dbres) {
+			dbuser.merge(req.body).save().then(function() {
 				res.status(200).send("changes made to: " + req.body.twitchname);
 			});
 		});
-	} else {
+	}else{
 		res.status(404).send('no mod access');
 	}
 });
-app.post('/admin/searchuser', checkAuth, function(req, res, next) {
-	if(ismod(req.session.name)) {
-		db.SelectUser(req.body.twitchname, function(dbres) {
+app.post('/admin/searchuser', helpers.checkAuth, function(req, res) {
+	if(helpers.isMod(req.session.name)) {
+		db.selectUser(req.body.twitchname, function(dbres) {
 			if(dbres) {
 				res.json(dbres);
-			} else {
+			}else{
 				res.json({"error": "could not find a user by that account"});
 			}
 		});
-	} else {
+	}else{
 		res.status(404).send('no mod access');
 	}
 });
-app.post('/createintro/submit', checkAuth, function(req, res, next) {
+app.post('/createintro/submit', helpers.checkAuth, function(req, res) {
 	var date = new Date();
 
 	req.body.intro_approved = (req.body.intro_approved == 'true'); //transform string into bool
@@ -270,7 +259,7 @@ app.post('/createintro/submit', checkAuth, function(req, res, next) {
 	req.body.intro_date = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
 
 	UserModel.get(req.body.twitchname).run().then(function(dbuser) {
-		dbuser.merge(req.body).save().then(function(dbres) {
+		dbuser.merge(req.body).save().then(function() {
 			res.status(200).send('Intro submitted and awaiting approval!');
 		});
 	});

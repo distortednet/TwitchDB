@@ -1,34 +1,60 @@
 {% include "./header.html" %}
 <div class="container">
-<center><a href="/admin/intro/pending" class="btn btn-default">Pending intros</a> <a href="/admin/intro/approved" class="btn btn-default">Approved intros</a> <a href="/admin/intro/rejected" class="btn btn-default">Rejected intros</a> <a href="/admin" class="btn btn-default">Tools</a></center>
-<hr>
-<h5>Search / Modify user</h5>
-<p>used to find an existing user in the database and modify various parameters</p>
-<input type="text" name="search-twitchname" placeholder="Twitch Username" class="search-twitchname"> <a href="#" class="btn btn-default btn-admin-search">Search</a>
-<hr>
-<strong>Things to know</strong><br>
-- If the user wants, we can clear the old reddit intro ID and this will allow them to create a new intro within the system.<br>
-- the clear intro checkbox will clear the new style intros, NOT legacy intros that are detected via the intro id.<br>
-- twitch usernames shouldnt need changed (i dont even think this works)<br>
-- intro approved/rejected cannot both be true, one must be false and true, or both must be false.<br>
-- afraid to click stuff here? ask distorted!
-<hr>
-<div id="result"><br>
-	<div class="form-left">Twitch name:</div> 							<div class="form-right"><input type="text" name="twitchname" id="twitchname"> </div>
-	<div class="form-left">Reddit name:</div> 							<div class="form-right"><input type="text" name="redditname" id="redditname"></div>
-	<div class="form-left">Reddit Intro ID (if not legacy)</div> 	<div class="form-right"><input type="text" name="reddit_introid" id="reddit_introid"></div>
-	<div class="form-left">Intro Approved:</div> 						<div class="form-right"><input type="text" name="intro_approved" id="intro_approved"></div>
-	<div class="form-left">Intro Rejected:</div>							<div class="form-right"><input type="text" name="intro_rejected" id="intro_rejected"> </div>
-	<div class="form-left">Clear Intro: </div>								<div class="form-right"><input type="checkbox" name="intro_clearintro" value="clear" id="intro_clearintro"> (only use if user needs to remake their intro because of mistakes)</div>
-	<input type="hidden" name="intro_about" id="intro_about">
-	<input type="hidden" name="intro_background" id="intro_background">
-	<input type="hidden" name="intro_channel" id="intro_channel">
-	<input type="hidden" name="intro_games" id="intro_games">
-	<input type="hidden" name="intro_goals" id="intro_goals">
-	<input type="hidden" name="intro_schedule" id="intro_schedule">
-	<div class="form-left">&nbsp;</div>                  			        <div class="form-right"><a href="#" class="btn btn-default btn-admin-search-change">Submit changes</a></div>
-</div>
-
+	<div class="text-center">
+		<a href="/admin/intro/pending" class="btn btn-default">Pending intros</a>
+		<a href="/admin/intro/approved" class="btn btn-default">Approved intros</a>
+		<a href="/admin/intro/rejected" class="btn btn-default">Rejected intros</a>
+		<a href="/admin" class="btn btn-default">Tools</a>
+	</div>
+	<hr />
+	<h5>Search / Modify user</h5>
+	<p>Used to find an existing user in the database and modify various parameters.</p>
+	<input type="text" name="search-twitchname" placeholder="Twitch Username" class="search-twitchname" />
+	<a href="#" class="btn btn-default btn-admin-search">Search</a>
+	<hr />
+	<strong>Things to know</strong><br />
+	- If the user wants, we can clear the old reddit intro ID and this will allow them to create a new intro within the system.<br />
+	- the clear intro checkbox will clear the new style intros, NOT legacy intros that are detected via the intro id.<br />
+	- twitch usernames shouldnt need changed (i dont even think this works)<br />
+	- intro approved/rejected cannot both be true, one must be false and true, or both must be false.<br />
+	- afraid to click stuff here? ask distorted!
+	<hr />
+	<div id="result"><br />
+		<div class="form-left">Twitch name:</div>
+		<div class="form-right">
+			<input type="text" name="twitchname" id="twitchname" />
+		</div>
+		<div class="form-left">Reddit name:</div>
+		<div class="form-right">
+			<input type="text" name="redditname" id="redditname" />
+		</div>
+		<div class="form-left">Reddit Intro ID (if not legacy):</div>
+		<div class="form-right">
+			<input type="text" name="reddit_introid" id="reddit_introid" />
+		</div>
+		<div class="form-left">Intro Approved:</div>
+		<div class="form-right">
+			<input type="text" name="intro_approved" id="intro_approved" />
+		</div>
+		<div class="form-left">Intro Rejected:</div>
+		<div class="form-right">
+			<input type="text" name="intro_rejected" id="intro_rejected" />
+		</div>
+		<div class="form-left">Clear Intro:</div>
+		<div class="form-right">
+			<input type="checkbox" name="intro_clearintro" value="clear" id="intro_clearintro" /> (Only use if user needs to remake their intro because of mistakes)
+		</div>
+		<input type="hidden" name="intro_about" id="intro_about" />
+		<input type="hidden" name="intro_background" id="intro_background" />
+		<input type="hidden" name="intro_channel" id="intro_channel" />
+		<input type="hidden" name="intro_games" id="intro_games" />
+		<input type="hidden" name="intro_goals" id="intro_goals" />
+		<input type="hidden" name="intro_schedule" id="intro_schedule" />
+		<div class="form-left">&nbsp;</div>
+		<div class="form-right">
+			<a href="#" class="btn btn-default btn-admin-search-change">Submit changes</a>
+		</div>
+	</div>
 </div>
 <script src="/js/admin.js?r={{rng}}"></script>
 {% include "./footer.html" %}

@@ -1,22 +1,19 @@
 {% include "./header.html" %}
 <div class="container">
-Hello {{data.twitchname}} !
-<hr>
-{%if !data.profile_data%}
-	{%if data.intro_id%}
-		It appears you created an old intro on the subreddit. Feel free to <a href="/createintro"> create a new one</a>!
+	Hello, {{data.twitchname}}!
+	<hr />
+	{%if !data.profile_data%}
+		{%if data.intro_id%}
+	<p>It appears you created an old intro on the subreddit. Feel free to <a href="/createintro">create a new one</a>!</p>
+		{%else%}
+	<p>No intro was found. <a href="/createintro">Try creating one!</a></p>
+		{%endif%}
 	{%else%}
-		no intro was found. <a href="/createintro">Try creating one!</a>
+	Your intro has been created, your public intro profile can be found <a href="/profile/u/{{data.twitchname}}">here</a>.
 	{%endif%}
-	
-{%else%}
-	your intro has been created, your public intro profile can be found <a href="/profile/u/{{data.twitchname}}">here</a>
-{%endif%}
-
-
-{% if ismod %}
-<hr>
-<a href="/admin" class="btn btn-default">Administration Panel</a>
-{%endif%}
+	{% if ismod %}
+	<hr />
+	<a href="/admin" class="btn btn-default">Administration Panel</a>
+	{%endif%}
 </div>
 {% include "./footer.html" %}
