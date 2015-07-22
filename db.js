@@ -23,6 +23,7 @@ var adminGetIntroStatus = function(status, cb) {
 				}
 
 				cb(statusarray);
+
 				break;
 			case 'approved':
 				for(var i in dbres) {
