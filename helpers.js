@@ -1,5 +1,4 @@
 var jsonraver = require('jsonraver'),
-	jsonfile = require('jsonfile'),
 	config = require('./config');
 
 function chunks(array, size) {
