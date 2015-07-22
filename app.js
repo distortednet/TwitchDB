@@ -114,7 +114,7 @@ app.get('/auth', function(req, res) {
 		code: req.query.code
 	}, function(err, resp, body) {
 		if(!err) {
-			needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, needleoptions, function(error, data) {
+			needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, function(error, data) {
 				if(!error && data.statusCode == 200) {
 					req.session.auth = body.access_token;
 					req.session.name = data.body.name;
