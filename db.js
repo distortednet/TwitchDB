@@ -11,7 +11,7 @@ var config = require('./config'),
 
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
 
-var AdminGetIntroStatus = function(status, cb) {
+var adminGetIntroStatus = function(status, cb) {
 	UserModel.run().then(function(dbres) {
 		var statusarray = [];
 
@@ -50,7 +50,7 @@ var AdminGetIntroStatus = function(status, cb) {
 	});
 }
 
-var GetOnlineUsers = function(cb) {
+var getOnlineUsers = function(cb) {
 	UserModel.filter(r.row('intro_approved')).run().then(function(users) {
 		var userarray = [];
 
@@ -58,7 +58,7 @@ var GetOnlineUsers = function(cb) {
 			userarray.push(users[i].twitchname);
 		}
 
-		helpers.getliveusers(userarray, function(jsonlist) {
+		helpers.getLiveUsers(userarray, function(jsonlist) {
 			if(jsonlist) {
 				var jsonurl = config.app.baseurl + 'api/streams/json';
 
@@ -98,7 +98,7 @@ var GetOnlineUsers = function(cb) {
 	});
 }
 
-var SelectUser = function(user, cb) {
+var selectUser = function(user, cb) {
 	UserModel.get(user).run().then(function(dbres) {
 		cb(dbres)
 	}).catch(thinky.Errors.DocumentNotFound, function(err) {
@@ -107,7 +107,7 @@ var SelectUser = function(user, cb) {
 }
 
 module.exports = {
-	AdminGetIntroStatus: AdminGetIntroStatus,
-	GetOnlineUsers: GetOnlineUsers,
-	SelectUser: SelectUser
+	adminGetIntroStatus: adminGetIntroStatus,
+	getOnlineUsers: getOnlineUsers,
+	selectUser: selectUser
 };

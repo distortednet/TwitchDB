@@ -1,62 +1,68 @@
 {% include "./header.html" %}
 <div class="container">
-<center>
-<a href="/admin/intro/pending" class="btn btn-default">Pending intros</a> <a href="/admin/intro/approved" class="btn btn-default">Approved intros</a> <a href="/admin/intro/rejected" class="btn btn-default">Rejected intros</a> <a href="/admin" class="btn btn-default">Tools</a>
-<hr>
-Admin panel<br>
-Viewing: {{view}}<br><br>
-{%if view == "pending" %}
-if the reddit username field is blank or incorrect, skip assigning flair.
-{%endif%}
-<hr>
-</center>
+	<center>
+		<a href="/admin/intro/pending" class="btn btn-default">Pending intros</a>
+		<a href="/admin/intro/approved" class="btn btn-default">Approved intros</a>
+		<a href="/admin/intro/rejected" class="btn btn-default">Rejected intros</a>
+		<a href="/admin" class="btn btn-default">Tools</a>
+		<hr />
+		Admin panel<br />
+		Viewing: {{view}}<br /><br />
+		{%if view == "pending" %}
+		If the reddit username field is blank or incorrect, skip assigning flair.
+		{%endif%}
+		<hr />
+	</center>
 	<table class="table table-striped table-hover table-condensed" id="admintable">
 		<thead>
-			<tr>
-				<th>Submitted Date</th>
-				<th>Twitch Name</th>
-				<th>Reddit Name</th>
-				{%if view == "pending" %}
-				<th>Flair</th>
-				<th>Action</th>
-				{%endif%}
-			</tr>
+		<tr>
+			<th>Submitted Date</th>
+			<th>Twitch Name</th>
+			<th>Reddit Name</th>
+			{%if view == "pending" %}
+			<th>Flair</th>
+			<th>Action</th>
+			{%endif%}
+		</tr>
 		</thead>
 
 		<tbody>
-			{%if view == "pending" %}
-				{%for pending in data %}
-				{%if pending.profile_data %}
-					<tr class="{{pending.twitchname}}">
-						<td>{{pending.intro_date}}</td>
-						<td><a href="http://www.twitch.tv/{{pending.twitchname}}" target="_blank">{{pending.twitchname}}</a></td>
-						<td><a href="http://www.reddit.com/u/{{pending.redditname}}" target="_blank">{{pending.redditname}}</a></td>
-						<td>{%if pending.redditname %}<a href="https://www.reddit.com/r/Twitch/about/flair/?name={{pending.redditname}}" class="btn btn-primary btn-view-intro" target="_blank">Assign Flair</a>{%endif%}</td>
-						<td>
-							<a href="/profile/u/{{pending.twitchname}}" class="btn btn-default btn-view-intro" target="_blank" style="">Intro Profile</a>
-							<a href="#" class="btn btn-success btn-submit" data-user="{{pending.twitchname}}" data-status="true" data-type="approve">Approve</a>
-							<a href="#" class="btn btn-danger btn-submit" data-user="{{pending.twitchname}}" data-status="false" data-type="reject">Reject</a>
-						</td>
-					</tr>
-					{%endif%}
-				{%endfor%}
-			{%elseif view == "approved" %}
-				{%for approved in data %}
-					<tr>
-						<td>{{approved.intro_date}}</td>
-						<td><a href="http://www.twitch.tv/{{approved.twitchname}}" target="_blank">{{approved.twitchname}}</a></td>
-						<td><a href="http://www.reddit.com/u/{{approved.redditname}}" target="_blank">{{approved.redditname}}</a></td>
-					</tr>
-				{%endfor%}
-			{%elseif view == "rejected" %}
-				{%for rejected in data %}
-					<tr>
-						<td>{{rejected.intro_date}}</td>
-						<td><a href="http://www.twitch.tv/{{rejected.twitchname}}" target="_blank">{{rejected.twitchname}}</a></td>
-						<td><a href="http://www.reddit.com/u/{{rejected.redditname}}" target="_blank">{{rejected.redditname}}</a></td>
-					</tr>
-				{%endfor%}
-			{%endif%}
+		{%if view == "pending" %}
+		{%for pending in data %}
+		{%if pending.profile_data %}
+		<tr class="{{pending.twitchname}}">
+			<td>{{pending.intro_date}}</td>
+			<td><a href="http://www.twitch.tv/{{pending.twitchname}}" target="_blank">{{pending.twitchname}}</a></td>
+			<td><a href="http://www.reddit.com/u/{{pending.redditname}}" target="_blank">{{pending.redditname}}</a></td>
+			<td>{%if pending.redditname %}<a href="https://www.reddit.com/r/Twitch/about/flair/?name={{pending.redditname}}" class="btn btn-primary btn-view-intro" target="_blank">Assign Flair</a>{%endif%}
+			</td>
+			<td>
+				<a href="/profile/u/{{pending.twitchname}}" class="btn btn-default btn-view-intro" target="_blank" style="">Intro Profile</a>
+				<a href="#" class="btn btn-success btn-submit" data-user="{{pending.twitchname}}" data-status="true" data-type="approve">Approve</a>
+				<a href="#" class="btn btn-danger btn-submit" data-user="{{pending.twitchname}}" data-status="false" data-type="reject">Reject</a>
+			</td>
+		</tr>
+		{%endif%}
+		{%endfor%}
+		{%elseif view == "approved" %}
+		{%for approved in data %}
+		<tr>
+			<td>{{approved.intro_date}}</td>
+			<td><a href="http://www.twitch.tv/{{approved.twitchname}}" target="_blank">{{approved.twitchname}}</a></td>
+			<td><a href="http://www.reddit.com/u/{{approved.redditname}}" target="_blank">{{approved.redditname}}</a>
+			</td>
+		</tr>
+		{%endfor%}
+		{%elseif view == "rejected" %}
+		{%for rejected in data %}
+		<tr>
+			<td>{{rejected.intro_date}}</td>
+			<td><a href="http://www.twitch.tv/{{rejected.twitchname}}" target="_blank">{{rejected.twitchname}}</a></td>
+			<td><a href="http://www.reddit.com/u/{{rejected.redditname}}" target="_blank">{{rejected.redditname}}</a>
+			</td>
+		</tr>
+		{%endfor%}
+		{%endif%}
 		</tbody>
 	</table>
 </div>
