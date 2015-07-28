@@ -74,7 +74,7 @@ var getLiveUsers = function(array, cb) {
 module.exports = {
 	getLiveUsers: getLiveUsers,
 	shuffleArray: shuffleArray,
-	getRedditName: getRedditName,
+	// getRedditName: getRedditName,
 	inArray: inArray,
 	isMod: isMod,
 	checkAuth: checkAuth
