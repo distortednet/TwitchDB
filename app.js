@@ -46,7 +46,7 @@ app.get('*', function(req, res, next) {
 
 	next();
 });
-app.get('/', routeCache.cacheSeconds(300), function(req, res) {
+app.get('/', routeCache.cacheSeconds(600), function(req, res) {
 	async.waterfall([
 		function(callback) {
 			db.getOnlineUsers(function(dbres) {
@@ -57,7 +57,7 @@ app.get('/', routeCache.cacheSeconds(300), function(req, res) {
 		res.render('index', {data: result.splice(0, 5)});
 	});
 });
-app.get('/streams', routeCache.cacheSeconds(300), function(req, res) {
+app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 	db.getOnlineUsers(function(dbres) {
 		var filterlist = [];
 
