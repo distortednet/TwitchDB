@@ -1,7 +1,6 @@
-// var jsonraver = require('jsonraver'),
-var needle = require('needle'),
-	batch = require('batchflow'),
-	config = require('./config');
+var	batch = require('batchflow'),
+		http = require('https'),
+		config = require('./config');
 
 function chunks(array, size) {
 	var results = [];
@@ -37,7 +36,19 @@ var checkAuth = function(req, res, next) {
 		next();
 	}
 };
-
+function requrl(url, cb) {
+	http.get(url, function(res) {
+		var body = '';
+		res.on('data', function(chunk) {
+			body += chunk;
+		});
+		res.on('end', function() {
+			cb(JSON.parse(body));
+		});
+	}).on('error', function(e) {
+    cb(e);
+	});
+}
 var getLiveUsers = function(array, cb) {
 	var userlist = [],
 		chunked = chunks(array, 100);
@@ -45,36 +56,20 @@ var getLiveUsers = function(array, cb) {
 	for(var i = 0; i < chunked.length; i++) {
 		userlist.push('https://api.twitch.tv/kraken/streams?channel=' + chunked[i].join(','));
 	}
+
 	batch(userlist).sequential().each(function(i, url, done) {
-		needle.get(url, function(error, response) {
-			done(response.body);
+		requrl(url, function(res) {
+			done(res);
 		});
 	}).end(function(final) {
 		cb(final);
 	});
-	// jsonraver(userlist, function(err, data) {
-	// 	if(!err) {
-	// 		cb(data);
-	// 	}else{
-	// 		cb(false);
-	// 	}
-	// });
-};
 
-// var getRedditName = function(id, cb) {
-// 	needle.get('https://www.reddit.com/r/Twitch/comments/' + id + '.json', function(error, response) {
-// 		if(!error && response.statusCode == 200) {
-// 			cb(response.body[0].data.children[0].data.author);
-// 		}else{
-// 			cb(false);
-// 		}
-// 	});
-// };
+};
 
 module.exports = {
 	getLiveUsers: getLiveUsers,
 	shuffleArray: shuffleArray,
-	// getRedditName: getRedditName,
 	inArray: inArray,
 	isMod: isMod,
 	checkAuth: checkAuth
