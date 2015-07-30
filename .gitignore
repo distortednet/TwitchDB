@@ -4,3 +4,5 @@ config.js
 .idea
 # Ignore Node Modules
 node_modules
+# Ignore test stuff
+test.js

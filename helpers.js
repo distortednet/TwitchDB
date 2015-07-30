@@ -46,7 +46,7 @@ function requrl(url, cb) {
 			cb(JSON.parse(body));
 		});
 	}).on('error', function(e) {
-    cb(e);
+		console.log(e);
 	});
 }
 var getLiveUsers = function(array, cb) {
