@@ -66,11 +66,17 @@ var getLiveUsers = function(array, cb) {
 	});
 
 };
+var getVOD = function(user, cb) {
+	requrl("https://api.twitch.tv/kraken/channels/"+user+"/videos?limit=1", function(res) {
+		cb(res.videos);
+	});
+};
 
 module.exports = {
 	getLiveUsers: getLiveUsers,
 	shuffleArray: shuffleArray,
 	inArray: inArray,
 	isMod: isMod,
-	checkAuth: checkAuth
+	checkAuth: checkAuth,
+	getVOD: getVOD
 };

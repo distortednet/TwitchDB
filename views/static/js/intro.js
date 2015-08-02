@@ -14,12 +14,15 @@ $(document).ready(function() {
 			return true;
 		}
 	}
-
+	$('.btn-edit-profile').click(function(e) {
+		e.preventDefault;
+		$('.editprofile').slideDown();
+	});
 	/* submit intro */
 	$('.btn-submit-intro').click(function(e) {
 		e.preventDefault;
 		var about = $('#intro-about').val();
-		var channel = $('#intro-channel').val();
+		var channel = twitchname;
 		var redditname = $('#redditname').val();
 		var schedule = $('#intro-schedule').val();
 		var games = $('#intro-games').val();

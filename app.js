@@ -192,6 +192,9 @@ app.get('/profile/u/:username', function(req, res) {
 			res.render('introprofile', {data: dbres});
 		}
 	});
+	// helpers.getVOD(req.params.username, function(resvod) {
+	// 		console.log(resvod[0].title);
+	// });
 });
 app.get('/profile', helpers.checkAuth, function(req, res) {
 	UserModel.get(req.session.name).run().then(function(dbres) {
@@ -245,16 +248,18 @@ app.post('/admin/searchuser', helpers.checkAuth, function(req, res) {
 });
 app.post('/createintro/submit', helpers.checkAuth, function(req, res) {
 	var date = new Date();
-
 	req.body.intro_approved = (req.body.intro_approved == 'true'); //transform string into bool
 	req.body.intro_rejected = (req.body.intro_rejected == 'true'); //transform string into bool
 	req.body.intro_date = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-
-	UserModel.get(req.body.twitchname).run().then(function(dbuser) {
-		dbuser.merge(req.body).save().then(function() {
-			res.status(200).send('Intro submitted and awaiting approval!');
+	if(req.session.name != req.body.twitchname) {
+		res.status(200).send('you cannot edit another users profile..');
+	} else {
+		UserModel.get(req.body.twitchname).run().then(function(dbuser) {
+			dbuser.merge(req.body).save().then(function() {
+				res.status(200).send('Intro submitted and awaiting approval!');
+			});
 		});
-	});
+	}
 });
 app.get('*', function(req, res, next) {
 	res.render('404');

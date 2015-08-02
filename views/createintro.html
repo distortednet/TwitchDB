@@ -10,7 +10,6 @@
 		<strong>About Me: </strong> a brief summary of who you are and what you are about!<br>
 		<textarea id="intro-about" required></textarea><br><br>
 		<input type="text" id="redditname"><strong> Reddit Username: </strong> Your Reddit username, to recieve broadcaster flair on /r/twitch (optional)<br><br>
-		<input type="hidden" id="intro-channel" value="{{data.twitchname}}" required>
 		<input type="text" id="intro-schedule" required>
 		<strong>Schedule: </strong> What dates/times do you stream? What timezone?<br><br>
 		<input type="text" id="intro-games" required>
@@ -29,5 +28,8 @@
 	<h3>A nasty error has occured.</h3>
 {%endif%}
 </div>
+<script>
+	var twitchname = "{{data.twitchname}}";
+</script>
 <script src="/js/intro.js"></script>
 {% include "./footer.html" %}
