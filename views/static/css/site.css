@@ -53,12 +53,16 @@ body {
 	overflow: hidden;
 	width: 100%;
 }
-
+textarea, input { outline: none; }
 textarea, input, select {
 	background-color: #343940;
-	border: 1px solid black;
+	border: 0px;
 	color: white;
 	padding: 4px;
+	-webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.73);
+	-moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.73);
+	box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.73);
+	margin-bottom: 4px;
 }
 
 textarea {

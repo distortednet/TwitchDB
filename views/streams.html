@@ -1,7 +1,7 @@
 {% include "./header.html" %}
 <div class="container-fluid">
 	{%if data %}
-	<center><strong>{{data.length}} streamers currently online</strong></center>
+
 	<div class="filterbar">
 		Games: <select class="gamefilter">
 		<option value="all">All</option>
@@ -23,6 +23,7 @@
 		<option value="{{list.video_height}}">{{list.video_height}}</option>
 		{% endfor %}
 	</select>
+	 <strong>{{data.length}} streamers currently online</strong>
 	</div>
 
 	{% for stream in data %}

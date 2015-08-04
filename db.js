@@ -11,45 +11,24 @@ var config = require('./config'),
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
 
 var adminGetIntroStatus = function(status, cb) {
-	UserModel.run().then(function(dbres) {
-		var statusarray = [];
-
-		switch(status) {
-			case 'pending':
-				for(var i in dbres) {
-					if(dbres[i].intro_approved == false && dbres[i].intro_rejected == false) {
-						statusarray.push(dbres[i]);
-					}
-				}
-
-				cb(statusarray);
-
-				break;
-			case 'approved':
-				for(var i in dbres) {
-					if(dbres[i].intro_approved == true && dbres[i].intro_rejected == false) {
-						statusarray.push(dbres[i]);
-					}
-				}
-
-				cb(statusarray);
-				break;
-			case 'rejected':
-				for(var i in dbres) {
-					if(dbres[i].intro_approved == false && dbres[i].intro_rejected == true) {
-						statusarray.push(dbres[i]);
-					}
-				}
-
-				cb(statusarray);
-				break;
-			default:
-				cb('no status selected');
-				break;
-		}
-	});
+	switch(status) {
+		case 'approved':
+			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+		case 'pending':
+			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+		case 'rejected':
+			UserModel.filter({'intro_approved': false, 'intro_rejected': true}).run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+	}
 }
-
 var getOnlineUsers = function(cb) {
 	UserModel.filter(r.row('intro_approved')).run().then(function(users) {
 		var userarray = [];
