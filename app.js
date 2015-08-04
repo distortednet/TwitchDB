@@ -73,10 +73,25 @@ app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 		filterlist = null;
 	});
 });
-app.get('/database', function(req, res) {
-	db.adminGetIntroStatus('searchdb', function(dbres) {
-		res.render('database', {data: dbres});
+app.get('/database/', function(req, res) {
+	db.PaginateUsers(0, 25, function(dbres) {
+		res.render('database', {count: dbres.count, data: dbres.data, previouspage: 0, nextpage: 25});
 	});
+
+});
+
+app.get('/database/page/:id', function(req, res) {
+	var currentpage = parseInt(req.params.id);
+	var nextpage = currentpage + 25;
+	if(currentpage != 0) {
+		var previouspage = currentpage - 25;
+	} else {
+		var previouspage = 0;
+	}
+	db.PaginateUsers(currentpage, nextpage, function(dbres) {
+		res.render('database', {count: dbres.count, data: dbres.data, previouspage: previouspage, nextpage: nextpage});
+	});
+
 });
 app.get('/contact', function(req, res) {
 	res.render('contact');
@@ -217,6 +232,11 @@ app.get('/logout', helpers.checkAuth, function(req, res) {
 });
 
 /* posts */
+app.post('/database/search', function(req, res) {
+	db.dbSearch(req.body.query, function(searchdata) {
+		res.status(200).send(searchdata);
+	})
+});
 app.post('/admin/submit', helpers.checkAuth, function(req, res) {
 	if(helpers.isMod(req.session.name)) {
 		req.body.intro_approved = (req.body.intro_approved == "true"); //transform string into bool

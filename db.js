@@ -27,13 +27,22 @@ var adminGetIntroStatus = function(status, cb) {
 				cb(dbres);
 			});
 		break;
-		case 'searchdb':
-			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', {'profile_data': 'intro_games'}).run().then(function(dbres) {
-				cb(dbres);
-			});
-		break;
 	}
 }
+var PaginateUsers = function(start, end, cb) {
+	UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
+		UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', {'profile_data': 'intro_games'}).orderBy(r.desc('intro_date')).slice(start, end).run().then(function(dbres) {
+			cb({'count': total, 'data': dbres});
+		});
+	});
+}
+var	dbSearch = function(string, cb) {
+	UserModel.filter(function (doc) {
+	    return doc("profile_data")("intro_games").match(string);
+	}).filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'intro_date', {'profile_data': 'intro_games'}).run().then(function(users) {
+		cb(users)
+	});
+};
 var getOnlineUsers = function(cb) {
 	UserModel.filter(r.row('intro_approved')).run().then(function(users) {
 		var userarray = [];
@@ -66,6 +75,8 @@ var selectUser = function(user, cb) {
 
 module.exports = {
 	adminGetIntroStatus: adminGetIntroStatus,
+	PaginateUsers: PaginateUsers,
+	dbSearch: dbSearch,
 	getOnlineUsers: getOnlineUsers,
 	selectUser: selectUser
 };
