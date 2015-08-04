@@ -13,17 +13,22 @@ var UserModel = thinky.createModel('users', config.app.rethink.schema, config.ap
 var adminGetIntroStatus = function(status, cb) {
 	switch(status) {
 		case 'approved':
-			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).run().then(function(dbres) {
+			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
 				cb(dbres);
 			});
 		break;
 		case 'pending':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).run().then(function(dbres) {
+			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', 'profile_data').run().then(function(dbres) {
 				cb(dbres);
 			});
 		break;
 		case 'rejected':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': true}).run().then(function(dbres) {
+			UserModel.filter({'intro_approved': false, 'intro_rejected': true}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+		case 'searchdb':
+			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', {'profile_data': 'intro_games'}).run().then(function(dbres) {
 				cb(dbres);
 			});
 		break;

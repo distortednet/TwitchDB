@@ -74,7 +74,7 @@ app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 	});
 });
 app.get('/database', function(req, res) {
-	db.adminGetIntroStatus('approved', function(dbres) {
+	db.adminGetIntroStatus('searchdb', function(dbres) {
 		res.render('database', {data: dbres});
 	});
 });
