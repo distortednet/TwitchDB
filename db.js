@@ -32,7 +32,7 @@ var adminGetIntroStatus = function(status, cb) {
 			});
 		break;
 		case 'pending':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
+			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', 'profile_data').run().then(function(dbres) {
 				cb(dbres);
 			});
 		break;
