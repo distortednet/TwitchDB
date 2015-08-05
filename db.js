@@ -9,26 +9,6 @@ var config = require('./config'),
 	helpers = require('./helpers');
 
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
-
-var adminGetIntroStatus = function(status, cb) {
-	switch(status) {
-		case 'approved':
-			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
-				cb(dbres);
-			});
-		break;
-		case 'pending':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', 'profile_data').run().then(function(dbres) {
-				cb(dbres);
-			});
-		break;
-		case 'rejected':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': true}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
-				cb(dbres);
-			});
-		break;
-	}
-}
 var PaginateUsers = function(start, end, cb) {
 	UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
 		UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', {'profile_data': 'intro_games'}).orderBy(r.desc('intro_date')).slice(start, end).run().then(function(dbres) {
@@ -38,19 +18,41 @@ var PaginateUsers = function(start, end, cb) {
 }
 var	dbSearch = function(string, cb) {
 	UserModel.filter(function (doc) {
-	    return doc("profile_data")("intro_games").match(string);
-	}).filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'intro_date', {'profile_data': 'intro_games'}).run().then(function(users) {
-		cb(users)
+	    return doc("profile_data")("intro_games").match('(?i)'+string);
+	}).filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'intro_date', {'profile_data': 'intro_games'}).orderBy(r.desc('intro_date')).run().then(function(users) {
+		cb(users);
 	});
 };
+
+var adminGetIntroStatus = function(status, cb) {
+	switch(status) {
+		case 'approved':
+			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+		case 'pending':
+			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+		case 'rejected':
+			UserModel.filter({'intro_approved': false, 'intro_rejected': true}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
+				cb(dbres);
+			});
+		break;
+		default:
+			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
+				cb(dbres);
+			});
+	}
+}
 var getOnlineUsers = function(cb) {
 	UserModel.filter(r.row('intro_approved')).run().then(function(users) {
 		var userarray = [];
-
 		for(var i in users) {
 			userarray.push(users[i].twitchname);
 		}
-
 		helpers.getLiveUsers(userarray, function(jsonlist) {
 			if(jsonlist) {
 				var streams = [];

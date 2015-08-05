@@ -66,6 +66,14 @@ var getLiveUsers = function(array, cb) {
 	});
 
 };
+var generatePages = function(page, cb) {
+	var currentpage = parseInt(page);
+	if(currentpage != 0) {
+		 cb({previous: currentpage - 25, next: currentpage + 25});
+	} else {
+		cb({previous: 0, next: currentpage + 25});
+	}
+}
 var getVOD = function(user, cb) {
 	requrl("https://api.twitch.tv/kraken/channels/"+user+"/videos?limit=1", function(res) {
 		cb(res.videos);
@@ -75,6 +83,7 @@ var getVOD = function(user, cb) {
 module.exports = {
 	getLiveUsers: getLiveUsers,
 	shuffleArray: shuffleArray,
+	generatePages: generatePages,
 	inArray: inArray,
 	isMod: isMod,
 	checkAuth: checkAuth,

@@ -60,7 +60,6 @@ app.get('/', routeCache.cacheSeconds(600), function(req, res) {
 app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 	db.getOnlineUsers(function(dbres) {
 		var filterlist = [];
-
 		for(var i in dbres) {
 			filterlist.push({
 				'game': dbres[i].game,
@@ -68,9 +67,7 @@ app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 				'video_height': dbres[i].video_height
 			});
 		}
-
 		res.render('streams', {data: dbres, filter: filterlist});
-		filterlist = null;
 	});
 });
 app.get('/database/', function(req, res) {
@@ -79,19 +76,12 @@ app.get('/database/', function(req, res) {
 	});
 
 });
-
 app.get('/database/page/:id', function(req, res) {
-	var currentpage = parseInt(req.params.id);
-	var nextpage = currentpage + 25;
-	if(currentpage != 0) {
-		var previouspage = currentpage - 25;
-	} else {
-		var previouspage = 0;
-	}
-	db.PaginateUsers(currentpage, nextpage, function(dbres) {
-		res.render('database', {count: dbres.count, data: dbres.data, previouspage: previouspage, nextpage: nextpage});
+	helpers.generatePages(req.params.id, function(pages) {
+		db.PaginateUsers(pages.previous, pages.next, function(dbres) {
+			res.render('database', {count: dbres.count, data: dbres.data, previouspage: pages.previous, nextpage: pages.next});
+		});
 	});
-
 });
 app.get('/contact', function(req, res) {
 	res.render('contact');
@@ -138,49 +128,12 @@ app.get('/auth', function(req, res) {
 app.get('/feedback/:id', helpers.checkAuth, function(req, res) {
 	res.status(404).send('The feedback section is being overhauled. Sorry! D:');
 });
-
-app.get('/admin/:type/:status', helpers.checkAuth, function(req, res) {
+app.get('/admin/intro/:status', helpers.checkAuth, function(req, res) {
 	if(helpers.isMod(req.session.name)) {
-		switch(req.params.type) {
-			case 'intro':
-				switch(req.params.status) {
-					case 'pending':
-						db.adminGetIntroStatus('pending', function(dbres) {
-							res.render('admin', {
-								view: 'pending',
-								data: dbres
-							});
-						});
-						break;
-					case 'approved':
-						db.adminGetIntroStatus('approved', function(dbres) {
-							res.render('admin', {
-								view: 'approved',
-								data: dbres
-							});
-						});
-						break;
-					case 'rejected':
-						db.adminGetIntroStatus('rejected', function(dbres) {
-							res.render('admin', {
-								view: 'rejected',
-								data: dbres
-							});
-						});
-						break;
-					default:
-						res.render('admin', {
-							view: 'admin'
-						});
-				}
-				break;
-			case 'feedback':
-				res.status(404).send('feedback');
-				break;
-			default:
-				res.status(404).send('invalid type');
-		}
-	}else{
+			db.adminGetIntroStatus(req.params.status, function(dbres) {
+				res.render('admin', {view: req.params.status, data: dbres});
+			});
+		} else {
 		res.redirect('/logout');
 	}
 });
