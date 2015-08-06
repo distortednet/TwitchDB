@@ -54,20 +54,20 @@ app.get('/', routeCache.cacheSeconds(600), function(req, res) {
 			});
 		}
 	], function(result) {
-		res.render('index', {data: result.splice(0, 5)});
+		res.render('index', {data: result.online.splice(0, 5)});
 	});
 });
 app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 	db.getOnlineUsers(function(dbres) {
 		var filterlist = [];
-		for(var i in dbres) {
+		for(var i in dbres.online) {
 			filterlist.push({
-				'game': dbres[i].game,
-				'viewers': dbres[i].viewers,
-				'video_height': dbres[i].video_height
+				'game': dbres.online[i].game,
+				'viewers': dbres.online[i].viewers,
+				'video_height': dbres.online[i].video_height
 			});
 		}
-		res.render('streams', {data: dbres, filter: filterlist});
+		res.render('streams', {data: dbres.online, filter: filterlist, count: dbres.total});
 	});
 });
 app.get('/database/', function(req, res) {

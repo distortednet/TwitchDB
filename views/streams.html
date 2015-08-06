@@ -22,8 +22,8 @@
 		{% for list in filter %}
 		<option value="{{list.video_height}}">{{list.video_height}}</option>
 		{% endfor %}
-	</select>
-	 <strong>{{data.length}} streamers currently online</strong>
+	</select><br>
+	 <strong>{{data.length}} streamers currently online out of {{count}} streams</strong>
 	</div>
 
 	{% for stream in data %}

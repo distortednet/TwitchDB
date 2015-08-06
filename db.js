@@ -61,7 +61,9 @@ var getOnlineUsers = function(cb) {
 						streams.push(jsonlist[i].streams[x]);
 					}
 				}
-				cb(streams);
+				UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
+					cb({online: streams, total: total});
+				});
 			}
 		});
 	});
