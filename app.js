@@ -8,7 +8,6 @@ var express = require('express'),
 	cookieParser = require('cookie-parser'),
 	needle = require('needle'),
 	swig = require('swig'),
-	async = require('async'),
 	thinky = require('thinky')({
 		host: config.app.rethink.host,
 		port: config.app.rethink.port,
@@ -47,18 +46,14 @@ app.get('*', function(req, res, next) {
 	next();
 });
 app.get('/', routeCache.cacheSeconds(600), function(req, res) {
-	async.waterfall([
-		function(callback) {
-			db.getOnlineUsers(function(dbres) {
-				callback(dbres);
-			});
-		}
-	], function(result) {
-		res.render('index', {data: result.online.splice(0, 5)});
+	db.getOnlineUsers(function(err, dbres) {
+		if (err) { console.error('Error:', err, err.stack); }
+		res.render('index', {data: dbres.online.splice(0, 5)});
 	});
 });
 app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
-	db.getOnlineUsers(function(dbres) {
+	db.getOnlineUsers(function(err, dbres) {
+		if (err) { console.error('Error:', err, err.stack); }
 		var filterlist = [];
 		for(var i in dbres.online) {
 			filterlist.push({
@@ -71,14 +66,17 @@ app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 	});
 });
 app.get('/database/', function(req, res) {
-	db.PaginateUsers(0, 25, function(dbres) {
+	db.PaginateUsers(0, 25, function(err, dbres) {
+		if (err) { console.error('Error:', err, err.stack); }
 		res.render('database', {count: dbres.count, data: dbres.data, previouspage: 0, nextpage: 25});
 	});
 
 });
 app.get('/database/page/:id', function(req, res) {
-	helpers.generatePages(req.params.id, function(pages) {
-		db.PaginateUsers(pages.previous, pages.next, function(dbres) {
+	helpers.generatePages(req.params.id, function(err, pages) {
+	if (err) { console.error('Error:', err, err.stack); }
+		db.PaginateUsers(pages.previous, pages.next, function(err, dbres) {
+			if (err) { console.error('Error:', err, err.stack); }
 			res.render('database', {count: dbres.count, data: dbres.data, previouspage: pages.previous, nextpage: pages.next});
 		});
 	});
@@ -130,7 +128,8 @@ app.get('/feedback/:id', helpers.checkAuth, function(req, res) {
 });
 app.get('/admin/intro/:status', helpers.checkAuth, function(req, res) {
 	if(helpers.isMod(req.session.name)) {
-			db.adminGetIntroStatus(req.params.status, function(dbres) {
+			db.adminGetIntroStatus(req.params.status, function(err, dbres) {
+				if (err) { console.error('Error:', err, err.stack); }
 				res.render('admin', {view: req.params.status, data: dbres});
 			});
 		} else {
@@ -145,7 +144,8 @@ app.get('/admin/', helpers.checkAuth, function(req, res) {
 	}
 });
 app.get('/profile/u/:username', function(req, res) {
-	db.selectUser(req.params.username, function(dbres) {
+	db.selectUser(req.params.username, function(err, dbres) {
+	if (err) { console.error('Error:', err, err.stack); }
 		if(dbres) {
 			needle.get('https://api.twitch.tv/kraken/channels/' + req.params.username, function(error, krakken) {
 				var data = {data: dbres};
@@ -160,9 +160,6 @@ app.get('/profile/u/:username', function(req, res) {
 			res.render('introprofile', {data: dbres});
 		}
 	});
-	// helpers.getVOD(req.params.username, function(resvod) {
-	// 		console.log(resvod[0].title);
-	// });
 });
 app.get('/profile', helpers.checkAuth, function(req, res) {
 	UserModel.get(req.session.name).run().then(function(dbres) {
@@ -186,7 +183,8 @@ app.get('/logout', helpers.checkAuth, function(req, res) {
 
 /* posts */
 app.post('/database/search', function(req, res) {
-	db.dbSearch(req.body.query, function(searchdata) {
+	db.dbSearch(req.body.query, function(err, searchdata) {
+		if (err) { console.error('Error:', err, err.stack); }
 		res.status(200).send(searchdata);
 	})
 });
@@ -208,7 +206,8 @@ app.post('/admin/submit', helpers.checkAuth, function(req, res) {
 });
 app.post('/admin/searchuser', helpers.checkAuth, function(req, res) {
 	if(helpers.isMod(req.session.name)) {
-		db.selectUser(req.body.twitchname, function(dbres) {
+		db.selectUser(req.body.twitchname, function(err, dbres) {
+		if (err) { console.error('Error:', err, err.stack); }
 			if(dbres) {
 				res.json(dbres);
 			}else{

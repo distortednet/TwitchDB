@@ -43,10 +43,11 @@ function requrl(url, cb) {
 			body += chunk;
 		});
 		res.on('end', function() {
-			cb(JSON.parse(body));
+			return cb(null, JSON.parse(body));
 		});
 	}).on('error', function(e) {
-		console.log(e);
+		console.error('Error:', err, err.stack);
+		return cb(err);
 	});
 }
 var getLiveUsers = function(array, cb) {
@@ -56,13 +57,13 @@ var getLiveUsers = function(array, cb) {
 	for(var i = 0; i < chunked.length; i++) {
 		userlist.push('https://api.twitch.tv/kraken/streams?channel=' + chunked[i].join(','));
 	}
-
 	batch(userlist).sequential().each(function(i, url, done) {
-		requrl(url, function(res) {
+		requrl(url, function(err, res) {
+			if (err) { console.error('Error:', err, err.stack); }
 			done(res);
 		});
 	}).end(function(final) {
-		cb(final);
+		return cb(null, final);
 	});
 
 };
@@ -71,12 +72,12 @@ var generatePages = function(page, cb) {
 	if(currentpage != 0) {
 		 cb({previous: currentpage - 25, next: currentpage + 25});
 	} else {
-		cb({previous: 0, next: currentpage + 25});
+		return cb(null, {previous: 0, next: currentpage + 25});
 	}
 }
 var getVOD = function(user, cb) {
 	requrl("https://api.twitch.tv/kraken/channels/"+user+"/videos?limit=1", function(res) {
-		cb(res.videos);
+		return cb(null, res.videos);
 	});
 };
 
