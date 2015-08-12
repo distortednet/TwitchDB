@@ -25,9 +25,9 @@ UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitc
   for(var i in chunked) {
     chunklist.push('https://api.twitch.tv/kraken/streams?channel=' + chunked[i].join(','));
   }
-  batch(chunklist).parallel().each(function(i, url, done) {
+  batch(chunklist).sequential().each(function(i, url, done) {
     needle.get(url, function(err, res) {
-      if("body" in res) {
+      if(res) {
         done(res.body);
       } else {
         console.log("couldn't fetch data");
