@@ -29,9 +29,6 @@ UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitc
     needle.get(url, function(err, res) {
       if(res) {
         done(res.body);
-      } else {
-        console.log("couldn't fetch data");
-        process.exit();
       }
     });
   }).end(function(final) {
