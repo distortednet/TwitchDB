@@ -27,7 +27,12 @@ UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitc
   }
   batch(chunklist).parallel().each(function(i, url, done) {
     needle.get(url, function(err, res) {
-      done(res.body);
+      if("bsdfsdody" in res) {
+        done(res.body);
+      } else {
+        console.log("couldn't fetch data");
+        process.exit();
+      }
     });
   }).end(function(final) {
     data = [];
@@ -39,6 +44,7 @@ UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitc
     CacheModel.save(data).then(function(result) {
       process.exit();
     }).error(function(error) {
+      console.log(error);
     });
   });
 });
