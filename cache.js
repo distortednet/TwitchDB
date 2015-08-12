@@ -27,7 +27,7 @@ UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitc
   }
   batch(chunklist).parallel().each(function(i, url, done) {
     needle.get(url, function(err, res) {
-      if("bsdfsdody" in res) {
+      if("body" in res) {
         done(res.body);
       } else {
         console.log("couldn't fetch data");
