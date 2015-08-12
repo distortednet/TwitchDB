@@ -9,6 +9,8 @@ var config = require('./config'),
 	type = thinky.type,
 	helpers = require('./helpers');
 
+var args = process.argv.slice(2);
+
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
 var CacheModel = thinky.createModel('onlinecache',   {streams: type.object()});
 
@@ -51,7 +53,7 @@ var adminGetIntroStatus = function(status, cb) {
 	}
 }
 var getOnlineUsers = function(cb) {
-	var child = fork('cache', ['dev']);
+	var child = fork('cache', [args[0]]);
 		child.on('exit', function (data) {
 		  CacheModel.without('id').run().then(function(streams) {
 				CacheModel.count().execute().then(function(total) {
