@@ -1,4 +1,5 @@
 var config = require('./config'),
+	fork = require('child_process').fork,
 	thinky = require('thinky')({
 		host: config.app.rethink.host,
 		port: config.app.rethink.port,
@@ -9,6 +10,8 @@ var config = require('./config'),
 	helpers = require('./helpers');
 
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
+var CacheModel = thinky.createModel('onlinecache',   {streams: type.object()});
+
 var PaginateUsers = function(start, end, cb) {
 	UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
 		UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', {'profile_data': 'intro_games'}).orderBy(r.desc('intro_date')).slice(start, end).run().then(function(dbres) {
@@ -48,26 +51,35 @@ var adminGetIntroStatus = function(status, cb) {
 	}
 }
 var getOnlineUsers = function(cb) {
-	UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname').run().then(function(users) {
-		var userarray = [];
-		for(var i in users) {
-			userarray.push(users[i].twitchname);
-		}
-		helpers.getLiveUsers(userarray, function(err, jsonlist) {
-			if (err) { console.error('Error:', err, err.stack); }
-			if(jsonlist) {
-				var streams = [];
-				for(var i in jsonlist) {
-					for(var x in jsonlist[i].streams) {
-						streams.push(jsonlist[i].streams[x]);
-					}
-				}
-				UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
+	var child = fork('cache', ['dev']);
+		child.on('exit', function (data) {
+		  CacheModel.without('id').run().then(function(streams) {
+				CacheModel.count().execute().then(function(total) {
 					return cb(null, {online: streams, total: total});
 				});
-			}
-		});
-	});
+			});
+		})
+	// UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname').run().then(function(users) {
+	// 	var userarray = [];
+	// 	for(var i in users) {
+	// 		userarray.push(users[i].twitchname);
+	// 	}
+	// 	helpers.getLiveUsers(userarray, function(err, jsonlist) {
+	//
+	// 		if (err) { console.error('Error:', err, err.stack); }
+	// 		if(jsonlist) {
+	// 			var streams = [];
+	// 			for(var i in jsonlist) {
+	// 				for(var x in jsonlist[i].streams) {
+	// 					streams.push(jsonlist[i].streams[x]);
+	// 				}
+	// 			}
+	// 			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
+	// 				return cb(null, {online: streams, total: total});
+	// 			});
+	// 		}
+	// 	});
+	// });
 }
 
 var selectUser = function(user, cb) {

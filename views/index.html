@@ -4,17 +4,17 @@
 	<div class="featured">
 		<center>
 			{%for streams in data%}
-			<object type="application/x-shockwave-flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{streams.channel.name}}" bgcolor="#000000" class="featuredstreamer">
+			<object type="application/x-shockwave-flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{streams.streams.channel.name}}" bgcolor="#000000" class="featuredstreamer">
 				<param name="allowFullScreen" value="true" />
 				<param name="allowScriptAccess" value="always" />
 				<param name="allowNetworking" value="all" />
 				<param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
-				<param name="flashvars" value="hostname=www.twitch.tv&channel={{streams.channel.name}}&auto_play=true&start_volume=0" />
+				<param name="flashvars" value="hostname=www.twitch.tv&channel={{streams.streams.channel.name}}&auto_play=true&start_volume=0" />
 			</object>
 			{%endfor%}
 			<div class="frontpagestreams">
 				{%for streams in data%}
-				<img src="{{ streams.preview.medium }}" class="featuredimgpreview">
+				<img src="{{ streams.streams.preview.medium }}" class="featuredimgpreview">
 				{%endfor%}
 			</div>
 		</center>

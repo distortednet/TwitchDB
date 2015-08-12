@@ -23,32 +23,32 @@
 		<option value="{{list.video_height}}">{{list.video_height}}</option>
 		{% endfor %}
 	</select><br>
-	 <strong>{{data.length}} streamers currently online out of {{count}} streams</strong>
+	 <strong>{{count}} streamers currently online</strong>
 	</div>
 
 	{% for stream in data %}
-	<div class="col-md-4 livestream" data-game="{{stream.game}}" data-viewers="{{stream.viewers}}" data-video="{{stream.video_height}}">
+	<div class="col-md-4 livestream" data-game="{{stream.streams.game}}" data-viewers="{{stream.streams.viewers}}" data-video="{{stream.streams.video_height}}">
 		<div class="thumbnail">
 			<div class="caption">
 				<h4>
-					{{stream.channel.name}}
+					{{stream.streams.channel.name}}
 					<span class="label label-default pull-right">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<small class="viewcount">{{stream.viewers}}</small>
+						<small class="viewcount">{{stream.streams.viewers}}</small>
 					</span>
-					<small>playing: <b>{{stream.game}}</b></small>
+					<small>playing: <b>{{stream.streams.game}}</b></small>
 				</h4>
 			</div>
-			<img src="{{stream.preview.large}}" class="img-rounded">
+			<img src="{{stream.streams.preview.large}}" class="img-rounded">
 
 			<div class="caption">
-				<small class="status">{{stream.channel.status}}</small>
+				<small class="status">{{stream.streams.channel.status}}</small>
 			</div>
 			<hr>
-			<a href="http://www.twitch.tv/{{stream.channel.name}}" class="btn btn-default" role="button" target="_Blank">View Stream {%if stream.channel.mature%}
+			<a href="http://www.twitch.tv/{{stream.streams.channel.name}}" class="btn btn-default" role="button" target="_Blank">View Stream {%if stream.streams.channel.mature%}
 				<small style="color: red"> [M]</small>
 				{%endif%}</a>
-			<a href="/profile/u/{{stream.channel.name}}" class="btn btn-default" role="button" target="_Blank" style="float: right;">View Intro</a>
+			<a href="/profile/u/{{stream.streams.channel.name}}" class="btn btn-default" role="button" target="_Blank" style="float: right;">View Intro</a>
 		</div>
 	</div>
 

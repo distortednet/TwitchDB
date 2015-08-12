@@ -1,14 +1,13 @@
 var	batch = require('batchflow'),
 		http = require('https'),
+		needle = require('needle'),
 		config = require('./config');
 
-function chunks(array, size) {
+var chunks = function(array, size) {
 	var results = [];
-
 	while(array.length) {
 		results.push(array.splice(0, size));
 	}
-
 	return results;
 }
 
@@ -36,37 +35,38 @@ var checkAuth = function(req, res, next) {
 		next();
 	}
 };
-function requrl(url, cb) {
-	http.get(url, function(res) {
-		var body = '';
-		res.on('data', function(chunk) {
-			body += chunk;
-		});
-		res.on('end', function() {
-			return cb(null, JSON.parse(body));
-		});
-	}).on('error', function(e) {
-		console.error('Error:', err, err.stack);
-		return cb(err);
-	});
-}
-var getLiveUsers = function(array, cb) {
-	var userlist = [],
-		chunked = chunks(array, 100);
-
-	for(var i = 0; i < chunked.length; i++) {
-		userlist.push('https://api.twitch.tv/kraken/streams?channel=' + chunked[i].join(','));
-	}
-	batch(userlist).sequential().each(function(i, url, done) {
-		requrl(url, function(err, res) {
-			if (err) { console.error('Error:', err, err.stack); }
-			done(res);
-		});
-	}).end(function(final) {
-		return cb(null, final);
-	});
-
-};
+// function requrl(url, cb) {
+// 	http.get(url, function(res) {
+// 		var body = '';
+// 		res.on('data', function(chunk) {
+// 			body += chunk;
+// 		});
+// 		res.on('end', function() {
+// 			return cb(null, JSON.parse(body));
+// 		});
+// 	}).on('error', function(e) {
+// 		console.error('Error:', err, err.stack);
+// 		return cb(err);
+// 	});
+// }
+// var getLiveUsers = function(arr, cb) {
+// 	var userlist = [],
+// 	 	chunked = chunks(arr, 100);
+//
+// 	for(var i = 0; i < chunked.length; i++) {
+// 		userlist.push('https://api.twitch.tv/kraken/streams?channel=' + chunked[i].join(','));
+// 	}
+//
+// 	batch(userlist).sequential().each(function(i, url, done) {
+// 		needle.get(url, function(err, res) {
+// 			if (err) { console.error('Error:', err, err.stack); }
+// 			done(res.body);
+// 		});
+// 	}).end(function(final) {
+// 		return cb(null, final);
+// 	});
+//
+// };
 var generatePages = function(page, cb) {
 	var currentpage = parseInt(page);
 	if(currentpage != 0) {
@@ -75,18 +75,12 @@ var generatePages = function(page, cb) {
 		return cb(null, {previous: 0, next: currentpage + 25});
 	}
 }
-var getVOD = function(user, cb) {
-	requrl("https://api.twitch.tv/kraken/channels/"+user+"/videos?limit=1", function(res) {
-		return cb(null, res.videos);
-	});
-};
 
 module.exports = {
-	getLiveUsers: getLiveUsers,
 	shuffleArray: shuffleArray,
 	generatePages: generatePages,
 	inArray: inArray,
 	isMod: isMod,
 	checkAuth: checkAuth,
-	getVOD: getVOD
+	chunks: chunks
 };
