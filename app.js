@@ -62,20 +62,8 @@ app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
 				'video_height': dbres.online[i].streams.video_height
 			})
 		}
-		res.render('streams', {data: dbres.online, filter: filterlist, count: dbres.total});
+		res.render('streams', {data: dbres.online, filter: filterlist, total: dbres.total, count: dbres.online.length});
 	})
-	// db.getOnlineUsers(function(err, dbres) {
-	// 	if (err) { console.error('Error:', err, err.stack); }
-	// 	var filterlist = [];
-	// 	for(var i in dbres.online) {
-	// 		filterlist.push({
-	// 			'game': dbres.online[i].game,
-	// 			'viewers': dbres.online[i].viewers,
-	// 			'video_height': dbres.online[i].video_height
-	// 		});
-	// 	}
-	// 	res.render('streams', {data: dbres.online, filter: filterlist, count: dbres.total});
-	// });
 });
 app.get('/database/', function(req, res) {
 	db.PaginateUsers(0, 25, function(err, dbres) {
@@ -182,7 +170,7 @@ app.get('/profile', helpers.checkAuth, function(req, res) {
 		UserData.save(function(err) {
 			if(err) throw err;
 
-			res.status(200).send('New profile created! <a href="/profile">Continue to Profile</a>');
+			res.redirect('/profile');
 		});
 	});
 });
