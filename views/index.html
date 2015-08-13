@@ -1,8 +1,10 @@
 {% include "./header.html" %}
 <div class="container-fluid" id="frontpage">
+
 	{%if data %}
 	<div class="featured">
 		<center>
+		There are <strong>{{total}}</strong> total intros and growing!<hr>
 			{%for streams in data%}
 			<object type="application/x-shockwave-flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{streams.streams.channel.name}}" bgcolor="#000000" class="featuredstreamer">
 				<param name="allowFullScreen" value="true" />
@@ -25,9 +27,10 @@
 </div>
 <hr />
 <div class="container-fluid">
-	<div class="container">
-		<strong>Welcome!</strong><br />
-		TwitchDB is a site developed to help streamers get noticed, as well as provide a platform for feedback! this frontpage is in serious need of work, sorry its so bare at the moment!
+	<div class="container" style="width: 50%">
+		<strong>Recent intros</strong><br>
+	{%for newusers in newusers%} <a href="/profile/u/{{newusers.twitchname}}" target="_blank" style="margin-right: 10px">{{newusers.twitchname}}</a> {%endfor%}<br>
+	</div>
 </div>
 <script src="/js/featured.js?r={{rng}}"></script>
 {% include "./footer.html" %}

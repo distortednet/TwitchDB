@@ -22,7 +22,7 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/views/static'));
 app.use(cookieParser());
-app.use(session({secret: 'anything', resave: false, saveUninitialized: false}));
+app.use(session({secret: ' ', resave: false, saveUninitialized: false}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -48,7 +48,10 @@ app.get('*', function(req, res, next) {
 app.get('/', routeCache.cacheSeconds(600), function(req, res) {
 	db.getOnlineUsers(function(err, dbres) {
 		if (err) { console.error('Error:', err, err.stack); }
-		res.render('index', {data: dbres.online.splice(0, 5)});
+		db.PaginateUsers(0, 10, function(err, recent) {
+			if (err) { console.error('Error:', err, err.stack); }
+			res.render('index', {data: dbres.online.splice(0, 5), newusers: recent.data, total: recent.count});
+		});
 	});
 });
 app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
