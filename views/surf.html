@@ -1,0 +1,20 @@
+{% include "./header.html" %}
+<div class="container-fluid" style="height: 93%">
+
+  <object data="//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf" type="application/x-shockwave-flash" class="surfplayer">
+    <param name="allowFullScreen" value="true" />
+    <param name="allowNetworking" value="all" />
+    <param name="allowScriptAccess" value="always" />
+    <param name="movie" value="//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf" />
+    <param name="flashvars" value="channel={{randomstream}}&auto_play=true&start_volume=5" />
+  </object>
+
+<iframe frameborder="0" scrolling="no" class="chat_embed" src="http://www.twitch.tv/{{randomstream}}/chat">
+</iframe>
+<a href="/surf" class="btn btn-default" role="button">Random Stream</a>
+<a href="/profile/u/{{randomstream}}" class="btn btn-default" role="button" target="_Blank">View Intro</a>
+<a href="//twitch.tv/{{randomstream}}" class="btn btn-default" role="button" target="_Blank">View On Twitch</a>
+</div>
+
+<script src="/js/surf.js?r={{rng}}"></script>
+{% include "./footer.html" %}

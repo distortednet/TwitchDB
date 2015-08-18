@@ -2,7 +2,9 @@ body {
 	background-image: url("/img/noise.png");
 	overflow-x: hidden;
 }
-
+html, body {
+height:100%;
+}
 .container-fluid {
 	padding-left: 0px;
 	padding-right: 0px;
@@ -221,4 +223,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 .editprofile {
 	display: none;
+}
+.surfplayer {
+	height: 93%;
+	width: 80%;
+	float: left;
+	margin-bottom: 8px;
+}
+.chat_embed {
+	float: right;
+	width: 20%;
+	height: 93%;
+	margin-bottom: 8px;
 }

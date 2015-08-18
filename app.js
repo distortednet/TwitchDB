@@ -75,6 +75,13 @@ app.get('/streams', function(req, res) {
 		res.render('streams', {data: dbres.online, total: dbres.total, live: dbres.online.length});
 	})
 });
+app.get('/surf', function(req, res) {
+	db.getOnlineUsers(function(err, dbres) {
+		if (err) { console.error('Error:', err, err.stack); }
+		var random = dbres.online[Math.floor(Math.random() * dbres.online.length)];
+		res.render('surf', {randomstream: random.streams.channel.name});
+	})
+});
 app.get('/database/', function(req, res) {
 	db.PaginateUsers(0, 25, function(err, dbres) {
 		if (err) { console.error('Error:', err, err.stack); }
@@ -159,11 +166,9 @@ app.get('/profile/u/:username', function(req, res) {
 		if(dbres) {
 			needle.get('https://api.twitch.tv/kraken/channels/' + req.params.username, function(error, krakken) {
 				var data = {data: dbres};
-
 				if(!error && krakken.statusCode == 200) {
 					data.krakken = krakken.body;
 				}
-
 				res.render('introprofile', data);
 			});
 		}else{
@@ -176,10 +181,8 @@ app.get('/profile', helpers.checkAuth, function(req, res) {
 		res.render('profile', {data: dbres, ismod: helpers.isMod(req.session.name)});
 	}).catch(thinky.Errors.DocumentNotFound, function() {
 		var UserData = new UserModel({twitchname: req.session.name});
-
 		UserData.save(function(err) {
 			if(err) throw err;
-
 			res.redirect('/profile');
 		});
 	});
