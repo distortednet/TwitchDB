@@ -1,33 +1,9 @@
 {% include "./header.html" %}
 <div class="container-fluid">
-	{%if data %}
-
-	<div class="filterbar">
-		Games: <select class="gamefilter">
-		<option value="all">All</option>
-		{% for list in filter %}
-		<option value="{{list.game}}">{{list.game}}</option>
-		{% endfor %}
-	</select>
-
-		Viewers: <select class="viewfilter">
-		<option value="all">All</option>
-		{% for list in filter %}
-		<option value="{{list.viewers}}">{{list.viewers}}</option>
-		{% endfor %}
-	</select>
-
-		Video: <select class="videofilter">
-		<option value="all">All</option>
-		{% for list in filter %}
-		<option value="{{list.video_height}}">{{list.video_height}}</option>
-		{% endfor %}
-	</select><br>
-	 <strong>{{count}} streamers currently online out of {{total}}</strong>
-	</div>
-
+<div class="row">
+	<center>There are {{total}} sreams and {{live}} online streams</center><hr>
 	{% for stream in data %}
-	<div class="col-md-4 livestream" data-game="{{stream.streams.game}}" data-viewers="{{stream.streams.viewers}}" data-video="{{stream.streams.video_height}}">
+	<div class="col-md-4 livestream">
 		<div class="thumbnail">
 			<div class="caption">
 				<h4>
@@ -51,11 +27,9 @@
 			<a href="/profile/u/{{stream.streams.channel.name}}" class="btn btn-default" role="button" target="_Blank" style="float: right;">View Intro</a>
 		</div>
 	</div>
-
 	{% endfor %}
-	{%else%}
-	<h1>something broke D:</h1>
-	{%endif%}
+</div>
+
 </div>
 
 <script src="/js/streams.js?r={{rng}}"></script>

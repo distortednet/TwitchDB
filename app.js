@@ -1,5 +1,6 @@
 var express = require('express'),
-	routeCache = require('route-cache'),
+	fork = require('child_process').fork,
+	args = process.argv.slice(2),
 	config = require('./config'),
 	helpers = require('./helpers'),
 	bodyParser = require('body-parser'),
@@ -39,33 +40,40 @@ app.locals = {
 	rng: Math.floor((Math.random() * 900000) + 10000)
 };
 
+// spin up a child process responsible for caching data from Krakken every 15 minutes.
+setInterval(function(){
+	var child = fork('cache', [args[0]]);
+	child.on('exit', function (data) {
+		console.log("online cache refreshed");
+	});
+}, 900000);
+
 /* gets */
 app.get('*', function(req, res, next) {
 	app.locals.loggedin = req.session.name;
-
 	next();
 });
-app.get('/', routeCache.cacheSeconds(600), function(req, res) {
+app.get('/debug', helpers.checkAuth, function(req, res) {
+	if(helpers.isMod(req.session.name)) {
+		var child = fork('cache', [args[0]]);
+		child.on('exit', function (data) {
+			res.status(404).send('cache refreshed');
+		});
+	} else {
+		res.status(404).send('you are not a mod and cannot execute debug commands');
+	}
+});
+app.get('/', function(req, res) {
 	db.getOnlineUsers(function(err, dbres) {
 		if (err) { console.error('Error:', err, err.stack); }
-		db.PaginateUsers(0, 10, function(err, recent) {
-			if (err) { console.error('Error:', err, err.stack); }
-			res.render('index', {data: dbres.online.splice(0, 5), newusers: recent.data, total: recent.count});
-		});
+			res.render('index', {data: dbres.online.slice(0, 20), total: dbres.total});
+			console.log(dbres);
 	});
 });
-app.get('/streams', routeCache.cacheSeconds(600), function(req, res) {
+app.get('/streams', function(req, res) {
 	db.getOnlineUsers(function(err, dbres) {
 		if (err) { console.error('Error:', err, err.stack); }
-		var filterlist = [];
-		for(var i in dbres.online) {
-			filterlist.push({
-				'game': dbres.online[i].streams.game,
-				'viewers': dbres.online[i].streams.viewers,
-				'video_height': dbres.online[i].streams.video_height
-			})
-		}
-		res.render('streams', {data: dbres.online, filter: filterlist, total: dbres.total, count: dbres.online.length});
+		res.render('streams', {data: dbres.online, total: dbres.total, live: dbres.online.length});
 	})
 });
 app.get('/database/', function(req, res) {
@@ -75,8 +83,8 @@ app.get('/database/', function(req, res) {
 	});
 
 });
-app.get('/database/page/:id', function(req, res) {
-	helpers.generatePages(req.params.id, function(err, pages) {
+app.get('/database/next/:id', function(req, res) {
+	helpers.generatePages(req.params.id, 25, function(err, pages) {
 	if (err) { console.error('Error:', err, err.stack); }
 		db.PaginateUsers(pages.previous, pages.next, function(err, dbres) {
 			if (err) { console.error('Error:', err, err.stack); }

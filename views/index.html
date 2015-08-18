@@ -14,23 +14,18 @@
 				<param name="flashvars" value="hostname=www.twitch.tv&channel={{streams.streams.channel.name}}&auto_play=true&start_volume=0" />
 			</object>
 			{%endfor%}
+			<div class="container">
 			<div class="frontpagestreams">
 				{%for streams in data%}
 				<img src="{{ streams.streams.preview.medium }}" class="featuredimgpreview">
 				{%endfor%}
+			</div>
 			</div>
 		</center>
 	</div>
 	{%else%}
 	<h1>Something broke D:</h1>
 	{%endif%}
-</div>
-<hr />
-<div class="container-fluid">
-	<div class="container" style="width: 50%">
-		<strong>Recent intros</strong><br>
-	{%for newusers in newusers%} <a href="/profile/u/{{newusers.twitchname}}" target="_blank" style="margin-right: 10px">{{newusers.twitchname}}</a> {%endfor%}<br>
-	</div>
 </div>
 <script src="/js/featured.js?r={{rng}}"></script>
 {% include "./footer.html" %}

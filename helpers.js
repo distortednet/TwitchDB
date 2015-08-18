@@ -35,12 +35,12 @@ var checkAuth = function(req, res, next) {
 		next();
 	}
 };
-var generatePages = function(page, cb) {
+var generatePages = function(page, max, cb) {
 	var currentpage = parseInt(page);
 	if(currentpage != 0) {
-		 cb(null, {previous: currentpage - 25, next: currentpage + 25});
+		 cb(null, {previous: currentpage - max, next: currentpage + max});
 	} else {
-		return cb(null, {previous: 0, next: currentpage + 25});
+		return cb(null, {previous: 0, next: currentpage + max});
 	}
 }
 

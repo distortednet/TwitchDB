@@ -1,5 +1,4 @@
 var config = require('./config'),
-	fork = require('child_process').fork,
 	thinky = require('thinky')({
 		host: config.app.rethink.host,
 		port: config.app.rethink.port,
@@ -8,8 +7,6 @@ var config = require('./config'),
 	r = thinky.r,
 	type = thinky.type,
 	helpers = require('./helpers');
-
-var args = process.argv.slice(2);
 
 var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
 var CacheModel = thinky.createModel('onlinecache',   {streams: type.object()});
@@ -53,14 +50,11 @@ var adminGetIntroStatus = function(status, cb) {
 	}
 }
 var getOnlineUsers = function(cb) {
-	var child = fork('cache', [args[0]]);
-		child.on('exit', function (data) {
-		  CacheModel.without('id').run().then(function(streams) {
-				UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
-					return cb(null, {online: streams, total: total});
-				});
-			});
-		})
+	CacheModel.without('id').run().then(function(streams) {
+		UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
+			return cb(null, {online: streams, total: total});
+		});
+	});
 }
 
 var selectUser = function(user, cb) {
