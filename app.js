@@ -67,7 +67,6 @@ app.get('/', function(req, res) {
 	db.getOnlineUsers(function(err, dbres) {
 		if (err) { console.error('Error:', err, err.stack); }
 			res.render('index', {data: dbres.online.slice(0, 20), total: dbres.total});
-			console.log(dbres);
 	});
 });
 app.get('/streams', function(req, res) {
