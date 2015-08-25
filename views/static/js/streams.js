@@ -1,4 +1,15 @@
 $(document).ready(function() {
+var totaldivs = $(".livestream").size();
+var loadamount = 12;
+
+$('.livestream:lt('+loadamount+')').show();
+
+$(window).scroll(function() {
+   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+       loadamount= (loadamount+7 <= totaldivs) ? loadamount+7 : totaldivs;
+       $('.livestream:lt('+loadamount+')').fadeIn(1000);
+   }
+});
   function getdata(cb) {
     var gamelist = [];
     var viewerlist = [];
@@ -18,20 +29,19 @@ $(document).ready(function() {
 			}else{
 				$('.livestream').fadeIn('slow');
 			}
+
 		});
 	}
   getdata(function(data) {
-    $(".filter").append('<select class="gamefilter" style="margin-left: 4px; margin-right: 4px;"></select>');
-    $(".filter").append('<select class="viewfilter" style="margin-left: 4px; margin-right: 4px;"></select>');
-    $(".gamefilter").prepend('<option value="All">All</option>');
-    $(".viewfilter").prepend('<option value="All">All</option>');
-    for(i in data.games) {
-      $(".gamefilter").append('<option value="'+data.games[i]+'">'+data.games[i]+'</option>');
-    }
-    for(i in data.viewers) {
-      $(".viewfilter").append('<option value="'+data.viewers[i]+'">'+data.viewers[i]+'</option>');
-    }
+    $(".filter").append('Game: <select class="gamefilter" style="margin-left: 4px; margin-right: 4px;"></select>');
+    $(".filter").append('Viewers: <select class="viewfilter" style="margin-left: 4px; margin-right: 4px;"></select>');
+    $(".filter").append('Mature: <select class="maturefilter" style="margin-left: 4px; margin-right: 4px;"></select>');
+    $(".gamefilter, .viewfilter, .maturefilter").prepend('<option value="All">All</option>');
+    for(i in data.games) { $(".gamefilter").append('<option value="'+data.games[i]+'">'+data.games[i]+'</option>')}
+    for(i in data.viewers) {$(".viewfilter").append('<option value="'+data.viewers[i]+'">'+data.viewers[i]+'</option>')}
+    $(".maturefilter").append('<option value="true">true</option><option value="false">false</option>');
   });
   filterthis('.gamefilter', 'game');
   filterthis('.viewfilter', 'viewers');
+  filterthis('.maturefilter', 'mature');
 });

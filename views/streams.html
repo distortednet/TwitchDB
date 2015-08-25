@@ -5,7 +5,7 @@
 	<div class="filter"></div>
 	</center><hr>
 	{% for stream in data %}
-	<div class="col-md-4 livestream" data-game="{{stream.streams.game}}" data-viewers="{{stream.streams.viewers}}">
+	<div class="col-md-4 livestream" data-game="{{stream.streams.game}}" data-viewers="{{stream.streams.viewers}}" data-mature="{{stream.streams.channel.mature}}">
 		<div class="thumbnail">
 			<div class="caption">
 				<h4>
@@ -23,9 +23,8 @@
 				<small class="status">{{stream.streams.channel.status}}</small>
 			</div>
 			<hr>
-			<a href="http://www.twitch.tv/{{stream.streams.channel.name}}" class="btn btn-default" role="button" target="_Blank">View Stream {%if stream.streams.channel.mature%}
-				<small style="color: red"> [M]</small>
-				{%endif%}</a>
+			<a href="http://www.twitch.tv/{{stream.streams.channel.name}}" class="btn btn-default" role="button" target="_Blank">View Stream</a>
+			<a href="http://www.twitch.tv/{{stream.streams.channel.name}}/popout" class="btn btn-default" role="button" target="_Blank">Popout Stream</a>
 			<a href="/profile/u/{{stream.streams.channel.name}}" class="btn btn-default" role="button" target="_Blank" style="float: right;">View Intro</a>
 		</div>
 	</div>
