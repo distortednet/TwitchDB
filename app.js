@@ -46,7 +46,7 @@ setInterval(function(){
 	child.on('exit', function (data) {
 		console.log("online cache refreshed");
 	});
-}, 900000);
+}, 300000);
 
 /* gets */
 app.get('*', function(req, res, next) {
