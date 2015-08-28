@@ -239,3 +239,15 @@ h1, h2, h3, h4, h5, h6 {
 .livestream {
 	display: none;
 }
+.thumbnail {
+	-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.55);
+	-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.55);
+	box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.55);
+	padding: 0px;
+	margin: 4px;
+	margin-bottom: 8px;
+}
+.buttonwrapper {
+	margin: 8px;
+
+}
