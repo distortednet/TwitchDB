@@ -1,27 +1,61 @@
-{% include "./header.html" %}
-<div class="container">
-	<h3>How do I create an intro and what does it do for me?</h3>
-	<hr />
-	<p>An intro will give people a little info about yourself and your goals as a streamer. The better written it is, the more likely you are to attract new eyes to your stream! Just go to your profile to create an intro, it is a self guided process!</p>
-	<br />
-	<h3>When logging in, the site requests my email address!!!!!</h3>
-	<hr />
-	<p>At no point is the email address used. This is a required scope by twitch so we can retrieve some info such as your username for Twitch and some basic profile info to help automate and personalize some sections of the website.</p>
-	<br />
-	<h3>I ran into a bug or something does not work as expected, wat do</h3>
-	<hr />
-	<p>Please tweet <a href="https://twitter.com/distortednet" target="_blank">@distortednet</a> with any issues.</p>
-	<br />
-	<h3>I do not appear to be in the intro database. What happened?</h3>
-	<hr />
-	<p>
-		If you are new, we may not have approved your intro yet. Send us modmail so we can look into it. If you are already in the database, or was in the google document database, a number of things could have happened.<br />
-		To ensure the most compatibility, we imported the old database to the new one using a strict set of formatting rules, which reduced the number of valid intros by about half. if you are missing,
-		<strong>LET US KNOW</strong> along with a link to your intro so we can get you re-added to the database.
-	</p>
-	<br />
-	<h3>I want to recieve feedback for my stream, how do I do that?</h3>
-	<hr />
-	<p>The feedback system is currently being retooled. Hang tight!</p>
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="row">
+  <div class="col s8 offset-s2">
+    <div class="section">
+      <h5>What is TwitchDB?</h5>
+      <p>
+        TwitchDB is a site that is aimed towards helping streamers get noticed. Additionally, the site provides a feedback system where your views can
+        submit very detailed feedback so that you can work to improve your stream. For people looking for something new, we have a database of over 5,000 streamers that can be found in a variety of ways using our categories.
+      </p>
+    </div>
+    <div class="section">
+        <h5>How do I get started?</h5>
+        <p>
+          Getting started is easy! just log in, and you'll be directed to your profile setup and overview page. From there, you'll be able to fill out an introduction. Once approved, you'll appear in the "streams" section when you are live.
+        </p>
+    </div>
+
+    <div class="section">
+        <h5>I am afraid my viewers won't submit feedback :(</h5>
+        <p>
+          Your viewers will be able to optionally enable the ability to send anonymous feedback. Do not worry, similar to profiles - all feedback is moderated first. That way, you don't get any malicious shenanigans.
+        </p>
+    </div>
+
+    <div class="section">
+        <h5>How does voting help?</h5>
+        <p>
+         Votes are a new way to sort streamers. The more votes you have, the higher up you'll appear in the "votes" category. Viewers will only be able to vote once.
+        </p>
+    </div>
+
+    <div class="section">
+        <h5>Why was my intro rejected?!</h5>
+        <p>
+         Intro's are typically rejected because not enough effort has been put into it to consider it worthy for approval.
+        </p>
+    </div>
+
+    <div class="section">
+        <h5>its been five minutes, WHY HAS IT NOT BEEN APPROVED?!</h5>
+        <p>
+         We get a lot of intros. like, a lot. Typically, it can take anywhere from 2-5 days to approve them.
+        </p>
+    </div>
+
+    <div class="section">
+        <h5>What is channel surf?</h5>
+        <p>
+         Channel surf is a feature that will randomly select users from the intro database that are online and allow you to quickly view them. This was a feature suggested by a user of the twitch subreddit, and is one of the most popular ways to discover new content.
+         On the channel surf page, you'll notice when you hover over the Twitch player, some new icons show up. You can hover over these icons for a description of what they do!
+        </p>
+    </div>
+
+
+  </div>
 </div>
-{% include "./footer.html" %}
+
+
+{% endblock %}

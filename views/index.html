@@ -1,31 +1,28 @@
-{% include "./header.html" %}
-<div class="container-fluid" id="frontpage">
-
-	{%if data %}
-	<div class="featured">
-		<center>
-		There are <strong>{{total}}</strong> total intros and growing!<hr>
-			{%for streams in data%}
-			<object type="application/x-shockwave-flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={{streams.streams.channel.name}}" bgcolor="#000000" class="featuredstreamer">
-				<param name="allowFullScreen" value="true" />
-				<param name="allowScriptAccess" value="always" />
-				<param name="allowNetworking" value="all" />
-				<param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" />
-				<param name="flashvars" value="hostname=www.twitch.tv&channel={{streams.streams.channel.name}}&auto_play=true&start_volume=0" />
-			</object>
-			{%endfor%}
-			<div class="container">
-			<div class="frontpagestreams">
-				{%for streams in data%}
-				<img src="{{ streams.streams.preview.medium }}" class="featuredimgpreview">
-				{%endfor%}
-			</div>
-			</div>
-		</center>
-	</div>
-	{%else%}
-	<h1>Something broke D:</h1>
-	{%endif%}
+{% extends 'template.html' %}
+{% block content %}
+<div class="row">
+  <div class="col s6 offset-s3">
+    <ul class="tabs grey darken-4  hide-on-med-and-down streams-tab">
+      <li class="tab"><a href="#top" data-tabtype="top" data-location="/">Most Viewers</a></li>
+      <li class="tab"><a href="#random"  data-tabtype="random"  data-location="/random">Random</a></li>
+      <li class="tab"><a href="#votes"  data-tabtype="votes" data-location="/votes">Votes</a></li>
+      <li class="tab"><a href="#game" data-tabtype="game" data-location="/games">Game</a></li>
+      <li class="tab"><a href="#mature" data-tabtype="mature" data-location="/mature">Mature</a></li>
+      <li class="tab"><a href="#family" data-tabtype="family" data-location="/family">Family Friendly</a></li>
+    </ul>
+  </div>
 </div>
-<script src="/js/featured.js?r={{rng}}"></script>
-{% include "./footer.html" %}
+<div class="row">
+  <div id="top" class="col s12">
+  </div>
+
+  <div id="random" class="col s12">
+  </div>
+
+  <div id="mature" class="col s12">
+  </div>
+
+  <div id="family" class="col s12">
+  </div>
+</div>
+{% endblock %}

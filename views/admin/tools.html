@@ -1,0 +1,125 @@
+{% extends '../template.html' %}
+{% block head %}
+<link rel="stylesheet" href="../../css/materialize.min.css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../../css/style.css" media="screen" title="no title" charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="../../js/materialize.min.js" charset="utf-8"></script>
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col s12">
+    <div class="row">
+      <div class="input-field col s4 offset-s2">
+        <input id="admin_search" type="text" class="validate"  style="margin-top: 40px;">
+        <label for="admin_search"><strong>Twitch Name OR reddit name</strong></label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 offset-s2">
+        <button class="admin-submit-search btn waves-effect waves-purple grey darken-3" type="submit" name="action">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="search-results row">
+  <div class="row">
+    <div class="input-field col s4 offset-s2">
+      <input id="result_twitchname" type="text" style="margin-top: 40px;">
+      <label for="result_twitchname"><strong>Twitch name</strong></label>
+    </div>
+    <div class="input-field col s4">
+      <input id="result_redditname" type="text" class="validate"  style="margin-top: 40px;">
+      <label for="result_redditname"><strong>Reddit Name</strong></label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s4 offset-s2">
+      <p>
+        <input name="searchgroup" type="radio" id="set_approved" value="approved"/>
+        <label for="set_approved">Approve</label>
+      </p>
+      <p>
+        <input name="searchgroup" type="radio" id="set_reject" value="rejected"/>
+        <label for="set_reject">Reject</label>
+      </p>
+      <p>
+        <input name="searchgroup" type="radio" id="set_pending" value="pending"/>
+        <label for="set_pending">Pending</label>
+      </p>
+      <p>
+        <input name="searchgroup" type="radio" id="set_clear"  value="clear"/>
+        <label for="set_clear">Clear Intro</label>
+      </p>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s4 offset-s2">
+      <button class="admin-modify-user btn waves-effect waves-purple grey darken-3" type="submit" name="action">Submit Changes</button>
+    </div>
+  </div>
+</div>
+
+
+  {% endblock %}
+
+
+  {% block footer %}
+  <script src="../../js/site.js" charset="utf-8"></script>
+  {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="row">
+  <form class="col s8 offset-s2">
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea validate"></textarea>
+        <label for="textarea1"><strong>About Me</strong> - a brief summary of who you are and what you are about!</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s4">
+        <input id="first_name" type="text" class="validate"  style="margin-top: 40px;">
+        <label for="first_name"><strong>Schedule</strong> - When do you stream? What timezone?</label>
+      </div>
+      <div class="input-field col s4">
+        <input id="first_name" type="text" class="validate"  style="margin-top: 40px;">
+        <label for="first_name"><strong>Games</strong> - What sort of stuff do you stream?</label>
+      </div>
+      <div class="input-field col s4">
+        <input id="first_name" type="text" class="validate"  style="margin-top: 40px;">
+        <label for="first_name"><strong>Reddit Username</strong> - Optional...for /r/twitch flair!</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea validate"></textarea>
+        <label for="textarea1"><strong>Goals</strong> - What sort of goals do you have? What unique "flair" do you have that would attract people?</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea validate"></textarea>
+        <label for="textarea1"><strong>Background</strong> - What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?</label>
+      </div>
+    </div>
+    <button class="btn waves-effect waves-purple grey darken-3 right" type="submit" name="action">Submit</button>
+  </form>
+</div> -->

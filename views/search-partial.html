@@ -1,0 +1,22 @@
+<div class="col s8 offset-s2">
+  <table class="admintable">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Intro URL</th>
+        <th>Twitch Name</th>
+        <th>Games</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for user in data %}
+      <tr>
+        <td>{{user.intro_date}}</td>
+        <td><a href="#">Intro URL</a></td>
+        <td>{{user.twitchname}}</td>
+        <td style="width: 60%;">{{user.profile_data.intro_games}}</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,44 @@
+<div class="row"  style="margin: 0px;">
+  <div class="col s8 offset-s2">
+    <p style="margin: 0px;" class="center">An introduction profile will allow you to appear on the public introduction database to help get your name out there more.</p>
+    <p style="margin: 0px;" class="center">Posts with minimal effort <i style="color: #6441A5">WILL BE REJECTED</i>. Please try to put some thought into it :D. You can edit your intro at any time in your profile.</p>
+  </div>
+</div>
+<div class="row">
+  <form class="col s8 offset-s2">
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="profile_about" class="materialize-textarea validate">{{data.profile_data.intro_about}}</textarea>
+        <label for="profile_about"><strong>About Me</strong> - a brief summary of who you are and what you are about!</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s4">
+        <input id="profile_schedule" type="text" class="validate"  style="margin-top: 40px;" value="{{data.profile_data.intro_schedule}}">
+        <label for="profile_schedule"><strong>Schedule</strong> - When do you stream? What timezone?</label>
+      </div>
+      <div class="input-field col s4">
+        <input id="profile_games" type="text" class="validate"  style="margin-top: 40px;" value="{{data.profile_data.intro_games}}">
+        <label for="profile_games"><strong>Games</strong> - What sort of stuff do you stream?</label>
+      </div>
+      <div class="input-field col s4">
+        <input id="profile_redditname" type="text" class="validate"  style="margin-top: 40px;"  value="{{data.redditname}}">
+        <label for="profile_redditname"><strong>Reddit Username</strong> - Optional...for /r/twitch flair!</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="profile_goals" class="materialize-textarea validate">{{data.profile_data.intro_goals}}</textarea>
+        <label for="profile_goals"><strong>Goals</strong> - What sort of goals do you have? What unique "flair" do you have that would attract people?</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="profile_background" class="materialize-textarea validate">{{data.profile_data.intro_background}}</textarea>
+        <label for="profile_background"><strong>Background</strong> - What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?</label>
+      </div>
+    </div>
+    <input id="profile_twitchname" type="hidden" class="validate"  value="{{name}}">
+    <button class="btn waves-effect waves-purple grey darken-3 right profile_edit" type="submit" name="action">Submit</button>
+  </form>
+</div>

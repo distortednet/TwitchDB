@@ -1,0 +1,50 @@
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="row">
+<div class="col s8 offset-s2">
+  <div class="card grey darken-3 profilecard">
+    {%if data%}
+    <div class="row introheader z-depth-1">
+      <div class="col s3 center">
+        <h5>{{api.followers}}</h5>
+        <p>Followers</p>
+      </div>
+      <div class="col s3 center">
+        <h5>{{api.views}}</h5>
+        <p>Total Views</p>
+      </div>
+      <div class="col s3 center">
+        <h5>{{api.mature}}</h5>
+        <p>Mature Status</p>
+      </div>
+      <div class="col s3 center">
+        <h5>14</h5>
+        <p>Votes</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s9">
+        <h4>{{data.twitchname}}</h4><br>
+        <strong>About</strong>
+        <p>{{data.profile_data.intro_about}}</p>
+        <strong>Goals</strong>
+        <p>{{data.profile_data.intro_goals}}</p>
+        <strong>Schedule</strong>
+        <p>{{data.profile_data.intro_schedule}}</p>
+        <strong>Games</strong>
+        <p>{{data.profile_data.intro_games}}</p>
+        <strong>My Background</strong>
+        <p>{{data.profile_data.intro_background}}</p>
+      </div>
+      <div class="col s3">
+        <img src="{{api.logo}}" class="circle responsive-img z-depth-1"/><br><br>
+      </div>
+    </div>
+    {%else%}
+      This profile does not exist. sry bb
+    {%endif%}
+  </div>
+</div>
+</div>
+{% endblock %}

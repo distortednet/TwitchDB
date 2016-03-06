@@ -1,75 +1,106 @@
-var config = require('./config'),
-	thinky = require('thinky')({
-		host: config.app.rethink.host,
-		port: config.app.rethink.port,
-		db: config.app.rethink.db
-	}),
+var needle = require('needle'),
+	config = require('./config'),
+  schema = require('./schema'),
+  thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
 	r = thinky.r,
 	type = thinky.type,
-	helpers = require('./helpers');
+	Query = thinky.Query;
+  UserModel = thinky.createModel('users', schema.users, schema.primarykey.users);
+	CacheModel = thinky.createModel('onlinecache', schema.cache);
 
-var UserModel = thinky.createModel('users', config.app.rethink.schema, config.app.rethink.pk);
-var CacheModel = thinky.createModel('onlinecache',   {streams: type.object()});
-
-var PaginateUsers = function(start, end, cb) {
-	UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
-		UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', {'profile_data': 'intro_games'}).orderBy(r.desc('intro_date')).slice(start, end).run().then(function(dbres) {
-			return cb(null, {'count': total, 'data': dbres});
+var intro = {
+  filter: (status) => {
+    return new Promise((resolve, reject) => {
+      UserModel.filter({'intro_status': status}).orderBy('intro_date').run().then((db) => {
+        resolve(db);
+      });
+    });
+  },
+	setstatus: (username, status) => {
+		return new Promise((resolve, reject) => {
+			UserModel.filter({'twitchname': username}).update({"intro_status": status}).run().then((db) => {
+				resolve(db);
+			});
 		});
-	});
+	},
+	update: (object) => {
+		return new Promise((resolve, reject) => {
+			UserModel.filter({'twitchname': object.twitchname}).update(object).run().then((db) => {
+				resolve(db);
+			});
+		});
+	},
+	select: (username) => {
+		return new Promise((resolve, reject) => {
+      UserModel.filter({'twitchname': username}).run().then((db) => {
+        resolve(db);
+      });
+    });
+	},
+	create: (username) => {
+		return new Promise((resolve, reject) => {
+			UserModel.get(username).run().then((db) => {
+					resolve("profile_exists");
+			}).catch(thinky.Errors.DocumentNotFound, (err) => {
+				var UserData = new UserModel({twitchname: username});
+				UserData.save((err) => {
+					if(err) { reject(err) };
+					resolve("profile_created");
+				});
+			});
+		});
+	},
+	search: (username, game) => {
+		return new Promise((resolve, reject) => {
+			UserModel.filter(r.row("twitchname").eq(username).or(r.row("redditname").eq(username)).or(r.row("profile_data")("intro_games").match("(?i)"+game))).orderBy('intro_date').run().then((db) => {
+				if(db.length) {
+					resolve(db)
+				} else {
+					resolve(false)
+				}
+			});
+		});
+	},
+	mostrecent: (start, end) => {
+		return new Promise(function(resolve, reject) {
+			UserModel.filter({'intro_status': 'approved'}).orderBy('intro_date').slice(start,end).run().then((streams) => {
+				resolve(streams);
+			});
+		});
+	},
+	randomintro: () => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.without('id', '_links', {'channel' : '_links'}).sample(1).run().then((db) => {
+				 resolve(db);
+			})
+		});
+	},
 }
-var	dbSearch = function(string, cb) {
-	UserModel.filter(function (doc) {
-	    return doc("profile_data")("intro_games").match('(?i)'+string);
-	}).filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'intro_date', {'profile_data': 'intro_games'}).orderBy(r.desc('intro_date')).run().then(function(users) {
-		return cb(null, users);
-	});
-};
-
-var adminGetIntroStatus = function(status, cb) {
-	switch(status) {
-		case 'approved':
-			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
-				return cb(null, dbres);
+var cache = {
+	approved: () => {
+    return new Promise((resolve, reject) => {
+      UserModel.filter({'intro_status': "approved"}).orderBy('intro_date').pluck('twitchname').run().then((db) => {
+        resolve(db);
+      });
+    });
+  },
+	online: (start, end) => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.without('id', '_links', {'channel' : '_links'}).orderBy(r.desc('viewers')).slice(start, end).run().then((streams) => {
+				resolve(streams);
 			});
-		break;
-		case 'pending':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date', 'profile_data').run().then(function(dbres) {
-				return cb(null, dbres);
+		});
+	},
+	maturefilter: (start, end, mature) => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.without('id', '_links', {'channel' : '_links'}).filter({'channel': {'mature': mature}}).orderBy(r.desc('viewers')).slice(start, end).run().then((streams) => {
+				resolve(streams);
 			});
-		break;
-		case 'rejected':
-			UserModel.filter({'intro_approved': false, 'intro_rejected': true}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
-				return cb(null, dbres);
-			});
-		break;
-		default:
-			UserModel.filter({'intro_approved': true, 'intro_rejected': false}).pluck('twitchname', 'redditname', 'intro_date').run().then(function(dbres) {
-				return cb(null, dbres);
-			});
+		});
 	}
-}
-var getOnlineUsers = function(cb) {
-	CacheModel.without('id').run().then(function(streams) {
-		UserModel.filter({'intro_approved': true, 'intro_rejected': false}).count().execute().then(function(total) {
-			return cb(null, {online: streams, total: total});
-		});
-	});
-}
-
-var selectUser = function(user, cb) {
-	UserModel.get(user).run().then(function(dbres) {
-		return cb(null, dbres)
-	}).catch(thinky.Errors.DocumentNotFound, function(err) {
-		console.error('Error:', err, err.stack);
-		return cb(false);
-	});
 }
 
 module.exports = {
-	adminGetIntroStatus: adminGetIntroStatus,
-	PaginateUsers: PaginateUsers,
-	dbSearch: dbSearch,
-	getOnlineUsers: getOnlineUsers,
-	selectUser: selectUser
+  intro: intro,
+	cache: cache
 };
