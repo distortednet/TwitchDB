@@ -25,7 +25,7 @@ router.get('/tools', (req, res, next) => {
   res.render('admin/tools');
 });
 router.post('/tools', (req, res, next) => {
-  db.intro.search(req.body.username, null).then((db) => {
+  db.intro.search(req.body.username, null, "intro_date").then((db) => {
     res.send(db[0]);
   });
 });

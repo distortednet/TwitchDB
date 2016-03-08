@@ -1,7 +1,6 @@
 var needle = require('needle'),
 	express = require('express'),
 	config = require('./config');
-
 var middleware = {
 	checkAdmin: (req, res, next) => {
 	  return (req, res, next) => {
@@ -56,7 +55,7 @@ var twitch = {
 				}
 			})
 		});
-	}
+	},
 }
 var general = {
 	chunks: (array, size) => {
@@ -87,6 +86,9 @@ var general = {
 		}
 		return input;
 	},
+	inarray: (value, array) => {
+		return array.indexOf(value) > -1;
+	}
 }
 
 module.exports = {

@@ -27,22 +27,6 @@ function paginate(div, route, cb) {
     $(window).scroll(scrollFunction);
 };
 
-// var loading = false;
-// function paginate(div, route, cb) {
-//   console.log("hello there");
-//   $(window).scroll(function() {
-//     if(!loading) {
-//       if($(window).scrollTop() + $(window).height() == $(document).height()) {
-//         loading = true;
-//         totaldivs = $(div+" .livestream").size();
-//         $.get("/api/"+route, {start: totaldivs, end: totaldivs + 12}, function(data) {
-//           loading = false;
-//           cb(data);
-//         });
-//       }
-//     }
-//   });
-// }
 function shufflechildren(div, frompost) {
   var parent = $(div);
   if(frompost) {
@@ -128,6 +112,32 @@ $('.streams-tab li a').click(function(e) {
       $(res).hide().appendTo("#family").fadeIn(3000);
     });
     break;
+
+    case "games":
+    $.get("/api/games", function(data) {
+      $(data).hide().appendTo("#games").fadeIn(3000);
+      $('.gamelisting').collapsible({accordion : false});
+      $('.gameheader').click(function(e) {
+        var game = $(this).data('game');
+        $.get("/api/games", {game: game}, function(users) {
+          //$("butts").appendTo('.collapsible-body[data-game="'+game+'"]')
+          $('.collapsible-body[data-game="'+game+'"]').html(users);
+          $('.livestream').show();
+        });
+      });
+    });
+    // $.get("/api/games", function(data) {
+    //   $(data).hide().appendTo("#games").fadeIn(3000);
+    //   $('.gamelisting').collapsible({accordion : false});
+    //     $('.gameheader').click(function(e) {
+    //       var game = $(this).data('game');
+    //       $.get("/api/games", {game: game}, function(data) {
+    //         $('.collapsible-body[data-game="'+game+'"]').html(data);
+    //       });
+    //     });
+    // });
+    break;
+
     default:
     $.get("/api/top", function(data) {
       $('#top').empty();
@@ -164,8 +174,8 @@ switch(window.location.pathname.replace(/\/$/, "")) {
   case "/votes":
     $('ul.tabs').tabs('select_tab', 'votes');
   break;
-  case "/game":
-    $('ul.tabs').tabs('select_tab', 'game');
+  case "/games":
+    $('ul.tabs').tabs('select_tab', 'games');
   break;
   default:
     $('ul.tabs').tabs('select_tab', 'top');

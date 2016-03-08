@@ -1,6 +1,8 @@
 var needle = require('needle'),
 	config = require('./config'),
+	helpers = require('./helpers'),
   schema = require('./schema'),
+	async = require('async'),
   thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
 	r = thinky.r,
 	type = thinky.type,
@@ -50,9 +52,9 @@ var intro = {
 			});
 		});
 	},
-	search: (username, game) => {
+	search: (username, game, orderby) => {
 		return new Promise((resolve, reject) => {
-			UserModel.filter(r.row("twitchname").eq(username).or(r.row("redditname").eq(username)).or(r.row("profile_data")("intro_games").match("(?i)"+game))).orderBy('intro_date').run().then((db) => {
+			UserModel.filter(r.row("twitchname").eq(username).or(r.row("redditname").eq(username)).or(r.row("profile_data")("intro_games").match("(?i)"+game))).orderBy(orderby).run().then((db) => {
 				if(db.length) {
 					resolve(db)
 				} else {
@@ -97,7 +99,27 @@ var cache = {
 				resolve(streams);
 			});
 		});
+	},
+	games: () => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.filter(r.row('channel')('game')).pluck({channel: ['game']}).orderBy(r.row('channel')('game')).distinct().run().then((db) => {
+				resolve(db);
+			});
+		});
+	},
+	search: (game) => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.filter(r.row("channel")("game").match("(?i)"+game)).run().then((db) => {
+				resolve(db);
+			});
+			// var gamearray = [];
+			// for(var i in game) { gamearray.push(game[i].channel.game); }
+			// CacheModel.filter(function(user) {return r.expr(gamearray).contains(user('channel')('game')) }).run().then((db) => {
+			// 	resolve(db);
+			// })
+		});
 	}
+
 }
 
 module.exports = {

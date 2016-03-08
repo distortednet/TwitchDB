@@ -1,0 +1,8 @@
+<ul class="collapsible gamelisting" data-collapsible="expandable">
+{%for game in data %}
+  <li style="margin-bottom: 20px; !important">
+    <div class="collapsible-header gameheader" data-game="{{game.channel.game}}" style="clear: left; font-size: 13pt">{{game.channel.game}}</div>
+    <div class="collapsible-body" data-game="{{game.channel.game}}"></div>
+  </li>
+{%endfor%}
+</ul>
