@@ -23,45 +23,6 @@ nav {
   line-height: 50px;
 
 }
-/*.dn-tabs {
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  height: 48px;
-  margin: 0 auto;
-  white-space: nowrap;
-}
-.dn-tabs li{
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  display: block;
-  float: left;
-  text-align: center;
-  line-height: 48px;
-  height: 48px;
-  padding: 0;
-  margin: 0;
-  text-transform: uppercase;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  letter-spacing: .8px;
-  width: 15%;
-  min-width: 80px;
-}
-.dn-tabs li a {
-  color: #B9A3E3 !important;
-  display: block;
-  width: 100%;
-  height: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  transition: color .28s ease;
-}
-.dn-active {
-  border-bottom: 3px solid #424242;
-}*/
 .tabs a {
   color: #B9A3E3 !important;
 }
@@ -278,4 +239,23 @@ input:focus:not([readonly]) {
 .profile-image {
   height: 160px;
   width: 160px;
+}
+.gridder-list img {
+  cursor: pointer;
+}
+.gridder-list {
+  margin-bottom: 0px !important;
+  opacity: 0.5;
+}
+.gridder-list:hover {
+    opacity: 1;
+}
+.selectedItem {
+  opacity: 1 !important;
+}
+.gridder-show {
+  background-color: #282828;
+  width: 98.6% !important;
+  margin-top: 8px;
+  margin-bottom: 16px !important;
 }

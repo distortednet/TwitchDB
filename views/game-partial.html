@@ -1,8 +1,12 @@
-<ul class="collapsible gamelisting" data-collapsible="expandable">
+<ul class="gridder">
 {%for game in data %}
-  <li style="margin-bottom: 20px; !important">
-    <div class="collapsible-header gameheader" data-game="{{game.channel.game}}" style="clear: left; font-size: 13pt">{{game.channel.game}}</div>
-    <div class="collapsible-body" data-game="{{game.channel.game}}"></div>
-  </li>
+
+    <li class="gridder-list" data-griddercontent="#grid-list-{{loop.index}}" data-game="{{game.channel.game}}">
+        <img src="http://static-cdn.jtvnw.net/ttv-boxart/{{game.channel.game}}-272x380.jpg" />
+    </li>
 {%endfor%}
 </ul>
+
+{%for game in data %}
+  <div id="grid-list-{{loop.index}}" class="gridder-content" data-game="{{game.channel.game}}"></div>
+{%endfor%}

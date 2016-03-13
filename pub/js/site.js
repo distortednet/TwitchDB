@@ -38,7 +38,6 @@ function shufflechildren(div, frompost) {
     parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
   }
 }
-
 // Admin client side logic
 $('.admin-approve, .admin-reject').click(function(e) {
   e.preventDefault();
@@ -81,70 +80,75 @@ $('.profile-tab li a').click(function(e) {
 $('.streams-tab li a').click(function(e) {
   $(window).unbind("scroll");
   var location = $(this).data('location').replace('/', '');
-    $('.livestream').hide().fadeIn(2000);
+    $('.livestream').hide().fadeIn(1000);
   switch(location) {
     case "random":
     $.get("/api/top", function(data) {
       $('#random').empty();
-      $(data).hide().appendTo("#random").fadeIn(3000);
+      $(data).hide().appendTo("#random").fadeIn(1000);
       shufflechildren("#random", false);
     });
     paginate("#random", "top", function(res) {
       shufflechildren("#random", true);
-      $(res).hide().appendTo("#random").fadeIn(3000); // we need to figure out a diff shuffle method, possibly shuffling the contents of res instead of shuffling child elements
+      $(res).hide().appendTo("#random").fadeIn(1000); // we need to figure out a diff shuffle method, possibly shuffling the contents of res instead of shuffling child elements
     });
     break;
     case "mature":
     $.get("/api/mature", function(data) {
       $('#mature').empty();
-      $(data).hide().appendTo("#mature").fadeIn(3000);
+      $(data).hide().appendTo("#mature").fadeIn(1000);
     });
     paginate("#mature", "mature", function(res) {
-      $(res).hide().appendTo("#mature").fadeIn(3000);
+      $(res).hide().appendTo("#mature").fadeIn(1000);
     });
     break;
     case "family":
     $.get("/api/family", function(data) {
       $('#family').empty();
-      $(data).hide().appendTo("#family").fadeIn(3000);
+      $(data).hide().appendTo("#family").fadeIn(1000);
     });
     paginate("#family", "family", function(res) {
-      $(res).hide().appendTo("#family").fadeIn(3000);
+      $(res).hide().appendTo("#family").fadeIn(1000);
     });
     break;
 
     case "games":
     $.get("/api/games", function(data) {
-      $(data).hide().appendTo("#games").fadeIn(3000);
-      $('.gamelisting').collapsible({accordion : false});
-      $('.gameheader').click(function(e) {
-        var game = $(this).data('game');
-        $.get("/api/games", {game: game}, function(users) {
-          //$("butts").appendTo('.collapsible-body[data-game="'+game+'"]')
-          $('.collapsible-body[data-game="'+game+'"]').html(users);
-          $('.livestream').show();
-        });
+      $(data).hide().appendTo("#games").fadeIn(1000);
+      $('.gridder').gridderExpander({
+          scroll: true,
+          scrollOffset: 400,
+          scrollTo: "panel",                  // panel or listitem
+          animationSpeed: 500,
+          animationEasing: "easeInOutExpo",
+          showNav: false,                      // Show Navigation
+          nextText: "Next",                   // Next button text
+          prevText: "Previous",               // Previous button text
+          closeText: "Close",                 // Close button text
+          onStart: function(e){
+          },
+          onContent: function(contentdiv){
+            var previousdiv = $(contentdiv).prev();
+            var game = $(contentdiv).prev().data('game');
+            $.get("/api/games", {game: game}, function(users) {
+              $(contentdiv).children().children().html(users);
+              $('.livestream').fadeIn(1000);
+            });
+          },
+          onClosed: function(){
+              console.log("closed");
+          }
       });
     });
-    // $.get("/api/games", function(data) {
-    //   $(data).hide().appendTo("#games").fadeIn(3000);
-    //   $('.gamelisting').collapsible({accordion : false});
-    //     $('.gameheader').click(function(e) {
-    //       var game = $(this).data('game');
-    //       $.get("/api/games", {game: game}, function(data) {
-    //         $('.collapsible-body[data-game="'+game+'"]').html(data);
-    //       });
-    //     });
-    // });
     break;
 
     default:
     $.get("/api/top", function(data) {
       $('#top').empty();
-      $(data).hide().appendTo("#top").fadeIn(3000);
+      $(data).hide().appendTo("#top").fadeIn(1000);
     });
     paginate("#top", "top", function(res) {
-      $(res).hide().appendTo("#top").fadeIn(3000);
+      $(res).hide().appendTo("#top").fadeIn(1000);
     });
     break;
   }

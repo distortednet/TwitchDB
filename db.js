@@ -100,23 +100,18 @@ var cache = {
 			});
 		});
 	},
-	games: () => {
+	gamelist: () => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.filter(r.row('channel')('game')).pluck({channel: ['game']}).orderBy(r.row('channel')('game')).distinct().run().then((db) => {
 				resolve(db);
 			});
 		});
 	},
-	search: (game) => {
+	gamesearch: (game) => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.filter(r.row("channel")("game").match("(?i)"+game)).run().then((db) => {
 				resolve(db);
 			});
-			// var gamearray = [];
-			// for(var i in game) { gamearray.push(game[i].channel.game); }
-			// CacheModel.filter(function(user) {return r.expr(gamearray).contains(user('channel')('game')) }).run().then((db) => {
-			// 	resolve(db);
-			// })
 		});
 	}
 

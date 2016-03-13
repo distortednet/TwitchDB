@@ -60,52 +60,15 @@ router.get('/search', (req, res, next) => {
 
 router.get('/games', (req, res, next) => {
   if(req.query.game) {
-    db.cache.search(req.query.game).then((db) => {
+    db.cache.gamesearch(req.query.game).then((db) => {
       var tpl = swig.compileFile('./views/stream-partial.html');
       res.send(tpl({streams: db}));
     })
   } else {
-    db.cache.games().then((db) => {
+    db.cache.gamelist().then((db) => {
       res.render('game-partial', { data: db});
     })
   }
-
-  // db.cache.games().then((games) => {
-  //   db.cache.search(games).then((db) => {
-  //     res.send(db);
-  //   })
-  // })
-  // if(req.query.game) {
-  //   db.cache.search(req.query.game).then((db) => {
-  //     res.render('stream-partial', { data: db});
-  //   })
-  //   res.send("butts");
-  // } else {
-  //   db.cache.games().then((db) => {
-  //     res.render('game-partial', { data: db});
-  //   })
-  // }
-
-  // if(req.query.start) {
-  //   var start = parseInt(req.query.start);
-  //   var end = parseInt(req.query.end);
-  // } else {
-  //   var start = 0;
-  //   var end = 12;
-  // }
-  //
-  // res.send("butts");
-  // db.cache.online(parseInt(start), parseInt(end)).then((users) => {
-  //   return helpers.twitch.boxart(users)
-  // }).then((boxart) => {
-  //   console.log(boxart);
-  // })
-  // // db.cache.online(parseInt(start), parseInt(end)).then((users) => {
-  // //   return helpers.twitch.boxart(users);
-  // // }).then((test) => {
-  // //   console.log('wot');
-  // //   res.send("butts");
-  // // })
 
 });
 
