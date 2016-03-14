@@ -56,49 +56,7 @@ var twitch = {
 				}
 			})
 		});
-	},
-	boxart: (gameobject) => {
-		new Promise(function(resolve, reject) {
-
-			gamearray = [];
-			for(var i in gameobject) {
-				gamearray.push(gameobject[i].channel.game)
-			}
-			batch(gamearray).parallel().each(function(i, gametitle, cb) {
-				needle.get("https://api.twitch.tv/kraken/search/games?q="+gametitle+"&type=suggest", (err, data) => {
-					if(data && data.body && data.body.games && data.body.games[0]) {
-						cb(data.body.games[0].box.large);
-					}
-				})
-			}).end(function(final) {
-				resolve(final);
-			})
-		});
 	}
-	// boxarthelper: (gametitle, cb) => {
-	// 		needle.get("https://api.twitch.tv/kraken/search/games?q="+gametitle+"&type=suggest", (err, data) => {
-	// 				cb(data.body);
-	// 			// if(data.body.games[0]) {
-	// 			// 	cb(data.body.games[0].box.large);
-	// 			// } else {
-	// 			// 	cb(false);
-	// 			// }
-	// 		});
-	// },
-	// boxart: (gameobject) => {
-	// 	return new Promise(function(resolve, reject) {
-	// 		gamearray = [];
-	// 		for(var i in gameobject) {
-	// 			gamearray.push(gameobject[i].channel.game)
-	// 		}
-	// 		async.each(gamearray, twitch.boxarthelper, function(results){
-	// 			console.log(results);
-	// 		})
-	// 		// async.map(gamearray, twitch.boxarthelper, function(err, results){
-	// 		// 	console.log(err);
-	// 		// });
-	// 	});
-	// }
 }
 var general = {
 	chunks: (array, size) => {

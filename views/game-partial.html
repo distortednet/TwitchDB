@@ -1,12 +1,26 @@
+<div class="row">
+  <div class="col s8 offset-s4">
+    <div class="row">
+      <div class="input-field col s3">
+        <input id="gamefilter" type="text">
+        <label for="gamefilter">Game Name</label>
+      </div>
+      <div class="col s3"><br><br>
+        <input type="checkbox" id="popular" />
+        <label for="popular">Most Popular</label>
+      </div>
+    </div>
+  </div>
+</div>
 <ul class="gridder">
-{%for game in data %}
-
-    <li class="gridder-list" data-griddercontent="#grid-list-{{loop.index}}" data-game="{{game.channel.game}}">
-        <img src="http://static-cdn.jtvnw.net/ttv-boxart/{{game.channel.game}}-272x380.jpg" />
-    </li>
-{%endfor%}
+  {%for data in data %}
+  <li class="gridder-list" data-griddercontent="#grid-list-{{loop.index}}" data-game="{{data.game}}" data-popularity="{{data.usercount}}">
+    <img src="http://static-cdn.jtvnw.net/ttv-boxart/{{data.game}}-272x380.jpg" />
+    <p style="margin-top: 0px;"><strong>{{data.usercount}}</strong> streamer{%if data.usercount != 1%}s{%endif%} playing <strong>{{data.game}}</strong></p>
+  </li>
+  {%endfor%}
 </ul>
 
-{%for game in data %}
-  <div id="grid-list-{{loop.index}}" class="gridder-content" data-game="{{game.channel.game}}"></div>
+{%for data in data %}
+<div id="grid-list-{{loop.index}}" class="gridder-content" data-game="{{data.game}}"></div>
 {%endfor%}

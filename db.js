@@ -102,7 +102,7 @@ var cache = {
 	},
 	gamelist: () => {
 		return new Promise(function(resolve, reject) {
-			CacheModel.filter(r.row('channel')('game')).pluck({channel: ['game']}).orderBy(r.row('channel')('game')).distinct().run().then((db) => {
+			CacheModel.group(r.row('channel')('game')).pluck({channel: ['game']}).run().then((db) => {
 				resolve(db);
 			});
 		});

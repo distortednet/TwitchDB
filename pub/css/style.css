@@ -250,6 +250,7 @@ input:focus:not([readonly]) {
 .gridder-list:hover {
     opacity: 1;
 }
+
 .selectedItem {
   opacity: 1 !important;
 }

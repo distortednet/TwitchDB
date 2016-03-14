@@ -114,6 +114,7 @@ $('.streams-tab li a').click(function(e) {
 
     case "games":
     $.get("/api/games", function(data) {
+      $('#games').empty();
       $(data).hide().appendTo("#games").fadeIn(1000);
       $('.gridder').gridderExpander({
           scroll: true,
@@ -132,7 +133,12 @@ $('.streams-tab li a').click(function(e) {
             var game = $(contentdiv).prev().data('game');
             $.get("/api/games", {game: game}, function(users) {
               $(contentdiv).children().children().html(users);
-              $('.livestream').fadeIn(1000);
+              $(contentdiv).children().children().prepend('<div class="progress"><div class="indeterminate"></div></div>');
+              $('.livestream').imagesLoaded().always( function( instance ) {
+                $('.progress').remove();
+              }).done( function( instance ) {
+                $('.livestream').fadeIn(1000);
+              })
             });
           },
           onClosed: function(){
@@ -227,7 +233,41 @@ $('#searchdb').keypress(function(e) {
   }
 });
 
+
+//game view search filter logic
+$(document).on( "keyup", "#gamefilter", function(e) {
+  var keyvalue = $(this).val();
+  $('.gridder-show').hide();
+  var elementarray = $(".gridder-list");
+  for (var i = 0; i < elementarray.length; i++) {
+    var game = $(elementarray[i]).data('game');
+    if (game.toLowerCase().indexOf(keyvalue.toLowerCase()) > -1) {
+      $(elementarray[i]).show();
+    } else {
+      $(elementarray[i]).hide();
+    }
+  }
+});
+
+//game view poplarity filter logic
+$(document).on( "click", "#popular", function(e) {
+  if($(this).is(':checked')) {
+    var divlist = $(".gridder");
+    var sort = divlist.find('.gridder-list').sort(function(a, b) {
+        return -a.getAttribute('data-popularity') - -b.getAttribute('data-popularity');
+    })
+    $(".gridder").html(sort);
+  } else {
+    var divlist = $(".gridder");
+    var sort = divlist.find('.gridder-list').sort(function(a, b) {
+        var compA = a.getAttribute('data-game');
+        var compB = b.getAttribute('data-game');
+        return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+    })
+    $(".gridder").html(sort);
+  }
+});
+
 // other shizz
 $('.modal-trigger').leanModal();
-
 })

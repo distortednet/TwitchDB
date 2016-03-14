@@ -57,7 +57,6 @@ router.get('/search', (req, res, next) => {
     res.send(false);
   }
 });
-
 router.get('/games', (req, res, next) => {
   if(req.query.game) {
     db.cache.gamesearch(req.query.game).then((db) => {
@@ -66,7 +65,13 @@ router.get('/games', (req, res, next) => {
     })
   } else {
     db.cache.gamelist().then((db) => {
-      res.render('game-partial', { data: db});
+      var gamelist = [];
+      for(i in db) {
+        if(db[i].group != null) {
+          gamelist.push({'game': db[i].group, 'usercount': db[i].reduction.length})
+        }
+      }
+      res.render('game-partial', { data: gamelist});
     })
   }
 
