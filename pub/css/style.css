@@ -247,12 +247,26 @@ input:focus:not([readonly]) {
   margin-bottom: 0px !important;
   opacity: 0.5;
 }
+.gridder:hover > .gridder-list:not(:hover) {
+  opacity: 0.4;
+  -webkit-filter: grayscale(100%);
+  -webkit-transition: 0.5s ease-in-out;
+  -o-filter: grayscale(100%);
+  -o-transition: 0.5s ease-in-out;
+}
 .gridder-list:hover {
     opacity: 1;
+}
+.gridder-list img:hover {
+  -webkit-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.75);
 }
 
 .selectedItem {
   opacity: 1 !important;
+  -webkit-filter: grayscale(0%) !important;
+  -o-filter: grayscale(0%) !important;
 }
 .gridder-show {
   background-color: #282828;
