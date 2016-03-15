@@ -1,9 +1,11 @@
-var helpers = require('./helpers'),
-    chain = require('connect-chain');
+var helpers = require('./helpers');
 
+    var corsOptions = {
+      origin: 'http://localhost:8080'
+    };
 module.exports = (app) => {
   app.use('/', require('./routes/index'));
-  app.use('/api', require('./routes/api'));
+  app.use('/api', helpers.middleware.checkxhr(), require('./routes/api'));
   app.use('/faq', require('./routes/faq'));
   app.use('/about', require('./routes/about'));
   app.use('/disclaimer', require('./routes/disclaimer'));

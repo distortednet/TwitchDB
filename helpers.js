@@ -20,6 +20,15 @@ var middleware = {
 	  		next();
 	  	}
 	  }
+	},
+	checkxhr: (req, res, next) => {
+	  return (req, res, next) => {
+	    if(!req.xhr) {
+	  		res.send('this is an improper request');
+	  	}else{
+	  		next();
+	  	}
+	  }
 	}
 }
 var twitch = {
