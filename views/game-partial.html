@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row hide-on-small-only">
   <div class="col s8 offset-s4">
     <div class="row">
       <div class="input-field col s3">
@@ -15,8 +15,8 @@
 <ul class="gridder">
   {%for data in data %}
   <li class="gridder-list" data-griddercontent="#grid-list-{{loop.index}}" data-game="{{data.game}}" data-popularity="{{data.usercount}}">
-    <img src="http://static-cdn.jtvnw.net/ttv-boxart/{{data.game}}-272x380.jpg" />
-    <p style="margin-top: 0px;"><strong>{{data.usercount}}</strong> streamer{%if data.usercount != 1%}s{%endif%} playing <strong>{{data.game}}</strong></p>
+    <img class="responsive-img" src="http://static-cdn.jtvnw.net/ttv-boxart/{{data.game}}-272x380.jpg" />
+    <p style="margin-top: 0px;" class="hide-on-med-and-down"><strong>{{data.usercount}}</strong> streamer{%if data.usercount != 1%}s{%endif%} playing <strong>{{data.game}}</strong></p>
   </li>
   {%endfor%}
 </ul>
