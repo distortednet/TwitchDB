@@ -54,7 +54,7 @@ var intro = {
 	},
 	search: (username, game, orderby) => {
 		return new Promise((resolve, reject) => {
-			UserModel.filter(r.row("twitchname").eq(username).or(r.row("redditname").eq(username)).or(r.row("profile_data")("intro_games").match("(?i)"+game))).orderBy(orderby).run().then((db) => {
+			UserModel.filter(r.row("twitchname").eq(username).or(r.row("redditname").eq(username)).or(r.row("intro_data")("intro_games").match("(?i)"+game))).orderBy(orderby).run().then((db) => {
 				if(db.length) {
 					resolve(db)
 				} else {
@@ -68,6 +68,16 @@ var intro = {
 			UserModel.filter({'intro_status': 'approved'}).orderBy('intro_date').slice(start,end).run().then((streams) => {
 				resolve(streams);
 			});
+		});
+	},
+	mostvotes: () => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.eqJoin(r.row('channel')('name'), r.db('introdb').table('users')).filter(r.row('right')('votes')).orderBy(r.desc(r.row('right')('votes').count())).without('right').zip().run().then((streams) => {
+
+				resolve(streams);
+			}).catch(function(error) {
+				console.log(error);
+			})
 		});
 	},
 	randomintro: () => {

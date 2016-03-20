@@ -8,7 +8,7 @@
         <a href="/user/{{user.channel.name}}" target="_blank"><i class="material-icons small" title="Twitch Profile">assignment_ind</i></a>
         <a href="/user/feedback/{{user.channel.name}}" target="_blank" title="Give feedback"><i class="material-icons small">subject</i></a>
         <a href="/surf"><i class="material-icons small" title="New Stream!">shuffle</i></a>
-        <a href="#}" target="_blank"><i class="material-icons small" title="Vote up">thumb_up</i></a>
+        {%if loggedin%}<a href="#" target="_blank" class="addvote" data-voter="{{name}}" data-votetarget="{{user.channel.name}}"><i class="material-icons small" title="Vote up">thumb_up</i></a>{%endif%}
       </div>
         <iframe src="http://player.twitch.tv/?channel={{user.channel.name}}" frameborder="0" scrolling="no" volume="0" allowfullscreen="true"></iframe>
     </div>

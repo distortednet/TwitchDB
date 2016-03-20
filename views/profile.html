@@ -27,9 +27,9 @@
     <div class="col s12 center profile-stats">
       <span><strong>Status:</strong> {{data.intro_status}}</span>
       <span><strong>Recieved Feedback:</strong> 4</span>
-      <span><strong>Votes:</strong> 15</span>
-      <span><strong>Intro Link: </strong><a href="/profile/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/profile/{{data.twitchname}}</a></span>
-      <span><strong>Feedback Link: </strong><a href="/profile/feedback/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/profile/feedback/{{data.twitchname}}</a></span>
+      <span><strong>Votes:</strong> {%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</span>
+      <span><strong>Intro Link: </strong><a href="/user/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}</a></span>
+      <span><strong>Feedback Link: </strong><a href="/user/feedback/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/user/feedback/{{data.twitchname}}</a></span>
     </div>
   </div>
 

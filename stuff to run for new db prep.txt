@@ -1,0 +1,4 @@
+
+
+replace profile_data - r.db('introdb').table('users').update({ intro_data: r.row('profile_data') })
+get rid of old profile_data - r.db('introdb').table('users').replace(r.row.without('profile_data'))

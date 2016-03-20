@@ -27,5 +27,8 @@ router.get('/family', (req, res, next) => {
 router.get('/games', (req, res, next) => {
     res.render('index');
 });
+router.get('/votes', (req, res, next) => {
+    res.render('index');
+});
 
 module.exports = router;

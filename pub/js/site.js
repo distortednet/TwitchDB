@@ -12,7 +12,6 @@ function inarray(value, array) {
   return array.indexOf(value) > -1;
 }
 
-
 function paginate(div, route, cb) {
     var scrollFunction = function(){
         if ($(window).scrollTop() + $(window).height() == $(document).height()) {
@@ -111,7 +110,12 @@ $('.streams-tab li a').click(function(e) {
       $(res).hide().appendTo("#family").fadeIn(1000);
     });
     break;
-
+    case "votes":
+      $.get("/api/votes", function(data) {
+        $('#votes').empty();
+        $(data).hide().appendTo("#votes").fadeIn(1000);
+      })
+    break;
     case "games":
     $.get("/api/games", function(data) {
       $('#games').empty();
@@ -187,6 +191,9 @@ switch(window.location.pathname.replace(/\/$/, "")) {
   case "/games":
     $('ul.tabs').tabs('select_tab', 'games');
   break;
+  case "/votes":
+    $('ul.tabs').tabs('select_tab', 'votes');
+  break;
   default:
     $('ul.tabs').tabs('select_tab', 'top');
   break;
@@ -200,7 +207,7 @@ $(".profile_edit").click(function(e) {
     twitchname: $("#profile_twitchname").val(),
     redditname: $("#profile_redditname").val(),
     intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-    profile_data: {
+    intro_data: {
       intro_about: $("#profile_about").val(),
       intro_schedule: $("#profile_schedule").val(),
       intro_games: $("#profile_games").val(),
@@ -267,6 +274,18 @@ $(document).on( "click", "#popular", function(e) {
     $(".gridder").html(sort);
   }
 });
+
+
+//vote logic
+$('.addvote').click(function(e) {
+  e.preventDefault();
+  var voter = $(this).data('voter');
+  var votetarget = $(this).data('votetarget');
+  console.log(votetarget);
+  $.post("/api/vote", {twitchname: votetarget, voter: voter}, function(data) {
+    Materialize.toast(data, 3000, 'rounded');
+  });
+})
 
 // other shizz
 $('.modal-trigger').leanModal();

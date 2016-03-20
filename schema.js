@@ -15,7 +15,8 @@
   	redditname: type.string(),
   	intro_status: type.string(),
   	intro_date:  type.string(),
-  	profile_data: type.object()
+  	intro_data: type.object(),
+    votes: type.array()
 
   };
   schema.cache = {
