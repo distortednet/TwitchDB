@@ -12,8 +12,8 @@
   {%for user in data %}
     <tr class="row-{{user.twitchname}}">
         <td>{{user.intro_date}}</td>
-        <td>{{user.twitchname}}</td>
-        <td>{{user.redditname}}</td>
+        <td><a href="/user/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
+        <td><a href="http://www.reddit.com/u/{{user.redditname}}" target="_blank">{{user.redditname}}</a></td>
         {% if type == "pending" %}
           <td>
             <a href="" class="admin-approve" data-user="{{user.twitchname}}" data-status="approved"><i class="material-icons Medium">done</i></a>

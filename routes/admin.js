@@ -18,9 +18,6 @@ router.get('/feedback/:type', (req, res, next) => {
 
 });
 
-
-
-
 router.get('/tools', (req, res, next) => {
   res.render('admin/tools');
 });
@@ -30,6 +27,10 @@ router.post('/tools', (req, res, next) => {
   });
 });
 router.post('/tools/update', (req, res, next) => {
+  if(req.body.intro_status == "clear") {
+    req.body['intro_data'] = null;
+    req.body['intro_status'] = null;
+  }
   db.intro.update(req.body).then((db) => {
     res.send("updated profile for " + req.body.twitchname);
   });
