@@ -287,6 +287,35 @@ $('.addvote').click(function(e) {
   });
 })
 
+//feedback submit logic
+$('.feedback_submit').click(function(e) {
+  e.preventDefault();
+      //who's submitting feedback? (get from server side, not client)
+      //who is the feedback for? (if someone changes this client side, they are just being dumb lol)
+      //feedback approval status for moderation
+      // has feedback been marked as read?
+        var feedback = {
+          data: {
+            branding: $('#feedback_branding').val(),
+            overlay: $('#feedback_overlay').val(),
+            panels: $('#feedback_panels').val(),
+            game: $('#feedback_game').val(),
+            social: $('#feedback_social').val(),
+            other: $('#feedback_other').val(),
+            audioquality: parseInt($('#feedback_audioquality').val()),
+            videoquality: parseInt($('#feedback_videoquality').val()),
+            chatinteraction: parseInt($('#feedback_chatinteraction').val()),
+            anonymous: $('#feedback_anonymous').is(':checked'),
+          },
+          touser: $('.feedback_submit').data('touser')
+        }
+      $.post("/api/feedback", feedback, function(data) {
+        console.log(data);
+      });
+});
+
 // other shizz
 $('.modal-trigger').leanModal();
+ $('select').material_select();
+
 })

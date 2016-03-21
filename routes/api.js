@@ -100,5 +100,15 @@ router.post('/vote', helpers.middleware.checkAuth(), (req, res, next) => {
   });
 });
 
+router.post('/feedback', helpers.middleware.checkAuth(), (req, res, next) => {
+  req.body.data.fromuser = req.session.name;
+  req.body.data.status = "pending";
+  req.body.data.read = false;
+  db.feedback.send(req.body.touser, req.body.data).then((result) => {
+    console.log(result)
+  })
+  res.send("butts");
+});
+
 
 module.exports = router;

@@ -72,8 +72,7 @@ var intro = {
 	},
 	mostvotes: () => {
 		return new Promise(function(resolve, reject) {
-			CacheModel.eqJoin(r.row('channel')('name'), r.db('introdb').table('users')).filter(r.row('right')('votes')).orderBy(r.desc(r.row('right')('votes').count())).without('right').zip().run().then((streams) => {
-
+			CacheModel.eqJoin(r.row('channel')('name'), r.db(config.app.rethink.db).table('users')).filter(r.row('right')('votes')).orderBy(r.desc(r.row('right')('votes').count())).without('right').zip().run().then((streams) => {
 				resolve(streams);
 			}).catch(function(error) {
 				console.log(error);
@@ -87,6 +86,15 @@ var intro = {
 			})
 		});
 	},
+}
+var feedback = {
+	send: (username, object) => {
+		return new Promise(function(resolve, reject) {
+			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row("feedback_data").default([]).append(object)}).run().then((db) => {
+				resolve(db);
+			})
+		});
+	}
 }
 var cache = {
 	approved: () => {
@@ -129,5 +137,6 @@ var cache = {
 
 module.exports = {
   intro: intro,
+	feedback: feedback,
 	cache: cache
 };
