@@ -98,6 +98,37 @@ var general = {
 	},
 	inarray: (value, array) => {
 		return array.indexOf(value) > -1;
+	},
+	setredditflair: (redditname, twitchname, auth, oauth) => {
+	  return new Promise(function(resolve, reject) {
+	    needle.post('https://'+oauth.clientid+':'+oauth.secret+'@www.reddit.com/api/v1/access_token', auth, (err, res) => {
+	      var options = {headers: {"Authorization": "bearer "+res.body.access_token, "User-Agent": "twitchdb/0.1 by "+auth.username}}
+	      needle.get('https://oauth.reddit.com/r/twitch/api/flairlist.json?name='+redditname, options, (err, oauth) => {
+	          if(oauth.body.users[0].user.toLowerCase() == redditname.toLowerCase()) {
+	            if(oauth.body.users[0].flair_text != null && oauth.body.users[0].flair_text.length > 0) {
+	              var flairtext = oauth.body.users[0].flair_text;
+	            } else {
+	              var flairtext = "http://www.twitch.tv/"+twitchname
+	            }
+	            var flairdata = {
+	              'api_type': 'json',
+	              'css_class': 'introflair',
+	              'name': redditname,
+	              'text': flairtext
+	            }
+	            needle.post('https://oauth.reddit.com/r/twitch/api/flair', flairdata, options, (err, flair) => {
+	              if(flair.body.json.errors.length == 0) {
+	                resolve({'status': true, data: flairdata});
+	              } else {
+	                resolve({'status': false, data: flair.body.json.errors});
+	              }
+	            });
+	          } else {
+	            resolve({'status': false, data: 'could not set flair or find user: ' + redditname});
+	          }
+	      });
+	    });
+	  });
 	}
 }
 

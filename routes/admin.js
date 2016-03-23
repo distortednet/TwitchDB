@@ -37,7 +37,17 @@ router.post('/tools/update', (req, res, next) => {
 });
 router.post('/submit', (req, res, next) => {
   db.intro.setstatus(req.body.twitchname, req.body.intro_status).then((dbres) => {
-    res.send(req.body.twitchname + " has been " + req.body.intro_status);
+    if(req.body.intro_status == 'approved' && dbres[0].redditname) {
+      return helpers.general.setredditflair(dbres[0].redditname, dbres[0].twitchname, config.reddit.auth, config.reddit.oauth);
+    } else {
+      return false;
+    }
+  }).then(function(final) {
+    if(final && final.status == true) {
+      res.send(req.body.twitchname + " has been " + req.body.intro_status + " flair set for: " + final.data.name);
+    } else {
+      res.send(req.body.twitchname + " has been " + req.body.intro_status);
+    }
   })
 });
 module.exports = router;
