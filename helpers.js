@@ -40,7 +40,7 @@ var twitch = {
 	      if(!err) {
 	        needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, (err, data) => {
 	          if(!err && data.statusCode == 200) {
-							db.intro.select(data.body.name).then((db) => { // when you see this, pls fix. there is probably a better way to set modstatus and i think when ppl log in this is causing two queries for profile to be pulled. i am not sober enough to figure this out tho.
+							db.intro.select(data.body.name).then((db) => { // there is probably a better way to set modstatus and i think when ppl log in this is causing two queries for profile to be pulled. i am not sober enough to figure this out tho.
 								if(db[0].admin && db[0].admin == true) {
 									var modstatus = true;
 								} else {
