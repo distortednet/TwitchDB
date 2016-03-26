@@ -31,6 +31,7 @@ router.post('/tools/update', (req, res, next) => {
     req.body['intro_data'] = null;
     req.body['intro_status'] = null;
   }
+  req.body.admin = (req.body.admin == "true");
   db.intro.update(req.body).then((db) => {
     res.send("updated profile for " + req.body.twitchname);
   });

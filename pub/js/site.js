@@ -59,9 +59,10 @@ $('.admin-submit-search').click(function(e) {
 $('.admin-modify-user').click(function(e) {
   e.preventDefault();
   var status = $('input[name="searchgroup"]:checked').val();
+  var admin = $('input[name="setadmin"]').is(':checked');
   var twitchname = $("#result_twitchname").val();
   var redditname = $("#result_redditname").val();
-  $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status}, function(data) {
+  $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin}, function(data) {
     Materialize.toast(data, 3000, 'rounded')
   });
 });

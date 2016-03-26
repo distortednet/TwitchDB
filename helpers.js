@@ -1,6 +1,7 @@
 var needle = require('needle'),
 	express = require('express'),
 	config = require('./config');
+	db = require('./db');
 	batch = require('batchflow');
 var middleware = {
 	checkAdmin: (req, res, next) => {
@@ -39,8 +40,15 @@ var twitch = {
 	      if(!err) {
 	        needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, (err, data) => {
 	          if(!err && data.statusCode == 200) {
-							var modstatus = config.twitch.mods.indexOf(data.body.name) > -1;
-	            resolve({'name': data.body.name, 'token': body.access_token, 'modstatus': modstatus});
+							db.intro.select(data.body.name).then((db) => { // when you see this, pls fix. there is probably a better way to set modstatus and i think when ppl log in this is causing two queries for profile to be pulled. i am not sober enough to figure this out tho.
+								if(db[0].admin && db[0].admin == true) {
+									var modstatus = true;
+								} else {
+									var modstatus = false;
+								}
+								resolve({'name': data.body.name, 'token': body.access_token, 'modstatus': modstatus});
+							})
+
 	          } else {
 	            reject(err);
 	          }
