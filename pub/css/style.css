@@ -274,3 +274,15 @@ input:focus:not([readonly]) {
   margin-top: 8px;
   margin-bottom: 16px !important;
 }
+h5.staff-head {
+  text-align: center;
+  font-weight: bold;
+}
+div.staff-col {
+  width: 12.5%;
+  height: auto;
+}
+div.staff-row {
+  width: 100%;
+  height: auto;
+}
