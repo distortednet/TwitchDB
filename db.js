@@ -94,6 +94,20 @@ var feedback = {
 				resolve(db);
 			})
 		});
+	},
+	generateuuid:(username, timestamp) => {
+		return new Promise(function(resolve, reject) {
+			r.uuid(username + " " + timestamp).then((result) => {
+				resolve(result);
+			});
+		});
+	},
+	setreadstatus:(username, uuid, readstatus) => {
+		return new Promise(function(resolve, reject) {
+			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({read: readstatus}),msg)})}).run().then((db) => {
+				resolve(db);
+			});
+		});
 	}
 }
 var cache = {

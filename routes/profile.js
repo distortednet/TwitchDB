@@ -8,9 +8,7 @@ var express = require('express'),
 router.get('/', (req, res, next) => {
   Promise.all([db.intro.create(req.session.name), db.intro.select(req.session.name)]).then((result) => {
     res.render('profile', {data: result[1][0]});
-  }).catch((err) => {
-    console.log(err);
-  })
+  });
 });
 
 router.get('/edit', (req, res, next) => {
@@ -28,5 +26,10 @@ router.post('/submit', (req, res, next) => {
   } else {
       res.send('stop trying to be a leet hax0r');
   }
+});
+router.get('/feedback', (req, res, next) => {
+  db.intro.select(req.session.name).then((db) => {
+    res.render('profile', { data: db[0]});
+  });
 });
 module.exports = router;

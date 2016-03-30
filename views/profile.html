@@ -26,36 +26,12 @@
   <div class="row">
     <div class="col s12 center profile-stats">
       <span><strong>Status:</strong> {{data.intro_status}}</span>
-      <span><strong>Recieved Feedback:</strong> 4</span>
+      <span><strong>Recieved Feedback:</strong> {{data.feedback_data.length}}</span>
       <span><strong>Votes:</strong> {%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</span>
       <span><strong>Intro Link: </strong><a href="/user/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}</a></span>
-      <span><strong>Feedback Link: </strong><a href="/user/feedback/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/user/feedback/{{data.twitchname}}</a></span>
+      <span><strong>Feedback Link: </strong><a href="/user/{{data.twitchname}}/feedback/" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}/feedback/</a></span>
     </div>
   </div>
-
-<!--
-  <div id="feedback">
-    <div class="row">
-      <div class="col s8 offset-s2 new-feedback">
-        <a href="#modal1" class="modal-trigger"><img src="profile.jpg" class="circle hoverable"></a>
-        <a href="#modal1" class="modal-trigger"><img src="profile.jpg" class="circle hoverable"></a>
-      </div>
-    </div>
-    <div id="modal1" class="modal  grey darken-3">
-      <div class="row">
-        <img src="profile.jpg" class="circle hoverable profile-img left">
-        <h5 class="left feedback-header">cooluser32</h5>
-      </div>
-      <div class="row">
-        bla bla bla bla bla bla<br><br><br>
-      </div>
-      <div class="row">
-        <a class="waves-effect waves-purple btn grey darken-2">Delete</a>
-        <a class="waves-effect waves-purple btn right grey darken-2">Close</a>
-      </div>
-    </div>
-  </div>
--->
 
 
 

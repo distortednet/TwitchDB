@@ -100,14 +100,28 @@ router.post('/vote', helpers.middleware.checkAuth(), (req, res, next) => {
   });
 });
 
-router.post('/feedback', helpers.middleware.checkAuth(), (req, res, next) => {
-  req.body.data.fromuser = req.session.name;
-  req.body.data.status = "pending";
-  req.body.data.read = false;
-  db.feedback.send(req.body.touser, req.body.data).then((result) => {
-    console.log(result)
+router.post('/feedback/', helpers.middleware.checkAuth(), (req, res, next) => {
+  helpers.twitch.profile(req.session.name).then((api) => {
+    db.feedback.generateuuid(req.session.name, Date.now()).then((uuid) => {
+      req.body.data.anonymous = (req.body.data.anonymous == "true");
+      req.body.data.fromuser = req.session.name;
+      req.body.data.status = "pending";
+      req.body.data.read = false;
+      req.body.data.logo = api.logo;
+      req.body.data.uuid = uuid;
+      console.log(req.body.data);
+      return db.feedback.send(req.body.touser, req.body.data);
+    }).then((result) => {
+      res.send("feedback for " + req.body.touser + " submitted");
+    })
   })
-  res.send("butts");
+});
+
+router.post('/feedback/markstatus', helpers.middleware.checkAuth(), (req, res, next) => {
+  req.body.read = (req.body.read == "true");
+  db.feedback.setreadstatus(req.session.name, req.body.uuid, req.body.read).then((db) => {
+    res.send(true);
+  });
 });
 
 

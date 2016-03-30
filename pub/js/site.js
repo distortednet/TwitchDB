@@ -291,10 +291,6 @@ $('.addvote').click(function(e) {
 //feedback submit logic
 $('.feedback_submit').click(function(e) {
   e.preventDefault();
-      //who's submitting feedback? (get from server side, not client)
-      //who is the feedback for? (if someone changes this client side, they are just being dumb lol)
-      //feedback approval status for moderation
-      // has feedback been marked as read?
         var feedback = {
           data: {
             branding: $('#feedback_branding').val(),
@@ -311,12 +307,27 @@ $('.feedback_submit').click(function(e) {
           touser: $('.feedback_submit').data('touser')
         }
       $.post("/api/feedback", feedback, function(data) {
-        console.log(data);
+        Materialize.toast(data, 3000, 'rounded');
       });
+});
+//feedback read logic
+
+$('.feedback-modal').click(function(e) {
+  e.preventDefault();
+  var modaltarget = $(this).data('modaltarget');
+  var uuid = $(this).data('uuid');
+  $('#'+modaltarget).openModal();
+  $(this).fadeOut(1000);
+  $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
+});
+$('.feedback-modal-read').click(function(e) {
+  e.preventDefault();
+  var modaltarget = $(this).data('modaltarget');
+  var uuid = $(this).data('uuid');
+  $('#'+modaltarget).openModal();
 });
 
 // other shizz
-$('.modal-trigger').leanModal();
  $('select').material_select();
 
 })
