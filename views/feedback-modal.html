@@ -1,0 +1,14 @@
+<div id="feedbackmodal-{{feedback.uuid}}" class="modal modal-fixed-footer" style="color: black;">
+  <div class="modal-content">
+    <h4>Feedback from: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}</h4>
+    <p><strong>Audio Quality (out of 10): </strong> {{feedback.audioquality}}</p>
+    <p><strong>Chat interaction (out of 10): </strong>{{feedback.chatinteraction}}</p>
+    <p><strong>Video Quality (out of 10)</strong>{{feedback.videoquality}}</p>
+    <p><strong>Branding<br></strong>{{feedback.branding}}</p>
+    <p><strong>Game choices<br></strong>{{feedback.game}}</p>
+    <p><strong>Overlay<br></strong>{{feedback.overlay}}</p>
+    <p><strong>Panels<br></strong>{{feedback.panels}}</p>
+    <p><strong>Social<br></strong>{{feedback.social}}</p>
+    <p><strong>Other<br></strong>{{feedback.other}}</p>
+  </div>
+</div>

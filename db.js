@@ -108,6 +108,20 @@ var feedback = {
 				resolve(db);
 			});
 		});
+	},
+	setfeedbackstatus:(username, uuid, feedbackstatus) => {
+		return new Promise(function(resolve, reject) {
+			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({status: feedbackstatus}),msg)})}).run().then((db) => {
+				resolve(db);
+			});
+		});
+	},
+	filter:(status) => {
+		return new Promise(function(resolve, reject) {
+			r.db(config.app.rethink.db).table('users')('feedback_data').concatMap(function(doc) {return doc.filter({'status': status})}).run().then((db) => {
+				resolve(db);
+			});
+		});
 	}
 }
 var cache = {

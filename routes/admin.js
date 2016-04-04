@@ -15,7 +15,9 @@ router.get('/intros/:type', (req, res, next) => {
 });
 
 router.get('/feedback/:type', (req, res, next) => {
-
+  db.feedback.filter(req.params.type).then(function(db) {
+    res.render('admin/feedback', {type: req.params.type, data: db });
+  });
 });
 
 router.get('/tools', (req, res, next) => {
@@ -50,5 +52,10 @@ router.post('/submit', (req, res, next) => {
       res.send(req.body.twitchname + " has been " + req.body.intro_status);
     }
   })
+});
+router.post('/submit/feedback', (req, res, next) => {
+  db.feedback.setfeedbackstatus(req.body.twitchname, req.body.uuid, req.body.status).then((dbres) => {
+    res.send("feedback for: " + req.body.twitchname + " has been " + req.body.status);
+  });
 });
 module.exports = router;

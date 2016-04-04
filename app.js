@@ -23,8 +23,6 @@ swig.setDefaults({cache: false});
 
 swig.setFilter('random', helpers.general.random);
 
-
-
 app.locals = {
 	authurl: config.twitch.authurl
 };

@@ -47,6 +47,17 @@ $('.admin-approve, .admin-reject').click(function(e) {
     Materialize.toast(data, 3000, 'rounded')
   });
 });
+$('.admin-feedback-approve, .admin-feedback-reject').click(function(e) {
+  e.preventDefault();
+  var touser = $(this).data('touser');
+  var uuid = $(this).data('uuid');
+  var feedbackstatus = $(this).data('status');
+  $.post("/admin/submit/feedback", {"twitchname": touser, "uuid": uuid, "status": feedbackstatus}, function(data) {
+    $('.row-'+uuid).fadeOut("slow");
+    Materialize.toast(data, 3000, 'rounded')
+  });
+});
+
 $('.admin-submit-search').click(function(e) {
   e.preventDefault();
   var namesearch = $('#admin_search').val();
@@ -310,21 +321,20 @@ $('.feedback_submit').click(function(e) {
         Materialize.toast(data, 3000, 'rounded');
       });
 });
-//feedback read logic
 
+//feedback read logic
 $('.feedback-modal').click(function(e) {
   e.preventDefault();
+  var readstate = $(this).data('read');
   var modaltarget = $(this).data('modaltarget');
   var uuid = $(this).data('uuid');
-  $('#'+modaltarget).openModal();
-  $(this).fadeOut(1000);
-  $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
-});
-$('.feedback-modal-read').click(function(e) {
-  e.preventDefault();
-  var modaltarget = $(this).data('modaltarget');
-  var uuid = $(this).data('uuid');
-  $('#'+modaltarget).openModal();
+  if(readstate == false) {
+    $('#'+modaltarget).openModal();
+    $(this).fadeOut(1000);
+    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
+  } else {
+    $('#'+modaltarget).openModal();
+  }
 });
 
 // other shizz

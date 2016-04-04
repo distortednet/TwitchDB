@@ -105,6 +105,7 @@ router.post('/feedback/', helpers.middleware.checkAuth(), (req, res, next) => {
     db.feedback.generateuuid(req.session.name, Date.now()).then((uuid) => {
       req.body.data.anonymous = (req.body.data.anonymous == "true");
       req.body.data.fromuser = req.session.name;
+      req.body.data.touser = req.body.touser;
       req.body.data.status = "pending";
       req.body.data.read = false;
       req.body.data.logo = api.logo;

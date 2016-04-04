@@ -1,52 +1,38 @@
 <div class="row">
   <div class="col s8 offset-s2">
+
+
+
+
 <h5 style="font-size: 15px;">Unread</h5>
 {%for feedback in data.feedback_data %}
-  {%if feedback.read == false %}
-      <a class="feedback-modal" href="#feedbackmodal-{{loop.index}}" data-modaltarget="feedbackmodal-{{loop.index}}" data-uuid="{{feedback.uuid}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
-      <div id="feedbackmodal-{{loop.index}}" class="modal modal-fixed-footer" style="color: black;">
-        <div class="modal-content">
-          <h4>Feedback from: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}</h4>
-          <p><strong>Audio Quality (out of 10): </strong> {{feedback.audioquality}}</p>
-          <p><strong>Chat interaction (out of 10): </strong>{{feedback.chatinteraction}}</p>
-          <p><strong>Video Quality (out of 10)</strong>{{feedback.videoquality}}</p>
-          <p><strong>Branding<br></strong>{{feedback.branding}}</p>
-          <p><strong>Game choices<br></strong>{{feedback.game}}</p>
-          <p><strong>Overlay<br></strong>{{feedback.overlay}}</p>
-          <p><strong>Panels<br></strong>{{feedback.panels}}</p>
-          <p><strong>Social<br></strong>{{feedback.social}}</p>
-          <p><strong>Other<br></strong>{{feedback.other}}</p>
-        </div>
-      </div>
+  {%if feedback.read == false && feedback.status == "approved" %}
+    <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
+    {% include "./feedback-modal.html" %}
   {%endif%}
 {%endfor%}
 
-<br><br>
+
+
 <h5 style="font-size: 15px;">Read</h5>
 {%for feedback in data.feedback_data %}
-  {%if feedback.read == true %}
-  <a class="feedback-modal-read" href="#feedbackmodal-read-{{loop.index}}" data-modaltarget="feedbackmodal-read-{{loop.index}}" data-uuid="{{feedback.uuid}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
-  <div id="feedbackmodal-read-{{loop.index}}" class="modal modal-fixed-footer" style="color: black;">
-        <div class="modal-content">
-          <h4>Feedback from: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}</h4>
-          <p><strong>Audio Quality (out of 10): </strong> {{feedback.audioquality}}</p>
-          <p><strong>Chat interaction (out of 10): </strong>{{feedback.chatinteraction}}</p>
-          <p><strong>Video Quality (out of 10)</strong>{{feedback.videoquality}}</p>
-          <p><strong>Branding<br></strong>{{feedback.branding}}</p>
-          <p><strong>Game choices<br></strong>{{feedback.game}}</p>
-          <p><strong>Overlay<br></strong>{{feedback.overlay}}</p>
-          <p><strong>Panels<br></strong>{{feedback.panels}}</p>
-          <p><strong>Social<br></strong>{{feedback.social}}</p>
-          <p><strong>Other<br></strong>{{feedback.other}}</p>
-        </div>
-      </div>
+  {%if feedback.read == true && feedback.status == "approved" %}
+    <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
+    {% include "./feedback-modal.html" %}
   {%endif%}
 {%endfor%}
+
+
+
+
+
+
   </div>
 </div>
+
+
+
 <!--
- create partials so we dont have to duplicate html like above, its bad and we should feel branding
  make putting stuff into "read" queue real time
  make it where a user can only submit one feedback to a specific user, but give them the ability to edit already submitted feedback
- get feedback moderation twerkin!
 -->
