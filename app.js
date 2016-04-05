@@ -1,6 +1,7 @@
 // dependencies
 var express = require('express'),
   swig = require('swig'),
+  swigExtras = require('swig-extras'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
@@ -10,6 +11,7 @@ var express = require('express'),
   app = express();
 
 // app config
+swigExtras.useTag(swig, 'markdown');
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
@@ -38,7 +40,6 @@ app.get('*', (req, res, next) => {
 });
 
 //routes
-
 require('./routes')(app);
 
 app.get('/logout', (req, res) => {

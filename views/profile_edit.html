@@ -1,15 +1,16 @@
 <div class="row"  style="margin: 0px;">
   <div class="col s8 offset-s2">
     <p style="margin: 0px;" class="center">An introduction profile will allow you to appear on the public introduction database to help get your name out there more.</p>
-    <p style="margin: 0px;" class="center">Posts with minimal effort <i style="color: #6441A5">WILL BE REJECTED</i>. Please try to put some thought into it :D. You can edit your intro at any time in your profile.</p>
+    <p style="margin: 0px;" class="center">Posts with minimal effort <i style="color: #6441A5">WILL BE REJECTED</i>. Please try to put some thought into it :D. You can edit your intro at any time in your profile, but it will need to be approved again.</p>
   </div>
 </div>
 <div class="row">
   <form class="col s8 offset-s2">
     <div class="row">
+      <h5>General Data</h5>
       <div class="input-field col s12">
         <textarea id="profile_about" class="materialize-textarea validate">{{data.intro_data.intro_about}}</textarea>
-        <label for="profile_about"><strong>About Me</strong> - a brief summary of who you are and what you are about!</label>
+        <label for="profile_about"><strong>About Me</strong> - A brief summary of who you are and what you are about!</label>
       </div>
     </div>
     <div class="row">
@@ -35,7 +36,38 @@
     <div class="row">
       <div class="input-field col s12">
         <textarea id="profile_background" class="materialize-textarea validate">{{data.intro_data.intro_background}}</textarea>
-        <label for="profile_background"><strong>Background</strong> - What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?</label>
+        <label for="profile_background"><strong>Background</strong> - What are your sweet nerd creds, hobbies, or gaming history? Anything else that might be relevant?</label>
+      </div>
+    </div>
+    <div class="row">
+      <h5>Social Media - Please use full URLs.</h5>
+      <div class="input-field col s6">
+        <input id="social_facebook" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.facebook}}">
+        <label for="social_facebook"><strong>Facebook</strong> - Optional</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="social_twitter" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.twitter}}">
+        <label for="social_twitter"><strong>Twitter</strong> - Optional</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="social_instagram" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.social_instagram}}">
+        <label for="social_instagram"><strong>Instagram</strong> - Optional</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="social_youtube" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.youtube}}">
+        <label for="social_youtube"><strong>YouTube</strong> - Optional</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="social_steam" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.intro_social_media.steam}}">
+        <label for="social_steam"><strong>Steam</strong> - Optional</label>
+      </div>
+      <div class="input-field col s6">
+        <input id="social_subreddit" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.subreddit}}">
+        <label for="social_subreddit"><strong>Subreddit</strong> - Optional</label>
       </div>
     </div>
     <input id="profile_twitchname" type="hidden" class="validate"  value="{{name}}">
