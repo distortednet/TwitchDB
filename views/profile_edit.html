@@ -7,6 +7,7 @@
 <div class="row">
   <form class="col s8 offset-s2">
     <div class="row">
+      <h5>General Data</h5>
       <div class="input-field col s12">
         <textarea id="profile_about" class="materialize-textarea validate">{{data.intro_data.intro_about}}</textarea>
         <label for="profile_about"><strong>About Me</strong> - A brief summary of who you are and what you are about!</label>
@@ -39,12 +40,13 @@
       </div>
     </div>
     <div class="row">
+      <h5>Social Media - Please use full URLs.</h5>
       <div class="input-field col s6">
         <input id="social_facebook" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.facebook}}">
         <label for="social_facebook"><strong>Facebook</strong> - Optional</label>
       </div>
       <div class="input-field col s6">
-        <input id="social_button" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.twitter}}">
+        <input id="social_twitter" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.social_media.twitter}}">
         <label for="social_twitter"><strong>Twitter</strong> - Optional</label>
       </div>
     </div>
