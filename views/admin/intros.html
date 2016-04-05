@@ -1,0 +1,21 @@
+{% extends '../template.html' %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col s8 offset-s2">
+    You are viewing: <strong>{{type}}</strong> intros.
+  </div>
+</div>
+<div class="row">
+  <div class="col s8 offset-s2">
+    {% if type == "pending" %}
+    {% include "./introtable.html" %}
+    {% elseif type == "approved" %}
+    {% include "./introtable.html" %}
+    {% elseif type == "rejected" %}
+    {% include "./introtable.html" %}
+    {%endif%}
+  </div>
+</div>
+{% endblock %}

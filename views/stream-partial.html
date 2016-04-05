@@ -1,0 +1,41 @@
+{%for user in streams %}
+  <div class="col s3 livestream" data-username="{{user.channel.name}}">
+    <div class="panel">
+      <div class="panel-img">
+        <img src="{{user.preview.large}}" alt="" />
+        <div class="image-overlay z-depth-3">
+          <nav>
+            <div class="nav-wrapper grey darken-3 ">
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="http://www.twitch.tv/{{user.channel.name}}" target="_blank">View</a></li>
+                <li><a href="http://player.twitch.tv/?volume=3&channel={{user.channel.name}}" target="_blank">Popout</a></li>
+              </ul>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/user/{{user.channel.name}}" target="_blank">Intro</a></li>
+                <li><a href="https://twitter.com/intent/tweet?text=Come%20watch%20this%20stream%20with%20me!%0A%0Ahttp%3A%2F%2Fwww.twitch.tv%2F{{user.channel.name}}%0A%0Avia%20http%3A%2F%2Fwww.twitchdb.tv" target="_blank">Tweet</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="col s2" style="padding-left: 0 !important;">
+        <div class="profile hide-on-med-and-down">
+          <div class="panel-img"><a href="/user/{{user.channel.name}}" class="hoverable" target="_blank">
+            {%if user.channel.logo != null %}
+              <img src="{{user.channel.logo}}" />
+            {%else%}
+              <img src="http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png" />
+             {%endif%}
+          </a>
+          </div>
+        </div>
+      </div>
+      <div class="col s10 hide-on-med-and-down" style="padding-right: 0px;">
+        <p class="panel-title"><strong>{{user.channel.name}}</strong></p>
+        <p class="panel-subtitle">{{user.channel.status}}</p>
+        <p class="panel-subtitle">Playing: {{user.channel.game}}</p>
+        <p class="panel-subtitle">{{user.viewers}} viewers</p>
+      </div>
+    </div>
+  </div>
+{%endfor%}

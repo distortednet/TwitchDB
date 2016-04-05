@@ -1,0 +1,10 @@
+dont forget stuff like updating the old intro verification values to the new one!
+
+replace profile_data - r.db('introdb').table('users').update({ intro_data: r.row('profile_data') })
+get rid of old profile_data - r.db('introdb').table('users').replace(r.row.without('profile_data'))
+
+
+
+stuff to make sure is nuked because of loltesting
+r.db('introdb').table('users').replace(r.row.without('feedback_data'))
+r.db('introdb').table('users').replace(r.row.without('votes'))

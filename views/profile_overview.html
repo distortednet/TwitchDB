@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col s8 offset-s2">
+    <ul class="collapsible"  data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header active"><strong>About</strong></div>
+        <div class="collapsible-body"><p class="newline">{%markdown%}{{data.intro_data.intro_about|safe}}{%endmarkdown%}</p></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><strong>Goals</strong></div>
+        <div class="collapsible-body"><p class="newline">{%markdown%}{{data.intro_data.intro_goals|safe}}{%endmarkdown%}</p></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><strong>Schedule</strong></div>
+        <div class="collapsible-body"><p>{%markdown%}{{data.intro_data.intro_schedule|safe}}{%endmarkdown%}</p></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><strong>Games</strong></div>
+        <div class="collapsible-body"><p>{%markdown%}{{data.intro_data.intro_games|safe}}{%endmarkdown%}</p></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><strong>Background</strong></div>
+        <div class="collapsible-body"><p class="newline">{%markdown%}{{data.intro_data.intro_background|safe}}{%endmarkdown%}</p></div>
+      </li>
+    </ul>
+  </div>
+</div>

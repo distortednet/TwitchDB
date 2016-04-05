@@ -1,39 +1,38 @@
-{% include "./header.html" %}
-<div class="container">
-	{% if ismod %}
-	<a href="/admin" class="btn btn-default">Administration Panel</a><br /><br />
-	{%endif%}
-	Hello, {{data.twitchname}}!
-<hr />
-	{%if !data.profile_data%}
-		{%if data.intro_id%}
-	<p>It appears you created an old intro on the subreddit. Feel free to <a href="/createintro">create a new one</a>!</p>
-		{%else%}
-	<p>No intro was found. <a href="/createintro">Try creating one!</a></p>
-		{%endif%}
-	{%else%}
-	Your intro has been created, your public intro profile can be found <a href="/profile/u/{{data.twitchname}}">here</a>.
-	<hr />
-	<a href="#" class="btn btn-default btn-sm btn-edit-profile">Edit Profile</a><br /><br />
-	<div id="step-1" class="editprofile">
-		<strong>About Me: </strong> a brief summary of who you are and what you are about!<br>
-		<textarea id="intro-about" required>{{data.profile_data.intro_about}}</textarea><br><br>
-		<input type="text" id="intro-schedule" value="{{data.profile_data.intro_schedule}}"required>
-		<strong>Schedule: </strong> What dates/times do you stream? What timezone?<br><br>
-		<input type="text" id="intro-games" value="{{data.profile_data.intro_games}}"required>
-		<strong>Games: </strong> What games do you stream, what type of streamer are you?<br><br>
-		<strong>Goals: </strong> What sort of goals do you have? What unique "flair" do you have that would attract people?<br>
-		<textarea id="intro-goals" required>{{data.profile_data.intro_goals}}</textarea><br><br>
-		<strong>Background: </strong> What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?<br>
-		<textarea id="intro-background" required>{{data.profile_data.intro_background}}</textarea><br><br>
-		<a href="#" class="btn btn-default btn-submit-intro">Save Settings</a>
-	</div>
-	<div id="done"></div>
-	{%endif%}
-</div>
-<script>
-	var redditname = "{{data.redditname}}";
-	var twitchname = "{{data.twitchname}}";
-</script>
-<script src="/js/intro.js"></script>
-{% include "./footer.html" %}
+{% extends 'template.html' %}
+{% block content %}
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <ul class="tabs grey darken-4  hide-on-med-and-down profile-tab">
+        <li class="tab"><a href="#profile_overview" data-tabtype="overview" data-location="/profile/">Overview</a></li>
+        <li class="tab"><a href="#profile_edit" data-tabtype="edit" data-location="/profile/edit">Edit/Create Profile</a></li>
+        <li class="tab"><a href="#profile_feedback" data-tabtype="feedback" data-location="/profile/feedback">Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="profile_overview">
+    {%if data.intro_status %}
+      {% include "./profile_overview.html" %}
+    {%else%}
+      <p class="center">If you want to create a profile, click <a href="/profile/edit">HERE</a></p>
+    {%endif%}
+  </div>
+  <div id="profile_edit">
+      {% include "./profile_edit.html" %}
+  </div>
+  <div id="profile_feedback">
+      {% include "./profile_feedback.html" %}
+  </div>
+
+  <div class="row">
+    <div class="col s12 center profile-stats">
+      <span><strong>Status:</strong> {{data.intro_status}}</span>
+      <span><strong>Received Feedback:</strong> {{data.feedback_data.length}}</span>
+      <span><strong>Votes:</strong> {%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</span>
+      <span><strong>Intro Link: </strong><a href="/user/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}</a></span>
+      <span><strong>Feedback Link: </strong><a href="/user/{{data.twitchname}}/feedback/" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}/feedback/</a></span>
+    </div>
+  </div>
+
+
+
+{% endblock %}
