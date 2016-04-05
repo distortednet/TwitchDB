@@ -35,7 +35,7 @@ router.post('/tools/update', (req, res, next) => {
   }
   req.body.admin = (req.body.admin == "true");
   db.intro.update(req.body).then((db) => {
-    res.send("updated profile for " + req.body.twitchname);
+    res.send("Profile updated for " + req.body.twitchname);
   });
 });
 router.post('/submit', (req, res, next) => {
@@ -47,7 +47,7 @@ router.post('/submit', (req, res, next) => {
     }
   }).then(function(final) {
     if(final && final.status == true) {
-      res.send(req.body.twitchname + " has been " + req.body.intro_status + " flair set for: " + final.data.name);
+      res.send(req.body.twitchname + " has been " + req.body.intro_status + " - Flair set for: " + final.data.name);
     } else {
       res.send(req.body.twitchname + " has been " + req.body.intro_status);
     }
@@ -55,7 +55,7 @@ router.post('/submit', (req, res, next) => {
 });
 router.post('/submit/feedback', (req, res, next) => {
   db.feedback.setfeedbackstatus(req.body.twitchname, req.body.uuid, req.body.status).then((dbres) => {
-    res.send("feedback for: " + req.body.twitchname + " has been " + req.body.status);
+    res.send("Feedback for: " + req.body.twitchname + " has been " + req.body.status);
   });
 });
 module.exports = router;

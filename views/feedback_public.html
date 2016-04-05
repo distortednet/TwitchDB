@@ -3,7 +3,7 @@
   {%if data != null %}
   <div class="row"  style="margin: 0px;">
     <div class="col s8 offset-s2"><br>
-      <p style="margin: 0px;" class="center">you are submitting feedback for <a href="http://www.twitch.tv/{{data.twitchname}}" target="_blank">{{data.twitchname}}</a>! Remember to be as constructive as possible!</p>
+      <p style="margin: 0px;" class="center">You are submitting feedback for <a href="http://www.twitch.tv/{{data.twitchname}}" target="_blank">{{data.twitchname}}</a>; remember to be as constructive as possible!</p>
     </div>
   </div>
   <br><br>
@@ -12,33 +12,33 @@
       <div class="row">
         <div class="input-field col s6">
           <textarea id="feedback_branding" class="materialize-textarea validate"></textarea>
-          <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</label>
+          <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images, artwork, introduction sequences & ending sequences? How could things be improved? What is the quality of their artwork for branding?</label>
         </div>
         <div class="input-field col s6">
           <textarea id="feedback_overlay" class="materialize-textarea validate"></textarea>
-          <label for="feedback_overlay"><strong>Overlay/Layout</strong><br>How is {{data.twitchname}}'s overlays? are they too much? too little? how about their alert notifications & sounds?</label>
+          <label for="feedback_overlay"><strong>Overlay/Layout</strong><br>How are {{data.twitchname}}'s overlays? Are they too much, or too little? What about their alert notifications & sounds?</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field col s6">
           <textarea id="feedback_panels" class="materialize-textarea validate"></textarea>
-          <label for="feedback_panels"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s info panels neatly organized? do you find there is too much info? is there any more info they could be providing in the panels?</label>
+          <label for="feedback_panels"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s information panels neatly organized? Do you find there is too much information? Is there any more information they could provide in the panels?</label>
         </div>
         <div class="input-field col s6">
           <textarea id="feedback_game" class="materialize-textarea validate"></textarea>
-          <label for="feedback_game"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? what sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</label>
+          <label for="feedback_game"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? What sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field col s6">
           <textarea id="feedback_social" class="materialize-textarea validate"></textarea>
-          <label for="feedback_social"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? are they active on twitter? would you like to see them on another social platform? what about a chat service such as Discord?</label>
+          <label for="feedback_social"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? Are they active on twitter, or another platform? Would you like to see them on another social platform? What about a chat service, such as Discord?</label>
         </div>
         <div class="input-field col s6">
           <textarea id="feedback_other" class="materialize-textarea validate"></textarea>
-          <label for="feedback_other"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</label>
+          <label for="feedback_other"><strong>Other ideas and features</strong><br>What other ideas do you have for {{data.twitchname}}? Any words of praise or ways that you can think of to improve the stream, that haven't already been covered?</label>
         </div>
       </div>
       <div class="row">
@@ -83,6 +83,6 @@
     </form>
   </div>
   {%else%}
-    cannot submit feedback on a profile that does not exist
+  <p>You cannot submit feedback on a profile that does not exist.</p>
   {%endif%}
 {% endblock %}

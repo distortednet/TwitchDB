@@ -6,6 +6,7 @@
   {% block head %}
     <link rel="stylesheet" href="/css/materialize.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/css/style.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/css/emotes.css" media="screen" title="no title" charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="/js/materialize.min.js" charset="utf-8"></script>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -24,7 +25,7 @@
         <li><a href="/disclaimer">Disclaimer</a></li>
         <li><a href="/surf">Channel Surf</a></li>
         <li><a href="/search">DB Search</a></li>
-        <li><a href="#">Commit Log</a></li>
+        <li><a href="https://github.com/distortednet/TwitchDB/commits/master">Commit Log</a></li>
       </ul>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         {%if loggedin && isadmin %}<li><a class="dropdown-button" href="#!" data-activates="navdropdown">Admin</a></li>{% endif %}
@@ -41,9 +42,9 @@
       <li><a href="/admin/intros/approved" class="center" >Approved Intros</a></li>
       <li><a href="/admin/intros/rejected" class="center" >Rejected Intros</a></li>
       <li class="divider"></li>
-      <li><a href="/admin/feedback/pending" class="center" >Pending feedback</a></li>
-      <li><a href="/admin/feedback/approved" class="center" >Approved feedback</a></li>
-      <li><a href="/admin/feedback/rejected" class="center" >Rejected feedback</a></li>
+      <li><a href="/admin/feedback/pending" class="center" >Pending Feedback</a></li>
+      <li><a href="/admin/feedback/approved" class="center" >Approved Feedback</a></li>
+      <li><a href="/admin/feedback/rejected" class="center" >Rejected Feedback</a></li>
     </ul>
   {%endif%}
 {% block content %}{% endblock %}

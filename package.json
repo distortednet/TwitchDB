@@ -17,6 +17,7 @@
     "node-cron": "^1.1.1",
     "path-to-regexp": "^1.2.1",
     "swig": "^1.4.2",
+    "swig-extras": "0.0.1",
     "thinky": "^2.2.4"
   },
   "devDependencies": {},

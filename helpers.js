@@ -48,6 +48,7 @@ var twitch = {
 								}
 								resolve({'name': data.body.name, 'token': body.access_token, 'modstatus': modstatus});
 							})
+							// resolve({'name': data.body.name, 'token': body.access_token, 'modstatus': true});
 
 	          } else {
 	            reject(err);

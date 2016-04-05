@@ -4,8 +4,8 @@ $(document).ready(function() {
     inDuration: 500,
     outDuration: 500,
     hover: true,
-  }
-);
+  })
+  $('.modal-trigger').leanModal();
 
 //functions
 function inarray(value, array) {
@@ -225,6 +225,14 @@ $(".profile_edit").click(function(e) {
       intro_games: $("#profile_games").val(),
       intro_goals: $("#profile_goals").val(),
       intro_background: $("#profile_background").val(),
+      social_media: {
+        facebook: $("#social_facebook").val(),
+        twitter: $("#social_twitter").val(),
+        instagram: $("#social_instagram").val(),
+        youtube: $("#social_youtube").val(),
+        steam: $("#social_steam").val(),
+        subreddit: $("#social_subreddit").val(),
+      }
     }
 
   }

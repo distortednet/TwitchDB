@@ -89,12 +89,12 @@ router.post('/vote', helpers.middleware.checkAuth(), (req, res, next) => {
       } else {
         data.votes.push(req.body.voter);
         db.intro.update({'twitchname': req.body.twitchname, 'votes': data.votes}).then((dbres) => {
-          res.send("you have succesfully voted!");
+          res.send("You have succesfully voted!");
         })
       }
     } else {
       db.intro.update({'twitchname': req.body.twitchname, 'votes': [req.body.voter]}).then((dbres) => {
-        res.send("you have succesfully voted!");
+        res.send("You have succesfully voted!");
       })
     }
   });
@@ -113,7 +113,7 @@ router.post('/feedback/', helpers.middleware.checkAuth(), (req, res, next) => {
       console.log(req.body.data);
       return db.feedback.send(req.body.touser, req.body.data);
     }).then((result) => {
-      res.send("feedback for " + req.body.touser + " submitted");
+      res.send("Feedback for " + req.body.touser + " submitted.");
     })
   })
 });

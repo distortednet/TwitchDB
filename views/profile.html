@@ -13,7 +13,7 @@
     {%if data.intro_status %}
       {% include "./profile_overview.html" %}
     {%else%}
-      if you want to create a profile, click <a href="/profile/edit">HERE</a>
+      <p class="center">If you want to create a profile, click <a href="/profile/edit">HERE</a></p>
     {%endif%}
   </div>
   <div id="profile_edit">
@@ -26,7 +26,7 @@
   <div class="row">
     <div class="col s12 center profile-stats">
       <span><strong>Status:</strong> {{data.intro_status}}</span>
-      <span><strong>Recieved Feedback:</strong> {{data.feedback_data.length}}</span>
+      <span><strong>Received Feedback:</strong> {{data.feedback_data.length}}</span>
       <span><strong>Votes:</strong> {%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</span>
       <span><strong>Intro Link: </strong><a href="/user/{{data.twitchname}}" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}</a></span>
       <span><strong>Feedback Link: </strong><a href="/user/{{data.twitchname}}/feedback/" target="blank">http://www.twitchdb.tv/user/{{data.twitchname}}/feedback/</a></span>
