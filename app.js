@@ -3,6 +3,7 @@ var express = require('express'),
   swig = require('swig'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
+  methodOverride = require('method-override'),
   session = require('express-session'),
   helpers = require('./helpers'),
   config = require('./config'),
@@ -10,6 +11,8 @@ var express = require('express'),
   app = express();
 
 // app config
+
+
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
@@ -18,6 +21,8 @@ app.use(cookieParser());
 app.use(session({secret: config.app.cookie, resave: false, saveUninitialized: false}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride());
+
 app.set('view cache', false);
 swig.setDefaults({cache: false});
 
@@ -45,6 +50,11 @@ app.get('/logout', (req, res) => {
   req.session.destroy(() => {
 		res.redirect('/');
 	});
+});
+
+app.use(function(err, req, res, next) {
+  console.log(err);
+  res.redirect('/');
 });
 
 // serve that shizz

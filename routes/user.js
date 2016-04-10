@@ -5,10 +5,11 @@ var express = require('express'),
   router = express.Router();
 
 router.get('/:username', (req, res, next) => {
-  Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username)]).then((result) => {
+  var username = req.params.username;
+  Promise.all([db.intro.select(username), helpers.twitch.profile(username)]).then((result) => {
     res.render('profile_public', { data: result[0][0], api: result[1]});
   })
-});
+})
 
 router.get('/:username/feedback', helpers.middleware.checkAuth(), (req, res, next) => {
   Promise.all([db.intro.select(req.params.username), db.feedback.find(req.session.name, req.params.username)]).then((db) => {

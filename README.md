@@ -2,6 +2,7 @@ beta branch. pls.
 
 
 Stuff that needs worked on
+ - input sanatization stuf
  - frontend UI (fixing mobile browsing issues)
  - create a public profile page that does not suck
  - make the feedback page moar pretty tools
@@ -23,7 +24,7 @@ db prep
  r.db('introdb').table('users').replace(r.row.without('intro_rejected'));
  r.db('introdb').table('users').update({ intro_data: r.row('profile_data') });
  r.db('introdb').table('users').replace(r.row.without('profile_data'));
-
+ r.db('introdb').table('users').filter(function(row) {return row.hasFields('intro_data').not()}).delete();
 
 replace after testing
  r.db('introdb').table('users').replace(r.row.without('feedback_data'))

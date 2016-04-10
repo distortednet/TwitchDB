@@ -1,21 +1,17 @@
 {
   "name": "twitchdb-new",
   "version": "1.0.0",
-  "description": "A BLARG OF BLARGLORDS",
+  "description": "A database of streamers",
   "main": "app.js",
   "dependencies": {
     "async": "^1.5.2",
-    "asynch": "^0.5.2",
-    "batchflow": "^0.4.0",
     "body-parser": "^1.14.2",
-    "connect-chain": "0.0.1",
     "cookie-parser": "^1.4.1",
-    "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "method-override": "^2.3.5",
     "needle": "^1.0.0",
     "node-cron": "^1.1.1",
-    "path-to-regexp": "^1.2.1",
     "swig": "^1.4.2",
     "thinky": "^2.2.4"
   },

@@ -15,28 +15,36 @@ var intro = {
     return new Promise((resolve, reject) => {
       UserModel.filter({'intro_status': status}).orderBy('intro_date').run().then((db) => {
         resolve(db);
-      });
+      }).catch(function(err) {
+				console.log("query error:" + err);
+			})
     });
   },
 	setstatus: (username, status) => {
 		return new Promise((resolve, reject) => {
 			UserModel.filter({'twitchname': username}).update({"intro_status": status}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	update: (object) => {
 		return new Promise((resolve, reject) => {
 			UserModel.filter({'twitchname': object.twitchname}).update(object).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	select: (username) => {
 		return new Promise((resolve, reject) => {
       UserModel.filter({'twitchname': username}).run().then((db) => {
         resolve(db);
-      });
+      }).catch(function(err) {
+				console.log("query error:" + err);
+			})
     });
 	},
 	create: (username) => {
@@ -49,7 +57,9 @@ var intro = {
 					if(err) { reject(err) };
 					resolve("profile_created");
 				});
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	search: (username, game, orderby) => {
@@ -60,22 +70,26 @@ var intro = {
 				} else {
 					resolve(false)
 				}
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	mostrecent: (start, end) => {
 		return new Promise(function(resolve, reject) {
 			UserModel.filter({'intro_status': 'approved'}).orderBy('intro_date').slice(start,end).run().then((streams) => {
 				resolve(streams);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	mostvotes: () => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.eqJoin(r.row('channel')('name'), r.db(config.app.rethink.db).table('users')).filter(r.row('right')('votes')).orderBy(r.desc(r.row('right')('votes').count())).without('right').zip().run().then((streams) => {
 				resolve(streams);
-			}).catch(function(error) {
-				console.log(error);
+			}).catch(function(err) {
+				console.log("query error:" + err);
 			})
 		});
 	},
@@ -83,6 +97,8 @@ var intro = {
 		return new Promise(function(resolve, reject) {
 			CacheModel.without('id', '_links', {'channel' : '_links'}).sample(1).run().then((db) => {
 				 resolve(db);
+			}).catch(function(err) {
+				console.log("query error:" + err);
 			})
 		});
 	},
@@ -92,6 +108,8 @@ var feedback = {
 		return new Promise(function(resolve, reject) {
 			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row("feedback_data").default([]).append(object)}).run().then((db) => {
 				resolve(db);
+			}).catch(function(err) {
+				console.log("query error:" + err);
 			})
 		});
 	},
@@ -99,42 +117,54 @@ var feedback = {
 		return new Promise(function(resolve, reject) {
 			r.uuid(username + " " + timestamp).then((result) => {
 				resolve(result);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	setreadstatus:(username, uuid, readstatus) => {
 		return new Promise(function(resolve, reject) {
 			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({read: readstatus}),msg)})}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	setfeedbackstatus:(username, uuid, feedbackstatus) => {
 		return new Promise(function(resolve, reject) {
 			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({status: feedbackstatus}),msg)})}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	update:(fromuser, touser, object) => {
 		return new Promise(function(resolve, reject) {
 			UserModel.filter({'twitchname': touser}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('fromuser').eq(fromuser),msg.merge(object),msg)})}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	filterstatus:(status) => {
 		return new Promise(function(resolve, reject) {
 			r.db(config.app.rethink.db).table('users')('feedback_data').concatMap(function(doc) {return doc.filter({'status': status})}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	find:(fromuser, touser) => {
 		return new Promise(function(resolve, reject) {
 			r.db(config.app.rethink.db).table('users')('feedback_data').concatMap(function(doc) {return doc.filter({'fromuser': fromuser, 'touser': touser})}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	}
 }
@@ -143,35 +173,45 @@ var cache = {
     return new Promise((resolve, reject) => {
       UserModel.filter({'intro_status': "approved"}).orderBy('intro_date').pluck('twitchname').run().then((db) => {
         resolve(db);
-      });
+      }).catch(function(err) {
+				console.log("query error:" + err);
+			})
     });
   },
 	online: (start, end) => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.without('id', '_links', {'channel' : '_links'}).orderBy(r.desc('viewers')).slice(start, end).run().then((streams) => {
 				resolve(streams);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	maturefilter: (start, end, mature) => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.without('id', '_links', {'channel' : '_links'}).filter({'channel': {'mature': mature}}).orderBy(r.desc('viewers')).slice(start, end).run().then((streams) => {
 				resolve(streams);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	gamelist: () => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.group(r.row('channel')('game')).pluck({channel: ['game']}).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	},
 	gamesearch: (game) => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.filter(r.row("channel")("game").match("(?i)"+game)).run().then((db) => {
 				resolve(db);
-			});
+			}).catch(function(err) {
+				console.log("query error:" + err);
+			})
 		});
 	}
 

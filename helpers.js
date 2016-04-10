@@ -2,7 +2,6 @@ var needle = require('needle'),
 	express = require('express'),
 	config = require('./config');
 	db = require('./db');
-	batch = require('batchflow');
 var middleware = {
 	checkAdmin: (req, res, next) => {
 	  return (req, res, next) => {
