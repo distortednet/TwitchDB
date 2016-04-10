@@ -317,13 +317,14 @@ $('.feedback_submit').click(function(e) {
           },
           touser: $('.feedback_submit').data('touser')
         }
+        console.log(feedback);
       $.post("/api/feedback", feedback, function(data) {
         Materialize.toast(data, 3000, 'rounded');
       });
 });
 
 //feedback read logic
-$('.feedback-modal').click(function(e) {
+$(document).on( "click", ".feedback-modal", function(e) {
   e.preventDefault();
   var readstate = $(this).data('read');
   var modaltarget = $(this).data('modaltarget');
@@ -331,6 +332,7 @@ $('.feedback-modal').click(function(e) {
   if(readstate == false) {
     $('#'+modaltarget).openModal();
     $(this).fadeOut(1000);
+    $(this).clone().data('read', true).prependTo(".readcontainer").hide().fadeIn(1000);
     $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
   } else {
     $('#'+modaltarget).openModal();

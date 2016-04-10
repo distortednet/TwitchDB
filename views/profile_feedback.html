@@ -2,37 +2,25 @@
   <div class="col s8 offset-s2">
 
 
-
-
 <h5 style="font-size: 15px;">Unread</h5>
+<div class="unreadcontainer">
 {%for feedback in data.feedback_data %}
   {%if feedback.read == false && feedback.status == "approved" %}
     <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
     {% include "./feedback-modal.html" %}
   {%endif%}
 {%endfor%}
-
+</div>
 
 
 <h5 style="font-size: 15px;">Read</h5>
+<div class="readcontainer">
 {%for feedback in data.feedback_data %}
   {%if feedback.read == true && feedback.status == "approved" %}
     <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
     {% include "./feedback-modal.html" %}
   {%endif%}
 {%endfor%}
-
-
-
-
-
-
+</div>
   </div>
 </div>
-
-
-
-<!--
- make putting stuff into "read" queue real time
- make it where a user can only submit one feedback to a specific user, but give them the ability to edit already submitted feedback
--->

@@ -15,7 +15,7 @@ router.get('/intros/:type', (req, res, next) => {
 });
 
 router.get('/feedback/:type', (req, res, next) => {
-  db.feedback.filter(req.params.type).then(function(db) {
+  db.feedback.filterstatus(req.params.type).then(function(db) {
     res.render('admin/feedback', {type: req.params.type, data: db });
   });
 });

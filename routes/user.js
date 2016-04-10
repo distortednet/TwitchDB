@@ -11,8 +11,8 @@ router.get('/:username', (req, res, next) => {
 });
 
 router.get('/:username/feedback', helpers.middleware.checkAuth(), (req, res, next) => {
-  db.intro.select(req.params.username).then((db) => {
-    res.render('feedback_public', {data: db[0]});
+  Promise.all([db.intro.select(req.params.username), db.feedback.find(req.session.name, req.params.username)]).then((db) => {
+    res.render('feedback_public', {data: db[0][0], feedback: db[1][0]});
   });
 });
 

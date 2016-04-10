@@ -116,9 +116,23 @@ var feedback = {
 			});
 		});
 	},
-	filter:(status) => {
+	update:(fromuser, touser, object) => {
+		return new Promise(function(resolve, reject) {
+			UserModel.filter({'twitchname': touser}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('fromuser').eq(fromuser),msg.merge(object),msg)})}).run().then((db) => {
+				resolve(db);
+			});
+		});
+	},
+	filterstatus:(status) => {
 		return new Promise(function(resolve, reject) {
 			r.db(config.app.rethink.db).table('users')('feedback_data').concatMap(function(doc) {return doc.filter({'status': status})}).run().then((db) => {
+				resolve(db);
+			});
+		});
+	},
+	find:(fromuser, touser) => {
+		return new Promise(function(resolve, reject) {
+			r.db(config.app.rethink.db).table('users')('feedback_data').concatMap(function(doc) {return doc.filter({'fromuser': fromuser, 'touser': touser})}).run().then((db) => {
 				resolve(db);
 			});
 		});

@@ -101,21 +101,23 @@ router.post('/vote', helpers.middleware.checkAuth(), (req, res, next) => {
 });
 
 router.post('/feedback/', helpers.middleware.checkAuth(), (req, res, next) => {
-  helpers.twitch.profile(req.session.name).then((api) => {
-    db.feedback.generateuuid(req.session.name, Date.now()).then((uuid) => {
-      req.body.data.anonymous = (req.body.data.anonymous == "true");
-      req.body.data.fromuser = req.session.name;
-      req.body.data.touser = req.body.touser;
-      req.body.data.status = "pending";
-      req.body.data.read = false;
-      req.body.data.logo = api.logo;
-      req.body.data.uuid = uuid;
-      console.log(req.body.data);
-      return db.feedback.send(req.body.touser, req.body.data);
-    }).then((result) => {
-      res.send("feedback for " + req.body.touser + " submitted");
-    })
-  })
+  Promise.all([helpers.twitch.profile(req.session.name), db.feedback.generateuuid(req.session.name, Date.now()), db.feedback.find(req.session.name, req.body.touser)]).then((dbres) => {
+    req.body.data.anonymous = (req.body.data.anonymous == "true");
+    req.body.data.fromuser = req.session.name;
+    req.body.data.touser = req.body.touser;
+    req.body.data.status = "pending";
+    req.body.data.read = false;
+    req.body.data.logo = dbres[0].logo;
+    req.body.data.uuid = dbres[1];
+    if(dbres[2][0]) {
+      console.log("you heff stuff");
+      return db.feedback.update(req.body.data.fromuser, req.body.data.touser, req.body.data);
+    } else {
+      return db.feedback.send(req.body.touser, req.body.data)
+    }
+  }).then((final) => {
+    res.send("feedback for " + req.body.touser + " submitted");
+  });
 });
 
 router.post('/feedback/markstatus', helpers.middleware.checkAuth(), (req, res, next) => {
