@@ -1,6 +1,8 @@
 // dependencies
 var express = require('express'),
   swig = require('swig'),
+  markedSwig = require('swig-marked'),
+  extras = require('swig-extras'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
@@ -12,7 +14,9 @@ var express = require('express'),
 
 // app config
 
-
+markedSwig.useFilter(swig);
+extras.useFilter(swig, 'truncate');
+markedSwig.useTag(swig);
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
