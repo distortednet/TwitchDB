@@ -1,4 +1,5 @@
 var express = require('express'),
+  swig = require('swig'),
   config = require('../config'),
   helpers = require('../helpers'),
   db = require('../db'),

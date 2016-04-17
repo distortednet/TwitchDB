@@ -1,4 +1,4 @@
-`body, html {
+body, html {
   height: 100%;
 }
 body {
@@ -125,14 +125,16 @@ textarea:focus:not([readonly]) {
   box-shadow: 0 1px 0 0 #6441A5  !important;
 }
 textarea.materialize-textarea:focus:not([readonly])+label {
-  color: #6441A5;
+  color: #B9A3E3;
+  font-size: 10pt;
+  transform: translateY(-75%) !important;
 }
 input:focus:not([readonly]) {
-  border-bottom: 1px solid #6441A5 !important;
-  box-shadow: 0 1px 0 0 #6441A5  !important;
+  /*border-bottom: 1px solid #6441A5 !important;
+  box-shadow: 0 1px 0 0 #6441A5  !important;*/
 }
 .input-field input[type=text]:focus + label {
-  color: #6441A5;
+  /*color: #6441A5;*/
 }
 .new-feedback img {
   height: 80px;

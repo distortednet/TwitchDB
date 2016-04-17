@@ -1,6 +1,6 @@
 {% extends 'template.html' %}
 {% block content %}
-<!-- <br>
+<br>
 <div class="row">
   <div class="col s6 offset-s3">
     <div class="card grey darken-3">
@@ -34,9 +34,9 @@
           <ul>
             <li><a href="#">Profile</a></li>
             <li><a href="#">VODS</a></li>
-            <li><a href="#">Submit Feedback</a></li>
+            <li><a href="/user/{{data.twitchname}}/feedback/" target="_blank">Submit Feedback</a></li>
             <li><a href="#">Social</a></li>
-            <li><a href="#">Suggested Streams</a></li>
+            <!-- <li><a href="#">Suggested Streams</a></li>-->
           </ul>
         </div>
       </div>
@@ -48,58 +48,116 @@
   <div class="col s6 offset-s3">
     <div class="card  grey darken-3">
       <div class="card-content">
+        <div class="row">
+          {%for videos in videos%}
+          {%if videos.broadcast_type == "highlight"%}
+          <div class="col s6"><iframe src="http://player.twitch.tv/?video={{videos._id}}&autoplay=false" frameborder="0" scrolling="no" volume="0" allowfullscreen="true" style="width: 100%; height: 348px;"></iframe></div>
+          {%endif%}
+          {%endfor%}
+        </div>
       </div>
     </div>
-  </div>
-</div> -->
-<div class="row">
-<div class="col s8 offset-s2">
-  <div class="card grey darken-3 profilecard">
-    {%if data%}
-    <div class="row introheader z-depth-1">
-      <div class="col s2  offset-s1 center">
-        <h5>{{api.followers}}</h5>
-        <p>Followers</p>
-      </div>
-      <div class="col s2 center">
-        <h5>{{api.views}}</h5>
-        <p>Total Views</p>
-      </div>
-      <div class="col s2 center">
-        <h5>{{api.mature}}</h5>
-        <p>Mature Status</p>
-      </div>
-      <div class="col s2 center">
-        <h5>{%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</h5>
-        <p>Votes</p>
-      </div>
-      <div class="col s2 center"><br>
-          {%if loggedin%}<a href="#" target="_blank" class="addvote" data-voter="{{name}}" data-votetarget="{{data.twitchname}}"><i class="material-icons medium" title="Vote up">thumb_up</i></a>{%endif%}
-      </div>
-
-    </div>
-    <div class="row">
-      <div class="col s9">
-        <h4>{{data.twitchname}}</h4><br>
-        <strong>About</strong>
-        <p>{% marked %}{{data.intro_data.intro_about}}{% endmarked %}</p>
-        <strong>Goals</strong>
-        <p>{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</p>
-        <strong>Schedule</strong>
-        <p>{{data.intro_data.intro_schedule}}</p>
-        <strong>Games</strong>
-        <p>{% marked %}{{data.intro_data.intro_games}}{% endmarked %}</p>
-        <strong>My Background</strong>
-        <p>{% marked %}{{data.intro_data.intro_background}}{% endmarked %}</p>
-      </div>
-      <div class="col s3">
-        <img src="{{api.logo}}" class="circle responsive-img z-depth-1"/><br><br>
-      </div>
-    </div>
-    {%else%}
-      This profile does not exist. sry bb
-    {%endif%}
   </div>
 </div>
+
+
+<div class="row">
+  <div class="col s6 offset-s3">
+    <div class="card  grey darken-3">
+      <div class="card-content">
+        <div class="row">
+          <form class="col s12">
+            <div class="input-field">
+              <textarea id="feedback_branding" class="materialize-textarea validate"></textarea>
+              <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</label>
+            </div>
+            <div class="input-field">
+              <textarea id="feedback_overlay" class="materialize-textarea validate"></textarea>
+              <label for="feedback_overlay"><strong>Overlay/Layout</strong><br>How is {{data.twitchname}}'s overlays? are they too much? too little? how about their alert notifications & sounds?</label>
+            </div>
+            <div class="input-field">
+              <textarea id="feedback_panels" class="materialize-textarea validate"></textarea>
+              <label for="feedback_panels"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s info panels neatly organized? do you find there is too much info? is there any more info they could be providing in the panels?</label>
+            </div>
+            <div class="input-field">
+              <textarea id="feedback_game" class="materialize-textarea validate"></textarea>
+              <label for="feedback_game"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? what sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</label>
+            </div>
+            <div class="input-field">
+              <textarea id="feedback_social" class="materialize-textarea validate"></textarea>
+              <label for="feedback_social"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? are they active on twitter? would you like to see them on another social platform? what about a chat service such as Discord?</label>
+            </div>
+            <div class="input-field">
+              <textarea id="feedback_other" class="materialize-textarea validate"></textarea>
+              <label for="feedback_other"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</label>
+            </div>
+            <div class="input-field col s1">
+              <select id="feedback_audioquality">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <label>Audio Quality</label>
+            </div>
+            <div class="input-field col s1">
+              <select id="feedback_videoquality">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <label>Video Quality</label>
+            </div>
+            <div class="input-field col s1">
+              <select id="feedback_chatinteraction">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <label>Chat Interaction</label>
+            </div>
+            <div class="input-field col s2">
+              <input type="checkbox" id="feedback_anonymous" /><label for="feedback_anonymous">Make Anonymous</label>
+            </div>
+            <div class="input-field col s1 push-s6">
+              <button class="btn waves-effect waves-purple grey darken-3 right feedback_submit" type="submit" name="action" data-touser="{{data.twitchname}}">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="row">
+  <div class="col s6 offset-s3">
+    <div class="card  grey darken-3">
+      <div class="card-content">
+        <div class="row">
+          <div class="col s12">
+            <p style="font-weight: 200; font-size: 2em">About</p>
+            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_about}}{% endmarked %}</div><br>
+            <p style="font-weight: 200; font-size: 2em">Goals</p>
+            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</div><br>
+            <p style="font-weight: 200; font-size: 2em">schedule</p>
+            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_schedule}}{% endmarked %}</div><br>
+            <p style="font-weight: 200; font-size: 2em">games</p>
+            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_games}}{% endmarked %}</div><br>
+            <p style="font-weight: 200; font-size: 2em">background</p>
+            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_background}}{% endmarked %}</div><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 {% endblock %}

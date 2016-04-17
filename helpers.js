@@ -72,6 +72,21 @@ var twitch = {
 				}
 			})
 		});
+	},
+	videos: (username, limit) => {
+		return new Promise(function(resolve, reject) {
+			needle.get('https://api.twitch.tv/kraken/channels/'+username+'/videos?limit='+limit, (err, data) => {
+				if(err) {
+					resolve(error);
+				} else {
+					if(data.body.status != "422") {
+						resolve(data.body.videos)
+					} else {
+						resolve(false);
+					}
+				}
+			})
+		});
 	}
 }
 var general = {

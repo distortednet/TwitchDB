@@ -13,10 +13,21 @@ var express = require('express'),
   app = express();
 
 // app config
+global.__base = __dirname + '/';
 
 markedSwig.useFilter(swig);
 extras.useFilter(swig, 'truncate');
 markedSwig.useTag(swig);
+markedSwig.configure({
+  gfm: false,
+  tables: false,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: false,
+  smartypants: false
+});
+
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');

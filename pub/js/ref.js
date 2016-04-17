@@ -17,7 +17,7 @@ function paginate(div, route, cb) {
         if ($(window).scrollTop() + $(window).height() == $(document).height()) {
             $(window).unbind("scroll");
             totaldivs = $(div+" .livestream").size();
-            $.get(route, {start: totaldivs, end: totaldivs + 12}, function(data) {
+            $.get("/api/"+route, {start: totaldivs, end: totaldivs + 12}, function(data) {
               $(window).scroll(scrollFunction);
               cb(data);
             });
@@ -78,131 +78,161 @@ $('.admin-modify-user').click(function(e) {
   });
 });
 
-
-
-//main page routing
 crossroads.addRoute('/', function(id){
   $.get("/api/top", function(data) {
+    $('#top').empty();
     $(data).hide().appendTo("#top").fadeIn(1000);
   });
-  paginate("#top", "/api/top", function(res) {
+  paginate("#top", "top", function(res) {
     $(res).hide().appendTo("#top").fadeIn(1000);
   });
 });
-crossroads.addRoute('/random', function(id){
-  $.get("/api/top", function(data) {
-    $('#random').empty();
-    $(data).hide().appendTo("#random").fadeIn(1000);
-    shufflechildren("#random", false);
-  });
-  paginate("#random", "/api/top", function(res) {
-    shufflechildren("#random", true);
-    $(res).hide().appendTo("#random").fadeIn(1000);
-  });
-});
-crossroads.addRoute('/mature', function(id){
-  $.get("/api/mature", function(data) {
-    $('#mature').empty();
-    $(data).hide().appendTo("#mature").fadeIn(1000);
-  });
-  paginate("#mature", "/api/mature", function(res) {
-    $(res).hide().appendTo("#mature").fadeIn(1000);
-  });
-});
-crossroads.addRoute('/family', function(id){
-  $.get("/api/family", function(data) {
-    $('#family').empty();
-    $(data).hide().appendTo("#family").fadeIn(1000);
-  });
-  paginate("#family", "/api/family", function(res) {
-    $(res).hide().appendTo("#family").fadeIn(1000);
-  });
-});
-crossroads.addRoute('/votes', function(id){
-  $.get("/api/votes", function(data) {
-    $('#votes').empty();
-    $(data).hide().appendTo("#votes").fadeIn(1000);
-  })
-});
-crossroads.addRoute('/games', function(id){
-  $.get("/api/games", function(data) {
-    $('#games').empty();
-    $(data).hide().appendTo("#games").fadeIn(1000);
-    $('.gridder').gridderExpander({
-        scroll: true,
-        scrollOffset: 400,
-        scrollTo: "panel",                  // panel or listitem
-        animationSpeed: 500,
-        animationEasing: "easeInOutExpo",
-        showNav: false,                      // Show Navigation
-        nextText: "Next",                   // Next button text
-        prevText: "Previous",               // Previous button text
-        closeText: "Close",                 // Close button text
-        onStart: function(e){
-        },
-        onContent: function(contentdiv){
-          var previousdiv = $(contentdiv).prev();
-          var game = $(contentdiv).prev().data('game');
-          $.get("/api/games", {game: game}, function(users) {
-            $(contentdiv).children().children().html(users);
-            $(contentdiv).children().children().prepend('<div class="progress"><div class="indeterminate"></div></div>');
-            $('.livestream').imagesLoaded().always( function( instance ) {
-              $('.progress').remove();
-            }).done( function( instance ) {
-              $('.livestream').fadeIn(1000);
-            })
-          });
-        },
-        onClosed: function(){
-            console.log("closed");
-        }
-    });
-  });
-});
-
-//default state when hitting a route directly
-switch(document.location.pathname) {
-  case "/profile":
-    $('ul.tabs').tabs('select_tab', 'profile_overview')
-  break;
-  case "/profile/edit":
-    $('ul.tabs').tabs('select_tab', 'profile_edit');
-  break;
-  case "/profile/feedback":
-    $('ul.tabs').tabs('select_tab', 'profile_feedback');
-  break;
-  case "/mature":
-    $('ul.tabs').tabs('select_tab', 'mature');
-  break;
-  case "/family":
-    $('ul.tabs').tabs('select_tab', 'family');
-  break;
-  case "/random":
-    $('ul.tabs').tabs('select_tab', 'random');
-  break;
-  case "/votes":
-    $('ul.tabs').tabs('select_tab', 'votes');
-  break;
-  case "/games":
-    $('ul.tabs').tabs('select_tab', 'games');
-  break;
-  case "/votes":
-    $('ul.tabs').tabs('select_tab', 'votes');
-  break;
-  default:
-    $('ul.tabs').tabs('select_tab', 'top');
-  break;
-}
-crossroads.parse(document.location.pathname);
+crossroads.parse('/');
 
 $('.streams-tab li a').click(function(e) {
   $(window).unbind("scroll");
   $('.livestream').hide().fadeIn(1000);
-  var location = $(this).data('location')
-  history.pushState(null, null, location);
-  crossroads.parse(location);
 });
 
+
+
+// switch(window.location.pathname.replace(/\/$/, "")) {
+//   case "/profile":
+//     $('ul.tabs').tabs('select_tab', 'profile_overview')
+//   break;
+//   case "/profile/edit":
+//     $('ul.tabs').tabs('select_tab', 'profile_edit');
+//   break;
+//   case "/profile/feedback":
+//     $('ul.tabs').tabs('select_tab', 'profile_feedback');
+//   break;
+//   case "/mature":
+//     $('ul.tabs').tabs('select_tab', 'mature');
+//   break;
+//   case "/family":
+//     $('ul.tabs').tabs('select_tab', 'family');
+//   break;
+//   case "/random":
+//     $('ul.tabs').tabs('select_tab', 'random');
+//   break;
+//   case "/votes":
+//     $('ul.tabs').tabs('select_tab', 'votes');
+//   break;
+//   case "/games":
+//     $('ul.tabs').tabs('select_tab', 'games');
+//   break;
+//   case "/votes":
+//     $('ul.tabs').tabs('select_tab', 'votes');
+//   break;
+//   default:
+//     $('ul.tabs').tabs('select_tab', 'top');
+//   break;
+// }
+
+
+
+
+
+
+
+
+//profile nav click logic
+// $('.profile-tab li a').click(function(e) {
+//   history.pushState(null, null, $(this).data('location'));
+// });
+
+//
+// //stereams view state on click
+// $('.streams-tab li a').click(function(e) {
+//   $(window).unbind("scroll");
+//   var location = $(this).data('location').replace('/', '');
+//     $('.livestream').hide().fadeIn(1000);
+//   switch(location) {
+//     case "random":
+//     $.get("/api/top", function(data) {
+//       $('#random').empty();
+//       $(data).hide().appendTo("#random").fadeIn(1000);
+//       shufflechildren("#random", false);
+//     });
+//     paginate("#random", "top", function(res) {
+//       shufflechildren("#random", true);
+//       $(res).hide().appendTo("#random").fadeIn(1000); // we need to figure out a diff shuffle method, possibly shuffling the contents of res instead of shuffling child elements
+//     });
+//     break;
+//     case "mature":
+//     $.get("/api/mature", function(data) {
+//       $('#mature').empty();
+//       $(data).hide().appendTo("#mature").fadeIn(1000);
+//     });
+//     paginate("#mature", "mature", function(res) {
+//       $(res).hide().appendTo("#mature").fadeIn(1000);
+//     });
+//     break;
+//     case "family":
+//     $.get("/api/family", function(data) {
+//       $('#family').empty();
+//       $(data).hide().appendTo("#family").fadeIn(1000);
+//     });
+//     paginate("#family", "family", function(res) {
+//       $(res).hide().appendTo("#family").fadeIn(1000);
+//     });
+//     break;
+//     case "votes":
+//       $.get("/api/votes", function(data) {
+//         $('#votes').empty();
+//         $(data).hide().appendTo("#votes").fadeIn(1000);
+//       })
+//     break;
+//     case "games":
+//     $.get("/api/games", function(data) {
+//       $('#games').empty();
+//       $(data).hide().appendTo("#games").fadeIn(1000);
+//       $('.gridder').gridderExpander({
+//           scroll: true,
+//           scrollOffset: 400,
+//           scrollTo: "panel",                  // panel or listitem
+//           animationSpeed: 500,
+//           animationEasing: "easeInOutExpo",
+//           showNav: false,                      // Show Navigation
+//           nextText: "Next",                   // Next button text
+//           prevText: "Previous",               // Previous button text
+//           closeText: "Close",                 // Close button text
+//           onStart: function(e){
+//           },
+//           onContent: function(contentdiv){
+//             var previousdiv = $(contentdiv).prev();
+//             var game = $(contentdiv).prev().data('game');
+//             $.get("/api/games", {game: game}, function(users) {
+//               $(contentdiv).children().children().html(users);
+//               $(contentdiv).children().children().prepend('<div class="progress"><div class="indeterminate"></div></div>');
+//               $('.livestream').imagesLoaded().always( function( instance ) {
+//                 $('.progress').remove();
+//               }).done( function( instance ) {
+//                 $('.livestream').fadeIn(1000);
+//               })
+//             });
+//           },
+//           onClosed: function(){
+//               console.log("closed");
+//           }
+//       });
+//     });
+//     break;
+//
+//     default:
+//     $.get("/api/top", function(data) {
+//       $('#top').empty();
+//       $(data).hide().appendTo("#top").fadeIn(1000);
+//     });
+//     paginate("#top", "top", function(res) {
+//       $(res).hide().appendTo("#top").fadeIn(1000);
+//     });
+//     break;
+//   }
+//   history.pushState(null, null, $(this).data('location'));
+// });
+//
+// //subnav click/routing logic
 
 
 //profile create/edit logic
