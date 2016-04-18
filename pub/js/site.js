@@ -82,6 +82,7 @@ $('.admin-modify-user').click(function(e) {
 
 //main page routing
 crossroads.addRoute('/', function(id){
+  $('ul.tabs').tabs('select_tab', 'top');
   $.get("/api/top", function(data) {
     $(data).hide().appendTo("#top").fadeIn(1000);
   });
@@ -90,6 +91,7 @@ crossroads.addRoute('/', function(id){
   });
 });
 crossroads.addRoute('/random', function(id){
+  $('ul.tabs').tabs('select_tab', 'random');
   $.get("/api/top", function(data) {
     $('#random').empty();
     $(data).hide().appendTo("#random").fadeIn(1000);
@@ -101,6 +103,7 @@ crossroads.addRoute('/random', function(id){
   });
 });
 crossroads.addRoute('/mature', function(id){
+  $('ul.tabs').tabs('select_tab', 'mature');
   $.get("/api/mature", function(data) {
     $('#mature').empty();
     $(data).hide().appendTo("#mature").fadeIn(1000);
@@ -110,6 +113,7 @@ crossroads.addRoute('/mature', function(id){
   });
 });
 crossroads.addRoute('/family', function(id){
+  $('ul.tabs').tabs('select_tab', 'family');
   $.get("/api/family", function(data) {
     $('#family').empty();
     $(data).hide().appendTo("#family").fadeIn(1000);
@@ -119,12 +123,14 @@ crossroads.addRoute('/family', function(id){
   });
 });
 crossroads.addRoute('/votes', function(id){
+  $('ul.tabs').tabs('select_tab', 'votes');
   $.get("/api/votes", function(data) {
     $('#votes').empty();
     $(data).hide().appendTo("#votes").fadeIn(1000);
   })
 });
 crossroads.addRoute('/games', function(id){
+  $('ul.tabs').tabs('select_tab', 'games');
   $.get("/api/games", function(data) {
     $('#games').empty();
     $(data).hide().appendTo("#games").fadeIn(1000);
@@ -160,6 +166,18 @@ crossroads.addRoute('/games', function(id){
   });
 });
 
+crossroads.addRoute('/user/{username}', function(username){
+  $('ul.tabs').tabs('select_tab', 'profile');
+});
+crossroads.addRoute('/user/{username}/feedback', function(username){
+  $('ul.tabs').tabs('select_tab', 'feedback');
+});
+crossroads.addRoute('/user/{username}/social', function(username){
+  $('ul.tabs').tabs('select_tab', 'social');
+});
+crossroads.addRoute('/user/{username}/vods', function(username){
+  $('ul.tabs').tabs('select_tab', 'vods');
+});
 //default state when hitting a route directly
 switch(document.location.pathname) {
   case "/profile":
@@ -171,29 +189,8 @@ switch(document.location.pathname) {
   case "/profile/feedback":
     $('ul.tabs').tabs('select_tab', 'profile_feedback');
   break;
-  case "/mature":
-    $('ul.tabs').tabs('select_tab', 'mature');
-  break;
-  case "/family":
-    $('ul.tabs').tabs('select_tab', 'family');
-  break;
-  case "/random":
-    $('ul.tabs').tabs('select_tab', 'random');
-  break;
-  case "/votes":
-    $('ul.tabs').tabs('select_tab', 'votes');
-  break;
-  case "/games":
-    $('ul.tabs').tabs('select_tab', 'games');
-  break;
-  case "/votes":
-    $('ul.tabs').tabs('select_tab', 'votes');
-  break;
-  default:
-    $('ul.tabs').tabs('select_tab', 'top');
-  break;
 }
-crossroads.parse(document.location.pathname);
+
 
 $('.streams-tab li a').click(function(e) {
   $(window).unbind("scroll");
@@ -203,8 +200,12 @@ $('.streams-tab li a').click(function(e) {
   crossroads.parse(location);
 });
 
-
-
+$(".profile-tab li a").click(function(e) {
+  // $('.livestream').hide().fadeIn(1000);
+  var location = $(this).data('location')
+  history.pushState(null, null, location);
+  crossroads.parse(location);
+});
 //profile create/edit logic
 $(".profile_edit").click(function(e) {
   e.preventDefault();
@@ -219,6 +220,13 @@ $(".profile_edit").click(function(e) {
       intro_games: $("#profile_games").val(),
       intro_goals: $("#profile_goals").val(),
       intro_background: $("#profile_background").val(),
+    },
+    social: {
+      facebook: $("#social_facebook").val(),
+      instagram: $("#social_instagram").val(),
+      youtube: $("#social_youtube").val(),
+      steam: $("#social_steam").val(),
+      twitter: $("#social_twitter").val(),
     }
 
   }
@@ -228,6 +236,10 @@ $(".profile_edit").click(function(e) {
     })
   });
 });
+
+
+
+
 
 
 //database search logic
@@ -333,7 +345,9 @@ $(document).on( "click", ".feedback-modal", function(e) {
   }
 });
 
+//parse crossroads route
+crossroads.parse(document.location.pathname);
 // other shizz
  $('select').material_select();
-
+$('ul.tabs').tabs();
 })

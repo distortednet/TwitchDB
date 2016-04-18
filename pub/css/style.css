@@ -276,22 +276,26 @@ input:focus:not([readonly]) {
   margin-top: 8px;
   margin-bottom: 16px !important;
 }
-
-
-.profile-nav {
+.profile-tab a {
+color: white !important;
+}
+.profile-tab .indicator {
+  background-color: #595959 !important;
+}
+.social-nav {
     width: 100%;
 }
-.profile-nav ul {
+.social-nav ul {
     display: flex;
     flex-direction: row;
     margin: 0;
     padding: 0;
 }
-.profile-nav ul li {
+.social-nav ul li {
     list-style: none;
     flex-grow: 1;
     text-align: center;
 }
-.profile-nav ul li a {
+.social-nav ul li a {
     display: block;
 }

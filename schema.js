@@ -16,6 +16,7 @@
   	intro_status: type.string(),
   	intro_date:  type.string(),
   	intro_data: type.object(),
+    social_info: type.object(),
     feedback_data: type.array(),
     votes: type.array(),
     admin: type.boolean()

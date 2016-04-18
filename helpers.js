@@ -15,7 +15,7 @@ var middleware = {
 	checkAuth: (req, res, next) => {
 	  return (req, res, next) => {
 	    if(!req.session.name) {
-	  		res.render('message', {data: 'Please log in to access this page'});
+	  		res.redirect(config.twitch.authurl);
 	  	}else{
 	  		next();
 	  	}

@@ -30,129 +30,156 @@
         </div>
       </div>
       <div class="card-action">
-        <div class="profile-nav">
-          <ul>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">VODS</a></li>
-            <li><a href="/user/{{data.twitchname}}/feedback/" target="_blank">Submit Feedback</a></li>
-            <li><a href="#">Social</a></li>
-            <!-- <li><a href="#">Suggested Streams</a></li>-->
+        <div>
+          <ul class="tabs profile-tab grey darken-3">
+            <li class="tab"><a href="#profile" data-tabtype="profile" data-location="/user/{{data.twitchname}}">Profile</a></li>
+            <li class="tab"><a href="#vods" data-tabtype="vods" data-location="/user/{{data.twitchname}}/vods">VODS</a></li>
+            <li class="tab"><a href="#feedback" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback">Submit Feedback</a></li>
+            <li class="tab"><a href="#social" data-tabtype="social" data-location="/user/{{data.twitchname}}/social">Social</a></li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<div class="row">
-  <div class="col s6 offset-s3">
-    <div class="card  grey darken-3">
-      <div class="card-content">
-        <div class="row">
-          {%for videos in videos%}
-          {%if videos.broadcast_type == "highlight"%}
-          <div class="col s6"><iframe src="http://player.twitch.tv/?video={{videos._id}}&autoplay=false" frameborder="0" scrolling="no" volume="0" allowfullscreen="true" style="width: 100%; height: 348px;"></iframe></div>
-          {%endif%}
-          {%endfor%}
+<div id="profile">
+  <div class="row">
+    <div class="col s6 offset-s3">
+      <div class="card  grey darken-3">
+        <div class="card-content">
+          <div class="row">
+            <div class="col s12">
+              <p style="font-weight: 200; font-size: 2em">About</p>
+              <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_about}}{% endmarked %}</div><br>
+              <p style="font-weight: 200; font-size: 2em">Goals</p>
+              <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</div><br>
+              <p style="font-weight: 200; font-size: 2em">schedule</p>
+              <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_schedule}}{% endmarked %}</div><br>
+              <p style="font-weight: 200; font-size: 2em">games</p>
+              <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_games}}{% endmarked %}</div><br>
+              <p style="font-weight: 200; font-size: 2em">background</p>
+              <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_background}}{% endmarked %}</div><br>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<div class="row">
-  <div class="col s6 offset-s3">
-    <div class="card  grey darken-3">
-      <div class="card-content">
-        <div class="row">
-          <form class="col s12">
-            <div class="input-field">
-              <textarea id="feedback_branding" class="materialize-textarea validate"></textarea>
-              <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</label>
-            </div>
-            <div class="input-field">
-              <textarea id="feedback_overlay" class="materialize-textarea validate"></textarea>
-              <label for="feedback_overlay"><strong>Overlay/Layout</strong><br>How is {{data.twitchname}}'s overlays? are they too much? too little? how about their alert notifications & sounds?</label>
-            </div>
-            <div class="input-field">
-              <textarea id="feedback_panels" class="materialize-textarea validate"></textarea>
-              <label for="feedback_panels"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s info panels neatly organized? do you find there is too much info? is there any more info they could be providing in the panels?</label>
-            </div>
-            <div class="input-field">
-              <textarea id="feedback_game" class="materialize-textarea validate"></textarea>
-              <label for="feedback_game"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? what sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</label>
-            </div>
-            <div class="input-field">
-              <textarea id="feedback_social" class="materialize-textarea validate"></textarea>
-              <label for="feedback_social"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? are they active on twitter? would you like to see them on another social platform? what about a chat service such as Discord?</label>
-            </div>
-            <div class="input-field">
-              <textarea id="feedback_other" class="materialize-textarea validate"></textarea>
-              <label for="feedback_other"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</label>
-            </div>
-            <div class="input-field col s1">
-              <select id="feedback_audioquality">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <label>Audio Quality</label>
-            </div>
-            <div class="input-field col s1">
-              <select id="feedback_videoquality">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <label>Video Quality</label>
-            </div>
-            <div class="input-field col s1">
-              <select id="feedback_chatinteraction">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <label>Chat Interaction</label>
-            </div>
-            <div class="input-field col s2">
-              <input type="checkbox" id="feedback_anonymous" /><label for="feedback_anonymous">Make Anonymous</label>
-            </div>
-            <div class="input-field col s1 push-s6">
-              <button class="btn waves-effect waves-purple grey darken-3 right feedback_submit" type="submit" name="action" data-touser="{{data.twitchname}}">Submit</button>
-            </div>
+<div id="vods">
+  <div class="row">
+    <div class="col s6 offset-s3">
+      <div class="card  grey darken-3">
+        <div class="card-content">
+          <div class="row">
+            {%for videos in videos%}
+            {%if videos.broadcast_type == "highlight"%}
+            <div class="col s6"><iframe src="http://player.twitch.tv/?video={{videos._id}}&autoplay=false" frameborder="0" scrolling="no" volume="0" allowfullscreen="true" style="width: 100%; height: 348px;"></iframe></div>
+            {%endif%}
+            {%endfor%}
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<div id="feedback">
+  <div class="row">
+    <div class="col s6 offset-s3">
+      <div class="card  grey darken-3">
+        <div class="card-content">
+          {%if loggedin%}
+          <div class="row">
+            <form class="col s12">
+              <div class="input-field">
+                <textarea id="feedback_branding" class="materialize-textarea validate"></textarea>
+                <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</label>
+              </div>
+              <div class="input-field">
+                <textarea id="feedback_overlay" class="materialize-textarea validate"></textarea>
+                <label for="feedback_overlay"><strong>Overlay/Layout</strong><br>How is {{data.twitchname}}'s overlays? are they too much? too little? how about their alert notifications & sounds?</label>
+              </div>
+              <div class="input-field">
+                <textarea id="feedback_panels" class="materialize-textarea validate"></textarea>
+                <label for="feedback_panels"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s info panels neatly organized? do you find there is too much info? is there any more info they could be providing in the panels?</label>
+              </div>
+              <div class="input-field">
+                <textarea id="feedback_game" class="materialize-textarea validate"></textarea>
+                <label for="feedback_game"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? what sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</label>
+              </div>
+              <div class="input-field">
+                <textarea id="feedback_social" class="materialize-textarea validate"></textarea>
+                <label for="feedback_social"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? are they active on twitter? would you like to see them on another social platform? what about a chat service such as Discord?</label>
+              </div>
+              <div class="input-field">
+                <textarea id="feedback_other" class="materialize-textarea validate"></textarea>
+                <label for="feedback_other"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</label>
+              </div>
+              <div class="input-field col s1">
+                <select id="feedback_audioquality">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <label>Audio Quality</label>
+              </div>
+              <div class="input-field col s1">
+                <select id="feedback_videoquality">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <label>Video Quality</label>
+              </div>
+              <div class="input-field col s1">
+                <select id="feedback_chatinteraction">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <label>Chat Interaction</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="checkbox" id="feedback_anonymous" /><label for="feedback_anonymous">Make Anonymous</label>
+              </div>
+              <div class="input-field col s1 push-s6">
+                <button class="btn waves-effect waves-purple grey darken-3 right feedback_submit" type="submit" name="action" data-touser="{{data.twitchname}}">Submit</button>
+              </div>
+            </div>
+          </form>
+          {%else%}
+            You will need to log in to submit feedback.
+          {%endif%}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 </div>
-
-
-<div class="row">
-  <div class="col s6 offset-s3">
-    <div class="card  grey darken-3">
-      <div class="card-content">
-        <div class="row">
-          <div class="col s12">
-            <p style="font-weight: 200; font-size: 2em">About</p>
-            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_about}}{% endmarked %}</div><br>
-            <p style="font-weight: 200; font-size: 2em">Goals</p>
-            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</div><br>
-            <p style="font-weight: 200; font-size: 2em">schedule</p>
-            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_schedule}}{% endmarked %}</div><br>
-            <p style="font-weight: 200; font-size: 2em">games</p>
-            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_games}}{% endmarked %}</div><br>
-            <p style="font-weight: 200; font-size: 2em">background</p>
-            <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_background}}{% endmarked %}</div><br>
+<div id="social">
+  <div class="row">
+    <div class="col s6 offset-s3">
+      <div class="card  grey darken-3">
+        <div class="card-content">
+          {%if data.social%}
+          <div class="social-nav">
+            <ul>
+              {%if data.social.twitter%}<li><a href="http://twitter.com/{{data.social.twitter}}" target="_blank"><span class="fa fa-twitter fa-5x"></span></a></li>{%endif%}
+              {%if data.social.steam%}<li><a href="http://steamcommunity.com/id/{{data.social.steam}}" target="_blank"><span class="fa fa-steam fa-5x"></span></a></li>{%endif%}
+              {%if data.social.youtube%}<li><a href="http://youtube.com/user/{{data.social.youtube}}" target="_blank"><span class="fa fa-youtube fa-5x"></span></a></li>{%endif%}
+              {%if data.social.facebook%}<li><a href="http://facebook.com/{{data.social.facebook}}" target="_blank"><span class="fa fa-facebook fa-5x"></span></a></li>{%endif%}
+              {%if data.social.instagram%}<li><a href="http://instagram.com/{{data.social.instagram}}" target="_blank"><span class="fa fa-instagram fa-5x"></span></a></li>{%endif%}
+            </ul>
           </div>
+          {%else%}
+            <p style="font-weight: 200; font-size: 2em">This user does not have any social networks listed :(</p>
+          {%endif%}
         </div>
       </div>
     </div>

@@ -2,15 +2,11 @@ beta branch. pls.
 
 
 Stuff that needs worked on
- - input sanatization stuf (done?)
  - frontend UI (fixing mobile browsing issues)
- - create a public profile page that does not suck
- - make the feedback page moar pretty tools
- - feedback section needs worked on
  - pagination to admin page for pending intros/feedback & approved
- - markdown support (maybe a fancy text editor) for intros & feedback submission (done! but no fancy text editor yet)
-
-
+ - make private profile page similar to the public page for continutiy and sexinuity
+ - convert everything in switch statements in site.js to crossroad routes
+ 
  some notes for beta stuff
  - rethink 2.2.6 (?) does not work with the latest python driver. pip install rethinkdb==2.2.0.post6
 
