@@ -3,27 +3,29 @@ var express = require('express'),
   db = require('../db'),
   helpers = require('../helpers'),
   router = express.Router();
+  var routearr = [
+    '/:username',
+    '/:username/feedback',
+    '/:username/feedback/view',
+    '/:username/vods',
+    '/:username/edit',
+  ];
+  routearr.forEach(function(route) {
+    router.get(route, (req, res, next) => {
+      Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6)]).then((result) => {
+        res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2]});
+      })
+    });
+  });
 
-router.get('/:username', (req, res, next) => {
-  Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6)]).then((result) => {
-    res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2]});
-  })
-});
-
-router.get('/:username/feedback', helpers.middleware.checkAuth(), (req, res, next) => {
-  Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6)]).then((result) => {
-    res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2]});
-  })
-});
-
-router.get('/:username/vods', (req, res, next) => {
-  Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6)]).then((result) => {
-    res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2]});
-  })
-});
-router.get('/:username/edit', helpers.middleware.checkAuth(), (req, res, next) => {
-  Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6)]).then((result) => {
-    res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2]});
-  })
+router.post('/submit', (req, res, next) => {
+  if(req.body.twitchname == req.session.name) {
+    req.body["intro_status"] = "pending";
+    db.intro.update(req.body).then((db) => {
+      res.send('intro submitted and is pending!');
+    });
+  } else {
+      res.send('stop trying to be a leet hax0r');
+  }
 });
 module.exports = router;

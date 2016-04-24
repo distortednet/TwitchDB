@@ -4,8 +4,6 @@ beta branch. pls.
 Stuff that needs worked on
  - frontend UI (fixing mobile browsing issues)
  - pagination to admin page for pending intros/feedback & approved
- - make private profile page similar to the public page for continutiy and sexinuity
- - convert everything in switch statements in site.js to crossroad routes
 
 
  - maybe profile tag cloud for better content sorting in the future?

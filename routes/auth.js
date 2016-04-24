@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
     req.session.token = auth.token;
 		req.session.name = auth.name;
     req.session.isadmin = auth.modstatus;
-		res.redirect('/profile');
+		res.redirect('/user/'+req.session.name);
   }).catch(function(e) {
 		console.log("error" + err);
   });

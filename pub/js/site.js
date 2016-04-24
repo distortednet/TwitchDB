@@ -172,6 +172,9 @@ crossroads.addRoute('/user/{username}', function(username){
 crossroads.addRoute('/user/{username}/feedback', function(username){
   $('ul.tabs').tabs('select_tab', 'feedback');
 });
+crossroads.addRoute('/user/{username}/feedback/view', function(username){
+  $('ul.tabs').tabs('select_tab', 'feedback');
+});
 crossroads.addRoute('/user/{username}/edit', function(username){
   $('ul.tabs').tabs('select_tab', 'edit');
 });
@@ -179,19 +182,6 @@ crossroads.addRoute('/user/{username}/edit', function(username){
 crossroads.addRoute('/user/{username}/vods', function(username){
   $('ul.tabs').tabs('select_tab', 'vods');
 });
-//default state when hitting a route directly
-switch(document.location.pathname) {
-  case "/profile":
-    $('ul.tabs').tabs('select_tab', 'profile_overview')
-  break;
-  case "/profile/edit":
-    $('ul.tabs').tabs('select_tab', 'profile_edit');
-  break;
-  case "/profile/feedback":
-    $('ul.tabs').tabs('select_tab', 'profile_feedback');
-  break;
-}
-
 
 $('.streams-tab li a').click(function(e) {
   $(window).unbind("scroll");
@@ -231,7 +221,7 @@ $(".profile_edit").click(function(e) {
     }
 
   }
-  $.post("/profile/submit", profile_object, function(data) {
+  $.post("/user/submit", profile_object, function(data) {
     Materialize.toast(data, 3000, 'rounded', function() {
       window.location.href = "/user/"+profile_object.twitchname;
     })

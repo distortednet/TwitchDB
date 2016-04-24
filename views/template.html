@@ -31,7 +31,7 @@
       </ul>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         {%if loggedin && isadmin %}<li><a class="dropdown-button" href="#!" data-activates="navdropdown">Admin</a></li>{% endif %}
-        {%if loggedin%}<li><a href="/profile">Profile</a></li>{%endif%}
+        {%if loggedin%}<li><a href="/user/{{name}}">Profile</a></li>{%endif%}
         <li>{%if loggedin%}<a href="/logout">Logout</a>{%else%}<a href="{{authurl}}">Login Via Twitch</a>{%endif%}</li>
       </ul>
     </div>
