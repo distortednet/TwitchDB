@@ -1,11 +1,5 @@
-<div class="row"  style="margin: 0px;">
-  <div class="col s8 offset-s2">
-    <p style="margin: 0px;" class="center">An introduction profile will allow you to appear on the public introduction database to help get your name out there more.</p>
-    <p style="margin: 0px;" class="center">Posts with minimal effort <i style="color: #6441A5">WILL BE REJECTED</i>. Please try to put some thought into it :D. You can edit your intro at any time in your profile.</p>
-  </div>
-</div>
 <div class="row">
-  <form class="col s8 offset-s2">
+  <form class="col s12">
     <div class="row">
       <div class="input-field col s12">
         <textarea id="profile_about" class="materialize-textarea validate">{{data.intro_data.intro_about}}</textarea>
@@ -38,34 +32,36 @@
         <label for="profile_background"><strong>Background</strong> - What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?</label>
       </div>
     </div>
-
-    <div class="row"><br>
-     <div class="input-field col s6">
+    <div class="row">
+     <div class="input-field col s2 offset-s1">
        <input id="social_facebook" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.facebook}}">
-       <label for="social_facebook"><strong>Facebook</strong> - (ex: distortednet)</label>
+       <label for="social_facebook"><strong>Facebook</strong> <br> (ex: distortednet)</label>
      </div>
-     <div class="input-field col s6">
+     <div class="input-field col s2">
        <input id="social_twitter" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.twitter}}">
-       <label for="social_twitter"><strong>Twitter</strong> - (ex: distortednet)</label>
+       <label for="social_twitter"><strong>Twitter</strong> <br> (ex: distortednet)</label>
      </div>
-   </div>
-   <div class="row">
-     <div class="input-field col s6">
+     <div class="input-field col s2">
        <input id="social_instagram" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.instagram}}">
-       <label for="social_instagram"><strong>Instagram</strong> - (ex: distortednet)</label>
+       <label for="social_instagram"><strong>Instagram</strong> <br> (ex: distortednet)</label>
      </div>
-     <div class="input-field col s6">
+     <div class="input-field col s2">
        <input id="social_youtube" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.youtube}}">
-       <label for="social_youtube"><strong>YouTube</strong> - (ex: distortednet)</label>
+       <label for="social_youtube"><strong>YouTube</strong> <br> (ex: distortednet)</label>
+     </div>
+     <div class="input-field col s2">
+       <input id="social_steam" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.steam}}">
+       <label for="social_steam"><strong>Steam</strong> <br> (ex: distortednet)</label>
      </div>
    </div>
    <div class="row">
-     <div class="input-field col s6">
-       <input id="social_steam" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.steam}}">
-       <label for="social_steam"><strong>Steam</strong> - (ex: distortednet)</label>
+     <div class="col s2 offset-s1">
+       <input id="profile_twitchname" type="hidden" class="validate"  value="{{name}}">
+       <button class="btn waves-effect waves-purple grey darken-3 profile_edit" type="submit" name="action">Submit</button>
      </div>
-      </div>
-    <input id="profile_twitchname" type="hidden" class="validate"  value="{{name}}">
-    <button class="btn waves-effect waves-purple grey darken-3 right profile_edit" type="submit" name="action">Submit</button>
+   </div>
+
+
   </form>
 </div>
+<br>

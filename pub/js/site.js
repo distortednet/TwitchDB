@@ -172,9 +172,10 @@ crossroads.addRoute('/user/{username}', function(username){
 crossroads.addRoute('/user/{username}/feedback', function(username){
   $('ul.tabs').tabs('select_tab', 'feedback');
 });
-crossroads.addRoute('/user/{username}/social', function(username){
-  $('ul.tabs').tabs('select_tab', 'social');
+crossroads.addRoute('/user/{username}/edit', function(username){
+  $('ul.tabs').tabs('select_tab', 'edit');
 });
+
 crossroads.addRoute('/user/{username}/vods', function(username){
   $('ul.tabs').tabs('select_tab', 'vods');
 });
@@ -232,7 +233,7 @@ $(".profile_edit").click(function(e) {
   }
   $.post("/profile/submit", profile_object, function(data) {
     Materialize.toast(data, 3000, 'rounded', function() {
-      window.location.href = "/profile/edit";
+      window.location.href = "/user/"+profile_object.twitchname;
     })
   });
 });

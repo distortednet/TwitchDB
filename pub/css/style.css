@@ -124,17 +124,17 @@ textarea:focus:not([readonly]) {
   border-bottom: 1px solid #6441A5 !important;
   box-shadow: 0 1px 0 0 #6441A5  !important;
 }
-textarea.materialize-textarea:focus:not([readonly])+label {
+textarea.materialize-textarea:focus:not([readonly])+label, input.validate:focus:not([readonly])+label {
   color: #B9A3E3;
   font-size: 10pt;
   transform: translateY(-75%) !important;
 }
 input:focus:not([readonly]) {
-  /*border-bottom: 1px solid #6441A5 !important;
-  box-shadow: 0 1px 0 0 #6441A5  !important;*/
+  border-bottom: 1px solid #6441A5 !important;
+  box-shadow: 0 1px 0 0 #6441A5  !important;
 }
 .input-field input[type=text]:focus + label {
-  /*color: #6441A5;*/
+  color: #B9A3E3;
 }
 .new-feedback img {
   height: 80px;
@@ -283,6 +283,7 @@ color: white !important;
   background-color: #595959 !important;
 }
 .social-nav {
+    margin-top: 8px;
     width: 100%;
 }
 .social-nav ul {

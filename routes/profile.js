@@ -21,7 +21,7 @@ router.post('/submit', (req, res, next) => {
   if(req.body.twitchname == req.session.name) {
     req.body["intro_status"] = "pending";
     db.intro.update(req.body).then((db) => {
-      res.send("intro submitted and is pending!");
+      res.send('intro submitted and is pending!');
     });
   } else {
       res.send('stop trying to be a leet hax0r');
