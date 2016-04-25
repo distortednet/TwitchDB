@@ -1,6 +1,6 @@
 # TwitchDB Contribution Guidelines
-**Created By: 0-Eclipse-0**
-**Last updated: April 25th, 2016**
+* **Template Created By:** 0-Eclipse-0
+* **Last updated:** April 25th, 2016
 
 ## Creating an Issue
  - Important: Make sure you do not use the issue tracker as a chat room.
