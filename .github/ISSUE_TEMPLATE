@@ -1,0 +1,21 @@
+<!-- DO NOT DELETE - LEAVE THIS IN YOUR ISSUE -->
+<!-- Welcome to the TwitchDB.tv issue tracker -->
+<!-- Before you make an issue, make sure your issue matches the criteria below. We'd also encourage you to review the contributing guidelines for more information. -->
+<!-- PLEASE TICK THE CHECKBOXES -->
+- [ ] This issue is completely relevant to TwitchDB
+- [ ] This issue isn't duplicated - you can check if it is by using the search bar located at the top left hand corner and select "Issues" on the left.
+- [ ] This issue includes appropriate markdown for sections - (e.g. / exemplī grātiā) code blocks for crash dumps.
+- [ ] This issue is understandable - feel free to use your native language to write issues if you are not comfortable with English.
+- [ ] This issue matches the contributing guidelines - the link is just above the title field.
+
+<!-- ISSUE DESCRIPTION - Write a bit about what problem you're having. -->
+## Issue description
+
+<!-- REPRODUCE ISSUE STEPS - How can this issue be reproduced? -->
+## Reproducing the issue
+
+<!-- CLIENT INFORMATION - Write a bit about what operating system or browser is being used. -->
+## Client information
+
+<!-- OPTIONAL INFORMATION - Use this section for posting errors, backtraces, et cetera (Please use code markdown!) -->
+## Optional information
