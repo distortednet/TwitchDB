@@ -1,7 +1,8 @@
 <!-- DO NOT DELETE - LEAVE THIS IN YOUR PR -->
 <!-- Welcome to the TwitchDB pull request system! -->
 <!-- Before you make an issue, make sure your pull request matches the criteria below. We'd also encourage you to review the contributing guidelines for more information. -->
-<!-- PLEASE TICK THE CHECKBOXES -->
+
+<!-- Pull Request Creation Requirements -->
 - [ ] This PR passes the TravisCI tests
 - [ ] This PR actually submits something - don't use this system as a messaging service!
 - [ ] This PR isn't duplicated - you can check if it is by scanning the small list - link is on the navigation bar for this repository.
@@ -12,8 +13,8 @@
 - [ ] This PR has descriptive titles for commits - don't use "Updated <file-name>" as your title for all your commits in the PR.
 - [ ] This PR contains appropriate credit and clearly states the source in the description of commits.
 
-<!-- PR DESCRIPTION - write a bit about what you've achieved in this pull request. -->
-## Pull Request description
+<!-- PR DESCRIPTION - Write a bit about what you've achieved in this pull request. -->
+## Pull Request Description
 
-<!-- OPTIONAL INFORMATION - use this section for posting errors, backtraces, et cetera (Please use code markdown!) -->
-## Optional information
+<!-- OPTIONAL INFORMATION - Use this section for posting errors, backtraces, et cetera (Please use code markdown!) -->
+## Optional Information
