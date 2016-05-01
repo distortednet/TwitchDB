@@ -43,8 +43,8 @@ nav {
 }
 
 
-.panel-img {
-  position: relative;
+/*.panel-img {
+
 }
 .image-overlay {
   top: 0px;
@@ -56,10 +56,10 @@ nav {
   opacity: 1;
   transition: visibility 0s 0.2s, opacity 0.2s linear;
 }
-.panel-img img {
+.panel-img .stream-preview {
   width: 100%;
   object-fit: contain;
-}
+}*/
 .panel-title{
   margin: 0px;
   color: #e0e0e0;

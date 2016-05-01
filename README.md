@@ -9,6 +9,7 @@ Stuff that needs worked on
  - maybe profile tag cloud for better content sorting in the future?
  - notification system of some sort (maybe issue notifications via whispers?)
  - integrate clippy.js as dank meme https://www.smore.com/clippy-js
+ - rename "family friendly" to something more accurate for channels not marked mature
  some notes for beta stuff
 
  - rethink 2.2.6 (?) does not work with the latest python driver. pip install rethinkdb==2.2.0.post6

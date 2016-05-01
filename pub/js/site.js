@@ -345,5 +345,6 @@ $(document).on( "click", ".feedback-modal", function(e) {
 crossroads.parse(document.location.pathname);
 // other shizz
  $('select').material_select();
-$('ul.tabs').tabs();
+ $('ul.tabs').tabs();
+ $(".button-collapse").sideNav();
 })
