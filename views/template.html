@@ -24,7 +24,7 @@
   <nav>
     <div class="nav-wrapper grey darken-3">
       <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
+      <ul class="left hide-on-med-and-down">
         <li><a href="/">Streams</a></li>
         <li><a href="/faq">FAQ</a></li>
         <li><a href="/about">About</a></li>
@@ -33,7 +33,7 @@
         <li><a href="/search">DB Search</a></li>
         <li><a href="#">Commit Log</a></li>
       </ul>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul class="right hide-on-med-and-down">
         {%if loggedin && isadmin %}<li><a class="dropdown-button" href="#!" data-activates="navdropdown">Admin</a></li>{% endif %}
         {%if loggedin%}<li><a href="/user/{{name}}">Profile</a></li>{%endif%}
         <li>{%if loggedin%}<a href="/logout">Logout</a>{%else%}<a href="{{authurl}}">Login Via Twitch</a>{%endif%}</li>
@@ -46,7 +46,6 @@
         <li><a href="/surf">Channel Surf</a></li>
         <li><a href="/search">DB Search</a></li>
         <li><a href="#">Commit Log</a></li>
-        {%if loggedin && isadmin %}<li><a class="dropdown-button" href="#!" data-activates="navdropdown">Admin</a></li>{% endif %}
         {%if loggedin%}<li><a href="/user/{{name}}">Profile</a></li>{%endif%}
         <li>{%if loggedin%}<a href="/logout">Logout</a>{%else%}<a href="{{authurl}}">Login Via Twitch</a>{%endif%}</li>
     </ul>
