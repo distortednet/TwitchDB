@@ -5,6 +5,7 @@ module.exports = (app) => {
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/index'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/feedback'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/general'));
+    app.use('/profile',  require('./routes/legacy'));
   app.use('/faq',  require('./routes/faq'));
   app.use('/about',  require('./routes/about'));
   app.use('/disclaimer',  require('./routes/disclaimer'));

@@ -13,11 +13,20 @@ var needle = require('needle'),
 var intro = {
   filter: (status) => {
     return new Promise((resolve, reject) => {
-      UserModel.filter({'intro_status': status}).orderBy('intro_date').run().then((db) => {
-        resolve(db);
-      }).catch(function(err) {
-				console.log("query error:" + err);
-			})
+			if(status != "pending") {
+				UserModel.filter({'intro_status': status}).orderBy('intro_date').limit(50).run().then((db) => {
+	        resolve(db);
+	      }).catch(function(err) {
+					console.log("query error:" + err);
+				})
+			} else {
+				UserModel.filter({'intro_status': status}).orderBy('intro_date').run().then((db) => {
+	        resolve(db);
+	      }).catch(function(err) {
+					console.log("query error:" + err);
+				})
+			}
+
     });
   },
 	setstatus: (username, status) => {

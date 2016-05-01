@@ -25,7 +25,7 @@
               <img src="{{user.channel.logo}}" />
             {%else%}
               <img src="http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png" />
-             {%endif%}
+            {%endif%}
           </a>
           </div>
         </div>
@@ -33,7 +33,9 @@
       <div class="col s10 hide-on-med-and-down" style="padding-right: 0px;">
         <p class="panel-title"><strong>{{user.channel.name}}</strong></p>
         <p class="panel-subtitle">{{user.channel.status}}</p>
-        <p class="panel-subtitle">Playing: {{user.channel.game}}</p>
+
+
+        <p class="panel-subtitle">{%if user.channel.game == "Creative" %}Being {%else%}Playing: {%endif%} {{user.channel.game}}</p>
         <p class="panel-subtitle">{{user.viewers}} viewers</p>
       </div>
     </div>

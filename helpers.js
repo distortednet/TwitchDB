@@ -73,9 +73,9 @@ var twitch = {
 			})
 		});
 	},
-	videos: (username, limit) => {
+	videos: (username, limit, type) => {
 		return new Promise(function(resolve, reject) {
-			needle.get('https://api.twitch.tv/kraken/channels/'+username+'/videos?limit='+limit, (err, data) => {
+			needle.get('https://api.twitch.tv/kraken/channels/'+username+'/videos?limit='+limit+"&broadcasts="+type, (err, data) => {
 				if(err) {
 					resolve(error);
 				} else {

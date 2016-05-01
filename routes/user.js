@@ -12,8 +12,8 @@ var express = require('express'),
   ];
   routearr.forEach(function(route) {
     router.get(route, (req, res, next) => {
-      Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6)]).then((result) => {
-        res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2]});
+      Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6, false), helpers.twitch.videos(req.params.username, 1, true)]).then((result) => {
+        res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2], lastbroadcast: result[3][0]});
       })
     });
   });

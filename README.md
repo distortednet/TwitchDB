@@ -3,14 +3,14 @@ beta branch. pls.
 
 Stuff that needs worked on
  - frontend UI (fixing mobile browsing issues)
- - pagination to admin page for pending intros/feedback & approved
 
-
+ - make hash tags in video titles on profile link to respective creative directories
+ - flair priority (ie: if a person has staff flair, it shouldn't get switched to intro flair)
  - maybe profile tag cloud for better content sorting in the future?
  - notification system of some sort (maybe issue notifications via whispers?)
  - integrate clippy.js as dank meme https://www.smore.com/clippy-js
-
  some notes for beta stuff
+
  - rethink 2.2.6 (?) does not work with the latest python driver. pip install rethinkdb==2.2.0.post6
 
 

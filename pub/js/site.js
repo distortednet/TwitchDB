@@ -221,11 +221,16 @@ $(".profile_edit").click(function(e) {
     }
 
   }
-  $.post("/user/submit", profile_object, function(data) {
-    Materialize.toast(data, 3000, 'rounded', function() {
-      window.location.href = "/user/"+profile_object.twitchname;
-    })
-  });
+  if(
+  validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
+    Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
+  } else {
+    $.post("/user/submit", profile_object, function(data) {
+      Materialize.toast(data, 3000, 'rounded', function() {
+        window.location.href = "/user/"+profile_object.twitchname;
+      })
+    });
+  }
 });
 
 

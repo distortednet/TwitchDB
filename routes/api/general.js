@@ -7,7 +7,7 @@ var express = require('express'),
 
 router.get('/search', (req, res, next) => {
   if(req.query.search.length > 2) {
-    db.intro.search(null, req.query.search, "intro_date").then((db) => {
+    db.intro.search(req.query.search, req.query.search, "intro_date").then((db) => {
       if(db) {
         res.render('search-partial', { data: db});
       } else {
