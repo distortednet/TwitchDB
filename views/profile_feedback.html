@@ -1,20 +1,22 @@
-<h5 style="font-size: 15px;">Unread</h5>
-<div class="unreadcontainer">
-{%for feedback in data.feedback_data %}
-  {%if feedback.read == false && feedback.status == "approved" %}
-    <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
-    {% include "./feedback-modal.html" %}
-  {%endif%}
-{%endfor%}
-</div>
+<div style="padding: 8px;">
 
+  <p style="font-weight: 200; font-size: 2em; border-bottom: 2px dotted #595959;">Unread</p>
+  <div class="unreadcontainer">
+  {%for feedback in data.feedback_data %}
+    {%if feedback.read == false && feedback.status == "approved" %}
+      <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
+      {% include "./feedback-modal.html" %}
+    {%endif%}
+  {%endfor%}
+  </div>
 
-<h5 style="font-size: 15px;">Read</h5>
-<div class="readcontainer">
-{%for feedback in data.feedback_data %}
-  {%if feedback.read == true && feedback.status == "approved" %}
-    <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
-    {% include "./feedback-modal.html" %}
-  {%endif%}
-{%endfor%}
+  <p style="font-weight: 200; font-size: 2em; border-bottom: 2px dotted #595959;">Read</p>
+  <div class="readcontainer">
+  {%for feedback in data.feedback_data %}
+    {%if feedback.read == true && feedback.status == "approved" %}
+      <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}"><img class="responsive-img circle" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png{%else%}{{feedback.logo}}{%endif%}" style="height: 120px; width: 120px;"/></a>
+      {% include "./feedback-modal.html" %}
+    {%endif%}
+  {%endfor%}
+  </div>
 </div>

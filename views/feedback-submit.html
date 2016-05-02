@@ -1,7 +1,7 @@
 <div class="card-content">
   {%if loggedin%}
   <div class="row">
-    <form class="col s12">
+    <form class="col l12 m12 s12">
       <div class="input-field">
         <textarea id="feedback_branding" class="materialize-textarea validate"></textarea>
         <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</label>
@@ -26,7 +26,7 @@
         <textarea id="feedback_other" class="materialize-textarea validate"></textarea>
         <label for="feedback_other"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</label>
       </div>
-      <div class="input-field col s1">
+      <div class="input-field col l1 m12 s12">
         <select id="feedback_audioquality">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -36,7 +36,7 @@
         </select>
         <label>Audio Quality</label>
       </div>
-      <div class="input-field col s1">
+      <div class="input-field col l1 m12 s12">
         <select id="feedback_videoquality">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -46,7 +46,7 @@
         </select>
         <label>Video Quality</label>
       </div>
-      <div class="input-field col s1">
+      <div class="input-field col l1 m12 s12">
         <select id="feedback_chatinteraction">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -56,10 +56,10 @@
         </select>
         <label>Chat Interaction</label>
       </div>
-      <div class="input-field col s2">
+      <div class="input-field col l2 m12 s12">
         <input type="checkbox" id="feedback_anonymous" /><label for="feedback_anonymous">Make Anonymous</label>
       </div>
-      <div class="input-field col s1 push-s6">
+      <div class="input-field col l1 push-l6 m12 s12">
         <button class="btn waves-effect waves-purple grey darken-3 right feedback_submit" type="submit" name="action" data-touser="{{data.twitchname}}">Submit</button>
       </div>
     </div>

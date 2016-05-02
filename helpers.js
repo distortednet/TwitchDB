@@ -62,7 +62,7 @@ var twitch = {
 		return new Promise(function(resolve, reject) {
 			needle.get("https://api.twitch.tv/kraken/channels/"+username, (err, data) => {
 				if(err) {
-					resolve(error);
+					resolve(err);
 				} else {
 					if(data.body.status != "422") {
 						resolve(data.body)
@@ -77,7 +77,7 @@ var twitch = {
 		return new Promise(function(resolve, reject) {
 			needle.get('https://api.twitch.tv/kraken/channels/'+username+'/videos?limit='+limit+"&broadcasts="+type, (err, data) => {
 				if(err) {
-					resolve(error);
+					resolve(err);
 				} else {
 					if(data.body.status != "422") {
 						resolve(data.body.videos)

@@ -300,3 +300,27 @@ color: white !important;
 .social-nav ul li a {
     display: block;
 }
+@media screen and (min-width: 992px) {
+    .responsive-title-l {
+      font-size: 1.5vmax;
+    }
+    .responsive-text-l {
+      font-size: 0.8vmax;
+    }
+}
+@media screen and (max-width: 992px) {
+    .responsive-title-m {
+      font-size: 2.5vmax;
+    }
+    .responsive-text-m {
+      font-size: 2.0vmax;
+    }
+}
+@media screen and (max-width: 600px) {
+    .responsive-title-s {
+      font-size: 3.5vmax;
+    }
+    .responsive-text-s {
+      font-size: 2.0vmax;
+    }
+}
