@@ -202,7 +202,7 @@ input:focus:not([readonly]) {
 }
 .video-wrapper {
   position: relative;
-  padding-bottom: 57.6%
+  padding-bottom: calc(100vh - 50px);
 }
 .video-wrapper iframe {
   position: absolute;
@@ -213,7 +213,7 @@ input:focus:not([readonly]) {
 }
 .chat-wrapper {
   position: relative;
-  padding-bottom: 288%;
+  padding-bottom: calc(100vh - 50px);
 }
 .chat-wrapper iframe {
   position: absolute;
@@ -331,6 +331,5 @@ color: white !important;
     }
 }
 .feedback-img {
-  width: 220px;
-  height: 220px;
+
 }

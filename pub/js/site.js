@@ -240,18 +240,17 @@ $(".profile_edit").click(function(e) {
 
 //database search logic
 $('#searchdb').keypress(function(e) {
-  if(e.which == 13) {
     var keyvalue = $(this).val();
-    $.get("/api/search", {search: keyvalue}, function(data) {
-      if(data) {
-        $('.searchresults').empty();
-        $('.searchresults').html(data);
-      } else {
-        Materialize.toast("Could not find a result or not enough search info", 3000, 'rounded')
-      }
-
-    });
-  }
+    if(keyvalue.length >= 2 || e.which == 13) {
+      $.get("/api/search", {search: keyvalue}, function(data) {
+        if(data) {
+          $('.searchresults').empty();
+          $('.searchresults').html(data);
+        } else {
+          $('.searchresults').empty();
+        }
+      });
+    }
 });
 
 

@@ -1,20 +1,16 @@
 {% extends 'template.html' %}
 
 {% block content %}
-<br><br><br><br>
+
 <div class="row">
-  <div class="input-field col s4 offset-s2">
-    <strong>DB Search Tool</strong><br>
-    use this to find streams based on the game. showing 20 latest intros
-  </div>
-  <div class="input-field col s2 offset-s2">
+  <div class="input-field col l8 offset-l2 m12 s12">
     <input id="searchdb" type="text">
-    <label for="searchdb">Search DB</label>
+    <label for="searchdb">Search via game or username</label>
   </div>
 </div>
 
 <div class="row searchresults">
-    {% include "./search-partial.html" %}
+  {% include "./search-partial.html" %}
 </div>
 
 {% endblock %}

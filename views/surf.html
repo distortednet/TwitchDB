@@ -1,31 +1,24 @@
 {% extends 'template.html' %}
 {% block content %}
-/*<style> body {overflow: hidden !important; }</style> <!-- body wanna overflow, but i need to chill. hacky, but get rekt m8 -->
-<div class="row ">
-  <div class="col s10" style="padding: 0px !important;">
+<style> body {overflow: hidden !important; }</style>
+
+<div class="row">
+  <div class="col l10 m12 s12" style="padding: 0px !important; margin: 0px !important;">
     <div class="video-wrapper">
-      <div class="surf-overlay">
+      <div class="surf-overlay hide-on-med-and-down">
         <a href="/user/{{user.channel.name}}" target="_blank"><i class="material-icons small" title="Twitch Profile">assignment_ind</i></a>
-        <a href="/user/feedback/{{user.channel.name}}" target="_blank" title="Give feedback"><i class="material-icons small">subject</i></a>
+        <a href="/user/{{user.channel.name}}/feedback" target="_blank" title="Give feedback"><i class="material-icons small">subject</i></a>
         <a href="/surf"><i class="material-icons small" title="New Stream!">shuffle</i></a>
         {%if loggedin%}<a href="#" target="_blank" class="addvote" data-voter="{{name}}" data-votetarget="{{user.channel.name}}"><i class="material-icons small" title="Vote up">thumb_up</i></a>{%endif%}
       </div>
-        <iframe src="http://player.twitch.tv/?channel={{user.channel.name}}" frameborder="0" scrolling="no" volume="0" allowfullscreen="true"></iframe>
+      <iframe src="http://player.twitch.tv/?channel={{user.channel.name}}" frameborder="0" scrolling="no" volume="0" allowfullscreen="true"></iframe>
     </div>
   </div>
-  <div class="col s2" style="padding: 0px !important;">
+  <div class="col l2 m2 s2 hide-on-small-and-down" style="padding: 0px !important; margin: 0px !important;">
     <div class="chat-wrapper">
       <iframe frameborder="0" scrolling="no" src="http://www.twitch.tv/{{user.channel.name}}/chat"></iframe>
     </div>
   </div>
 </div>
-
-<div class="row ">
-  <div class="col s12" style="padding: 0px !important;">
-    <div class="video-wrapper">
-        <iframe src="http://player.twitch.tv/?channel={{user.channel.name}}&!autoplay" frameborder="0" scrolling="no" volume="0" allowfullscreen="true"></iframe>
-    </div>
-  </div>
-</div>*/
 
 {% endblock %}

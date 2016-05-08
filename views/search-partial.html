@@ -1,9 +1,9 @@
-<div class="col s8 offset-s2">
+<div class="col l8 offset-l2">
   <table class="admintable">
     <thead>
       <tr>
         <th>Date</th>
-        <th>Intro URL</th>
+        <th>TwitchDB Profile</th>
         <th>Twitch Name</th>
         <th>Games</th>
       </tr>
@@ -12,8 +12,8 @@
     {%for user in data %}
       <tr>
         <td>{{user.intro_date}}</td>
-        <td><a href="#">Intro URL</a></td>
-        <td>{{user.twitchname}}</td>
+        <td><a href="/user/{{user.twitchname}}" target="_blank">View Profile</a></td>
+        <td><a href="http://www.twitch.tv/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
         <td style="width: 60%;">{{user.intro_data.intro_games}}</td>
       </tr>
     {%endfor%}

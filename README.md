@@ -2,10 +2,9 @@ beta branch. pls.
 
 
 Stuff that needs worked on
- - frontend UI (fixing mobile browsing issues)
+ - consider reformatting the schedule field to require more strict Stuff
 
  - make hash tags in video titles on profile link to respective creative directories
- - flair priority (ie: if a person has staff flair, it shouldn't get switched to intro flair)
  - maybe profile tag cloud for better content sorting in the future?
  - notification system of some sort (maybe issue notifications via whispers?)
  - integrate clippy.js as dank meme https://www.smore.com/clippy-js
