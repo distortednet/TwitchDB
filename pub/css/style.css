@@ -282,6 +282,12 @@ color: white !important;
 .profile-tab .indicator {
   background-color: #595959 !important;
 }
+.feedback-tab a {
+color: white !important;
+}
+.feedback-tab .indicator {
+  background-color: #595959 !important;
+}
 .social-nav {
     margin-top: 8px;
     width: 100%;
@@ -323,4 +329,8 @@ color: white !important;
     .responsive-text-s {
       font-size: 2.0vmax;
     }
+}
+.feedback-img {
+  width: 220px;
+  height: 220px;
 }

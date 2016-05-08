@@ -1,14 +1,62 @@
-<div id="feedbackmodal-{{feedback.uuid}}" class="modal modal-fixed-footer grey darken-3" style="color: white;">
+<div id="feedbackmodal-{{feedback.uuid}}" class="modal grey darken-3" style="color: white;">
   <div class="modal-content">
-    <h4>Feedback from: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}</h4>
-    <p><strong>Audio Quality (out of 5): </strong>{{feedback.audioquality}}</p>
-    <p><strong>Chat interaction (out of 5): </strong>{{feedback.chatinteraction}}</p>
-    <p><strong>Video Quality (out of 5)</strong>{{feedback.videoquality}}</p>
-    <p><strong>Branding<br></strong>{% marked %}{{feedback.branding}}{% endmarked %}</p>
-    <p><strong>Game choices<br></strong>{% marked %}{{feedback.game}}{% endmarked %}</p>
-    <p><strong>Overlay<br></strong>{% marked %}{{feedback.overlay}}{% endmarked %}</p>
-    <p><strong>Panels<br></strong>{% marked %}{{feedback.panels}}{% endmarked %}</p>
-    <p><strong>Social<br></strong>{% marked %}{{feedback.social}}{% endmarked %}</p>
-    <p><strong>Other<br></strong>{% marked %}{{feedback.other}}{% endmarked %}</p>
+    <div class="row">
+      <div class="col l1 m1 s1 hide-on-med-and-down">
+        {%if feedback.anonymous%}
+        <img class="responsive-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png"/>
+        {%else%}
+        <a href="/user/{{feedback.fromuser}}" target="_blank">
+          <img class="responsive-img" src="{{feedback.logo}}"/>
+        </a>
+        {%endif%}
+      </div>
+      <div class="col l10 m10 s10">
+        {%if feedback.anonymous%}Anonymous{%else%}<a href="/user/{{feedback.fromuser}}" target="_blank">{{feedback.fromuser}}</a>{%endif%}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col l4 m4 s12 center">
+        <span style="font-weight: 100; font-size: 17pt;">Audio Quality<br>{{feedback.audioquality}} out of 5</span>
+      </div>
+      <div class="col l4 m4 s12 center">
+        <span style="font-weight: 100; font-size: 17pt;">Chat Interaction<br>{{feedback.chatinteraction}} out of 5</span>
+      </div>
+      <div class="col l4 m4 s12 center">
+        <span style="font-weight: 100; font-size: 17pt;">Video Quality<br>{{feedback.videoquality}} out of 5</span>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col l6 m6 s12">
+        <p style="font-weight: 100; font-size: 17pt;">Branding</p>
+        <p>{% marked %}{{feedback.branding}}{% endmarked %}</p>
+      </div>
+      <div class="col l6 m6 s12">
+        <p style="font-weight: 100; font-size: 17pt;">Game Choices</p>
+        <p>{% marked %}{{feedback.game}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p style="font-weight: 100; font-size: 17pt;">Overlay</p>
+        <p>{% marked %}{{feedback.overlay}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p style="font-weight: 100; font-size: 17pt;">Social</p>
+        <p>{% marked %}{{feedback.social}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p style="font-weight: 100; font-size: 17pt;">Panels</p>
+        <p>{% marked %}{{feedback.panels}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p style="font-weight: 100; font-size: 17pt;">Other</p>
+        <p>{% marked %}{{feedback.social}}{% endmarked %}</p>
+      </div>
+
+      </div>
+    </div>
+
   </div>
 </div>

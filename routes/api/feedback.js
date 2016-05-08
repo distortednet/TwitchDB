@@ -16,7 +16,6 @@ router.post('/feedback/', helpers.middleware.checkAuth(), (req, res, next) => {
     req.body.data.logo = dbres[0].logo;
     req.body.data.uuid = dbres[1];
     if(dbres[2][0]) {
-      console.log("you heff stuff");
       return db.feedback.update(req.body.data.fromuser, req.body.data.touser, req.body.data);
     } else {
       return db.feedback.send(req.body.touser, req.body.data)
