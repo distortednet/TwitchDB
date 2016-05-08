@@ -130,7 +130,7 @@ var general = {
 	            if(oauth.body.users[0].flair_text != null && oauth.body.users[0].flair_text.length > 0) {
 								if(oauth.body.users[0].css_class == "staffflair" || oauth.body.users[0].css_class == "adminflair" || oauth.body.users[0].css_class == "gmodflair") {
 									var flaircss = oauth.body.users[0].css_class;
-								else {
+								} else {
 									var flaircss = "introflair";
 								}
 	              var flairtext = oauth.body.users[0].flair_text;
