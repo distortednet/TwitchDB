@@ -330,6 +330,19 @@ color: white !important;
       font-size: 2.0vmax;
     }
 }
-.feedback-img {
-
+.day select, .hour-start select, .hour-end select {
+  background-color: #424242;
+  margin-top: 18px;
+  border: none;
+}
+.day select:focus, .hour-start select:focus, .hour-end select:focus {
+  border: none;
+  outline: none;
+}
+.day select option, .hour-start select option, .hour-end select option {
+  border: none;
+  outline: none;
+}
+.input-field label.active {
+    transform: translateY(-0%);
 }

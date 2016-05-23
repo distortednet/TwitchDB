@@ -88,9 +88,18 @@
           <p style="font-weight: 200; font-size: 2em">Goals</p>
           <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</div><br>
           <p style="font-weight: 200; font-size: 2em">schedule</p>
-          <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_schedule}}{% endmarked %}</div><br>
+          <div style="font-weight: 300;">
+            {%if data.intro_data.intro_schedule%}
+              {%for schedule in data.intro_data.intro_schedule %}
+              {{schedule.day}} - From: {{schedule.start}} To: {{schedule.end}} <br>
+
+              {%endfor%}
+            {%else%}
+              This user has not set a schedule
+            {%endif%}
+          </div><br>
           <p style="font-weight: 200; font-size: 2em">games</p>
-          <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_games}}{% endmarked %}</div><br>
+          <div style="font-weight: 300;">{{data.intro_data.intro_games}}</div><br>
           <p style="font-weight: 200; font-size: 2em">background</p>
           <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_background}}{% endmarked %}</div><br>
         </div>

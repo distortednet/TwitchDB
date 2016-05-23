@@ -177,8 +177,121 @@ crossroads.addRoute('/user/{username}/feedback/view', function(username){
 });
 crossroads.addRoute('/user/{username}/edit', function(username){
   $('ul.tabs').tabs('select_tab', 'edit');
+  function generatehours(interval) {
+    var arr = [], i, j;
+    for(i=0; i<24; i++) {
+      if(i < 10) {
+        i = "0"+i;
+      }
+      arr.push(i+":00", i+":"+interval);
+    }
+    return arr;
+  }
+  $.fn.populate = function(type){
+    var element = this;
+    $(this).empty();
+    switch(type) {
+      case 'hours':
+        var hours = generatehours(30);
+        $.each(hours, function(index, hour) {
+          $(element).append('<option value="'+hour+'">'+hour+'</option>');
+        });
+      break;
+      case 'days':
+        var daysarr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        $.each(daysarr, function(index, day) {
+          $(element).append('<option value="'+day+'">'+day+'</option>');
+        });
+      break;
+    }
+    return $(element);
+  };
+  function generatefields(template) {
+    $(template).populate('days').appendTo('.day');
+    $(template).populate('hours').appendTo('.hour-start');
+    $(template).populate('hours').appendTo('.hour-end');
+    $('.day select:last, .hour-start select:last, .hour-end select:last').hide().fadeIn(100);
+  }
+  //next step logic
+  $('.next-step').click(function(e) {
+    e.preventDefault();
+    if($('.profile-step-1').is(':visible')) {
+      $('.next-step').text("Step 3");
+      $('.profile-step-1').hide();
+      $('.profile-step-2').show();
+      $('.previous-step').show();
+    } else if($('.profile-step-2').is(':visible')) {
+      $('.next-step').text("Back to step 1");
+      $('.profile-step-2').hide();
+      $('.profile-step-3').show();
+      $('.profile_edit').show();
+    } else if($('.profile-step-3').is(':visible')) {
+      $('.next-step').text("Step 2");
+      $('.profile-step-3').hide();
+      $('.profile-step-1').show();
+    }
+  });
+  //schedule logic
+  var template = '<select class="browser-default"></select>';
+  generatefields(template);
+  $('.addfield').click(function(e) {
+    e.preventDefault();
+    fieldcount = $('.day').children().length;
+    if(fieldcount >= 20) {
+       Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
+    } else {
+      generatefields(template);
+    }
+  });
+//profile submit logic
+  $('.profile_edit').click(function(e) {
+    e.preventDefault();
+    var date = new Date();
+    var tzoffset = new Date().getTimezoneOffset();
+    var schedulearr = [];
+    $.each($('.day select option:selected'), function(index, element) {
+      var day = $(this).val();
+      var starthour = $('.hour-start select option:selected').eq(index).val();
+      var endhour = $('.hour-end select option:selected').eq(index).val();
+      schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'utcoffset': tzoffset});
+    });
+    var profile_object = {
+      twitchname: $("#profile_twitchname").val(),
+      redditname: $("#profile_redditname").val(),
+      intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+      intro_data: {
+        intro_about: $("#profile_about").val(),
+        intro_schedule: schedulearr,
+        intro_games: $("#profile_games").val(),
+        intro_goals: $("#profile_goals").val(),
+        intro_background: $("#profile_background").val(),
+      },
+      social: {
+        facebook: $("#social_facebook").val(),
+        instagram: $("#social_instagram").val(),
+        youtube: $("#social_youtube").val(),
+        steam: $("#social_steam").val(),
+        twitter: $("#social_twitter").val(),
+      }
+    }
+    if(validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
+      Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
+    } else {
+      $.post("/user/submit", profile_object, function(data) {
+        Materialize.toast(data, 3000, 'rounded', function() {
+          window.location.href = "/user/"+profile_object.twitchname;
+        })
+      });
+    }
+  })
+  //remove schedule field logic
+  $('.removefield').click(function(e) {
+    e.preventDefault();
+    $('.day select:last, .hour-start select:last, .hour-end select:last').fadeOut(100, function() {
+      $(this).remove();
+    });
+  })
 });
-
 crossroads.addRoute('/user/{username}/vods', function(username){
   $('ul.tabs').tabs('select_tab', 'vods');
 });
@@ -192,46 +305,45 @@ $('.streams-tab li a').click(function(e) {
 });
 
 $(".profile-tab li a").click(function(e) {
-  // $('.livestream').hide().fadeIn(1000);
   var location = $(this).data('location')
   history.pushState(null, null, location);
   crossroads.parse(location);
 });
-//profile create/edit logic
-$(".profile_edit").click(function(e) {
-  e.preventDefault();
-  var date = new Date();
-  var profile_object = {
-    twitchname: $("#profile_twitchname").val(),
-    redditname: $("#profile_redditname").val(),
-    intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-    intro_data: {
-      intro_about: $("#profile_about").val(),
-      intro_schedule: $("#profile_schedule").val(),
-      intro_games: $("#profile_games").val(),
-      intro_goals: $("#profile_goals").val(),
-      intro_background: $("#profile_background").val(),
-    },
-    social: {
-      facebook: $("#social_facebook").val(),
-      instagram: $("#social_instagram").val(),
-      youtube: $("#social_youtube").val(),
-      steam: $("#social_steam").val(),
-      twitter: $("#social_twitter").val(),
-    }
 
-  }
-  if(
-  validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
-    Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
-  } else {
-    $.post("/user/submit", profile_object, function(data) {
-      Materialize.toast(data, 3000, 'rounded', function() {
-        window.location.href = "/user/"+profile_object.twitchname;
-      })
-    });
-  }
-});
+//profile create/edit logic
+// $(".profile_edit").click(function(e) {
+//   e.preventDefault();
+//   var date = new Date();
+//   var profile_object = {
+//     twitchname: $("#profile_twitchname").val(),
+//     redditname: $("#profile_redditname").val(),
+//     intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+//     intro_data: {
+//       intro_about: $("#profile_about").val(),
+//       intro_schedule: $("#profile_schedule").val(),
+//       intro_games: $("#profile_games").val(),
+//       intro_goals: $("#profile_goals").val(),
+//       intro_background: $("#profile_background").val(),
+//     },
+//     social: {
+//       facebook: $("#social_facebook").val(),
+//       instagram: $("#social_instagram").val(),
+//       youtube: $("#social_youtube").val(),
+//       steam: $("#social_steam").val(),
+//       twitter: $("#social_twitter").val(),
+//     }
+//
+//   }
+//   if(validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
+//     Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
+//   } else {
+//     $.post("/user/submit", profile_object, function(data) {
+//       Materialize.toast(data, 3000, 'rounded', function() {
+//         window.location.href = "/user/"+profile_object.twitchname;
+//       })
+//     });
+//   }
+// });
 
 
 
@@ -339,6 +451,7 @@ $(document).on( "click", ".feedback-modal", function(e) {
     $('#'+modaltarget).openModal();
   }
 });
+
 
 //parse crossroads route
 crossroads.parse(document.location.pathname);

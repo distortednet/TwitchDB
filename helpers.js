@@ -128,7 +128,7 @@ var general = {
 	      needle.get('https://oauth.reddit.com/r/twitch/api/flairlist.json?name='+redditname, options, (err, oauth) => {
 	          if(oauth.body.users[0].user.toLowerCase() == redditname.toLowerCase()) {
 	            if(oauth.body.users[0].flair_text != null && oauth.body.users[0].flair_text.length > 0) {
-								if(oauth.body.users[0].css_class == "staffflair" || oauth.body.users[0].css_class == "adminflair" || oauth.body.users[0].css_class == "gmodflair") {
+								if(oauth.body.users[0].flair_css_class == "staffflair" || oauth.body.users[0].flair_css_class == "adminflair" || oauth.body.users[0].flair_css_class == "gmodflair") {
 									var flaircss = oauth.body.users[0].css_class;
 								} else {
 									var flaircss = "introflair";
