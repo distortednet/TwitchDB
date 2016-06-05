@@ -44,7 +44,8 @@ swig.setDefaults({cache: false});
 swig.setFilter('random', helpers.general.random);
 
 app.locals = {
-	authurl: config.twitch.authurl
+	authurl: config.twitch.authurl,
+  rng: Math.floor((Math.random() * 100) + 1),
 };
 app.get('*', (req, res, next) => {
   if(req.session.token && req.session.name) {
