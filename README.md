@@ -1,18 +1,20 @@
-beta branch. pls.
+beta branch. no pull requests until this is live pls thanks
 
 
 Stuff that needs worked on
+ - certain input fields like db search, label overflows the input
+ - main index page tab menu overflows on small resolutions
+ - empty vod pages look weird on profile
+ - empty feedback pages look weird on profile
+ - rename "family friendly" to something more accurate for channels not marked mature
 
  - make hash tags in video titles on profile link to respective creative directories
  - maybe profile tag cloud for better content sorting in the future?
  - notification system of some sort (maybe issue notifications via whispers?)
- - integrate clippy.js as dank meme https://www.smore.com/clippy-js
- - rename "family friendly" to something more accurate for channels not marked mature
+
  some notes for beta stuff
 
  - rethink 2.2.6 (?) does not work with the latest python driver. pip install rethinkdb==2.2.0.post6
-
-bugs?
 
 
 db prep
