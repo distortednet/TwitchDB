@@ -2,8 +2,6 @@ beta branch. pls.
 
 
 Stuff that needs worked on
- - consider reformatting the schedule field to require more strict Stuff
- - oh god damn it https://snyk.io/blog/marked-xss-vulnerability/
 
  - make hash tags in video titles on profile link to respective creative directories
  - maybe profile tag cloud for better content sorting in the future?
@@ -16,7 +14,6 @@ Stuff that needs worked on
 
 bugs?
 
-- feedback can be sent with no contents, causing the user to see feedback in a forever unread state if approved
 
 db prep
 

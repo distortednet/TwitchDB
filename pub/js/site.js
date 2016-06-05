@@ -415,6 +415,7 @@ $('.addvote').click(function(e) {
 //feedback submit logic
 $('.feedback_submit').click(function(e) {
   e.preventDefault();
+  console.log("TOUCH MY NIPPLES");
         var feedback = {
           data: {
             branding: $('#feedback_branding').val(),
@@ -429,11 +430,14 @@ $('.feedback_submit').click(function(e) {
             anonymous: $('#feedback_anonymous').is(':checked'),
           },
           touser: $('.feedback_submit').data('touser')
+        };
+        if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
+          $.post("/api/feedback", feedback, function(data) {
+            Materialize.toast(data, 3000, 'rounded');
+          });
+        } else {
+          Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
         }
-        console.log(feedback);
-      $.post("/api/feedback", feedback, function(data) {
-        Materialize.toast(data, 3000, 'rounded');
-      });
 });
 
 //feedback read logic

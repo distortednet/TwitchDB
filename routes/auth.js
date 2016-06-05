@@ -1,6 +1,7 @@
 var express = require('express'),
   config = require('../config'),
   helpers = require('../helpers'),
+  db = require('../db'),
   router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -8,7 +9,9 @@ router.get('/', (req, res, next) => {
     req.session.token = auth.token;
 		req.session.name = auth.name;
     req.session.isadmin = auth.modstatus;
-		res.redirect('/user/'+req.session.name);
+    db.intro.create(req.session.name).then((db) => {
+      res.redirect('/user/'+req.session.name);
+    });
   }).catch(function(e) {
 		console.log("error" + err);
   });

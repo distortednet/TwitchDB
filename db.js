@@ -59,9 +59,14 @@ var intro = {
 	create: (username) => {
 		return new Promise((resolve, reject) => {
 			UserModel.get(username).run().then((db) => {
+				var logindate = new Date();
+				console.log(logindate);
+				UserModel.filter({'twitchname': username}).update({"lastlogin": logindate}).run().then((dbres) => {
 					resolve("profile_exists");
+				});
 			}).catch(thinky.Errors.DocumentNotFound, (err) => {
-				var UserData = new UserModel({twitchname: username});
+				var logindate = new Date();
+				var UserData = new UserModel({twitchname: username, lastlogin: logindate});
 				UserData.save((err) => {
 					if(err) { reject(err) };
 					resolve("profile_created");

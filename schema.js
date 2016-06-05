@@ -19,7 +19,8 @@
     social_info: type.object(),
     feedback_data: type.array(),
     votes: type.array(),
-    admin: type.boolean()
+    admin: type.boolean(),
+    lastlogin: type.date()
 
   };
   schema.cache = {
