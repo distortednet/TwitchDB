@@ -127,32 +127,26 @@ var general = {
 	      var options = {headers: {"Authorization": "bearer "+res.body.access_token, "User-Agent": "twitchdb/0.1 by "+auth.username}}
 	      needle.get('https://oauth.reddit.com/r/twitch/api/flairlist.json?name='+redditname, options, (err, oauth) => {
 	          if(oauth.body.users[0].user.toLowerCase() == redditname.toLowerCase()) {
-	            if(oauth.body.users[0].flair_text != null && oauth.body.users[0].flair_text.length > 0) {
-								if(oauth.body.users[0].flair_css_class == "staffflair" || oauth.body.users[0].flair_css_class == "adminflair" || oauth.body.users[0].flair_css_class == "gmodflair") {
-									var flaircss = oauth.body.users[0].css_class;
-								} else {
-									var flaircss = "introflair";
-								}
-	              var flairtext = oauth.body.users[0].flair_text;
-	            } else {
-								var flaircss = "introflair";
-	              var flairtext = "http://www.twitch.tv/"+twitchname
-	            }
-	            var flairdata = {
-	              'api_type': 'json',
-	              'css_class': flaircss,
-	              'name': redditname,
-	              'text': flairtext
-	            }
-	            needle.post('https://oauth.reddit.com/r/twitch/api/flair', flairdata, options, (err, flair) => {
-	              if(flair.body.json.errors.length == 0) {
-	                resolve({'status': true, data: flairdata});
-	              } else {
-	                resolve({'status': false, data: flair.body.json.errors});
-	              }
-	            });
+							if(oauth.body.users[0].flair_text === null || oauth.body.users[0].flair_text.length === 0 || oauth.body.users[0].flair_text.length === "") {
+								var flairdata = {
+		              'api_type': 'json',
+		              'css_class': "introflair",
+		              'name': redditname,
+		              'text': "http://www.twitch.tv/"+twitchname
+		            }
+								needle.post('https://oauth.reddit.com/r/twitch/api/flair', flairdata, options, (err, flair) => {
+									if(flair.body.json.errors.length == 0) {
+										resolve({'status': true});
+									} else {
+										resolve({'status': false});
+									}
+								});
+							} else {
+								resolve({'status': true});
+							}
+
 	          } else {
-	            resolve({'status': false, data: 'could not set flair or find user: ' + redditname});
+	            resolve({'status': false});
 	          }
 	      });
 	    });

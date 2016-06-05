@@ -47,7 +47,7 @@ router.post('/submit', (req, res, next) => {
     }
   }).then(function(final) {
     if(final && final.status == true) {
-      res.send(req.body.twitchname + " has been " + req.body.intro_status + " flair set for: " + final.data.name);
+      res.send(req.body.twitchname + " has been " + req.body.intro_status);
     } else {
       res.send(req.body.twitchname + " has been " + req.body.intro_status);
     }
