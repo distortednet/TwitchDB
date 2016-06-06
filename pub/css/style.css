@@ -346,3 +346,11 @@ color: white !important;
 .input-field label.active {
     transform: translateY(-0%);
 }
+.feedback-img {
+  height: 40px;
+  width: 40px;
+}
+
+.feedback-row[data-read="true"] {
+  opacity: .3;
+}

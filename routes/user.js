@@ -12,7 +12,7 @@ var express = require('express'),
   ];
   routearr.forEach(function(route) {
     router.get(route, (req, res, next) => {
-      Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username), helpers.twitch.videos(req.params.username, 6, false), helpers.twitch.videos(req.params.username, 1, true)]).then((result) => {
+      Promise.all([db.intro.select(req.params.username.toLowerCase()), helpers.twitch.profile(req.params.username.toLowerCase()), helpers.twitch.videos(req.params.username.toLowerCase(), 6, false), helpers.twitch.videos(req.params.username.toLowerCase(), 1, true)]).then((result) => {
         if(result[0][0] === undefined) {
           res.redirect('/');
         } else {

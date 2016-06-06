@@ -310,46 +310,6 @@ $(".profile-tab li a").click(function(e) {
   crossroads.parse(location);
 });
 
-//profile create/edit logic
-// $(".profile_edit").click(function(e) {
-//   e.preventDefault();
-//   var date = new Date();
-//   var profile_object = {
-//     twitchname: $("#profile_twitchname").val(),
-//     redditname: $("#profile_redditname").val(),
-//     intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-//     intro_data: {
-//       intro_about: $("#profile_about").val(),
-//       intro_schedule: $("#profile_schedule").val(),
-//       intro_games: $("#profile_games").val(),
-//       intro_goals: $("#profile_goals").val(),
-//       intro_background: $("#profile_background").val(),
-//     },
-//     social: {
-//       facebook: $("#social_facebook").val(),
-//       instagram: $("#social_instagram").val(),
-//       youtube: $("#social_youtube").val(),
-//       steam: $("#social_steam").val(),
-//       twitter: $("#social_twitter").val(),
-//     }
-//
-//   }
-//   if(validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
-//     Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
-//   } else {
-//     $.post("/user/submit", profile_object, function(data) {
-//       Materialize.toast(data, 3000, 'rounded', function() {
-//         window.location.href = "/user/"+profile_object.twitchname;
-//       })
-//     });
-//   }
-// });
-
-
-
-
-
-
 //database search logic
 $('#searchdb').keypress(function(e) {
     var keyvalue = $(this).val();
@@ -415,29 +375,30 @@ $('.addvote').click(function(e) {
 //feedback submit logic
 $('.feedback_submit').click(function(e) {
   e.preventDefault();
-  console.log("TOUCH MY NIPPLES");
-        var feedback = {
-          data: {
-            branding: $('#feedback_branding').val(),
-            overlay: $('#feedback_overlay').val(),
-            panels: $('#feedback_panels').val(),
-            game: $('#feedback_game').val(),
-            social: $('#feedback_social').val(),
-            other: $('#feedback_other').val(),
-            audioquality: parseInt($('#feedback_audioquality').val()),
-            videoquality: parseInt($('#feedback_videoquality').val()),
-            chatinteraction: parseInt($('#feedback_chatinteraction').val()),
-            anonymous: $('#feedback_anonymous').is(':checked'),
-          },
-          touser: $('.feedback_submit').data('touser')
-        };
-        if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
-          $.post("/api/feedback", feedback, function(data) {
-            Materialize.toast(data, 3000, 'rounded');
-          });
-        } else {
-          Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
-        }
+    var date = new Date();
+    var feedback = {
+      data: {
+        branding: $('#feedback_branding').val(),
+        overlay: $('#feedback_overlay').val(),
+        panels: $('#feedback_panels').val(),
+        game: $('#feedback_game').val(),
+        social: $('#feedback_social').val(),
+        other: $('#feedback_other').val(),
+        audioquality: parseInt($('#feedback_audioquality').val()),
+        videoquality: parseInt($('#feedback_videoquality').val()),
+        chatinteraction: parseInt($('#feedback_chatinteraction').val()),
+        anonymous: $('#feedback_anonymous').is(':checked'),
+        date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+      },
+      touser: $('.feedback_submit').data('touser')
+    };
+    if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
+      $.post("/api/feedback", feedback, function(data) {
+        Materialize.toast(data, 3000, 'rounded');
+      });
+    } else {
+      Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
+    }
 });
 
 //feedback read logic
@@ -448,8 +409,7 @@ $(document).on( "click", ".feedback-modal", function(e) {
   var uuid = $(this).data('uuid');
   if(readstate == false) {
     $('#'+modaltarget).openModal();
-    $(this).fadeOut(1000);
-    $(this).clone().data('read', true).prependTo(".readcontainer").hide().fadeIn(1000);
+    $(this).parent().parent().fadeTo('slow', 0.3);
     $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
   } else {
     $('#'+modaltarget).openModal();

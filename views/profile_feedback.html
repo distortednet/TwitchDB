@@ -1,39 +1,79 @@
-<ul class="tabs feedback-tab grey darken-3" style="overflow: hidden">
-  <li class="tab active"><a href="#unread" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback/view/unread">Unread</a></li>
-  <li class="tab"><a href="#read" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback/view/read">Read</a></li>
-</ul><br>
+{%if data.feedback_data.length%}
+<table>
+ <thead style="border-bottom: none;">
+   <tr>
+      <th data-field="">From</th>
+      <th data-field="">Read Status</th>
+      <th data-field="">Date</th>
+      <th data-field="">Action</th>
+   </tr>
+ </thead>
+  <tbody>
+  {%for feedback in data.feedback_data %}
+    {%if feedback.status == "approved" %}
+      <tr class="feedback-row" data-read="{{feedback.read}}">
+        <td><img align="middle" class="responsive-img feedback-img" src="{%if feedback.anonymous || feedback.logo == null %}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png{%else%}{{feedback.logo}}{%endif%}"/> {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}</td>
+        <td>{{feedback.read}}</td>
+        <td>{{feedback.date}}</td>
+        <td><a href="#feedbackmodal-{{feedback.uuid}}" class="feedback-modal btn grey darken-2" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}">View</a></td>
+      </tr>
+    {% include "./feedback-modal.html" %}
+  {%endif%}
+  {%endfor%}
+</tbody>
+</table>
+{%else%}
 
-  <div id="unread" class="unreadcontainer row">
-    {%for feedback in data.feedback_data %}
-      {%if feedback.read == false && feedback.status == "approved" %}
-      <div class="col l2 m2 s2">
-        <div class="row" style="margin-bottom: 0px;">
-          <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}">
-            <img class="responsive-img feedback-img" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png{%else%}{{feedback.logo}}{%endif%}"/>
-          </a>
+{%endif%}
+
+
+
+
+
+<!-- <ul class="tabs feedback-tab grey darken-3" style="overflow: hidden">
+  <li class="tab"><a href="#unread" class="active" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback/view/unread">Unread</a></li>
+  <li class="tab"><a href="#read" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback/view/read">Read</a></li>
+</ul><br> -->
+
+
+  <!-- <div id="unread" class="unreadcontainer row">
+    {%if data.feedback_data.length%}
+      {%for feedback in data.feedback_data %}
+        {%if feedback.read == false && feedback.status == "approved" %}
+        <div class="col l2 m2 s2">
+          <div class="row" style="margin-bottom: 0px;">
+            <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}">
+            <img class="responsive-img feedback-img" src="{%if feedback.anonymous || feedback.logo == null %}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png{%else%}{{feedback.logo}}{%endif%}"/>
+            </a>
+          </div>
+          <div class="row hide-on-small-and-down" style="margin-top: 0px;">
+            From: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}
+          </div>
         </div>
-        <div class="row hide-on-small-and-down" style="margin-top: 0px;">
-          From: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}
-        </div>
-      </div>
-      {% include "./feedback-modal.html" %}
-      {%endif%}
-    {%endfor%}
+        {% include "./feedback-modal.html" %}
+        {%endif%}
+      {%endfor%}
+  {%else%}
+  <p style="font-weight: 200; font-size: 2em; text-align: center;">No feedback <br> :(</p>
+  {%endif%}
   </div>
   <div id="read" class="readcontainer row">
-    {%for feedback in data.feedback_data %}
-      {%if feedback.read == true && feedback.status == "approved" %}
-      <div class="col l2 m2 s2">
-        <div class="row" style="margin-bottom: 0px;">
-          <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}">
-            <img class="responsive-img feedback-img" src="{%if feedback.anonymous%}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png{%else%}{{feedback.logo}}{%endif%}"/>
-          </a>
+    {%if data.feedback_data.length > 0 %}
+      {%for feedback in data.feedback_data %}
+        {%if feedback.read == true %}
+        <div class="col l2 m2 s2">
+          <div class="row" style="margin-bottom: 0px;">
+            <a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="{{feedback.read}}">
+            <img class="responsive-img feedback-img" src="{%if feedback.anonymous || feedback.logo == null %}https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png{%else%}{{feedback.logo}}{%endif%}"/>            </a>
+          </div>
+          <div class="row hide-on-small-and-down" style="margin-top: 0px;">
+            From: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}
+          </div>
         </div>
-        <div class="row hide-on-small-and-down" style="margin-top: 0px;">
-          From: {%if feedback.anonymous%}Anonymous{%else%}{{feedback.fromuser}}{%endif%}
-        </div>
-      </div>
-        {% include "./feedback-modal.html" %}
-      {%endif%}
-    {%endfor%}
-  </div>
+          {% include "./feedback-modal.html" %}
+        {%endif%}
+      {%endfor%}
+    {%else%}
+  <p style="font-weight: 200; font-size: 2em; text-align: center;">No feedback <br> :(</p>
+    {%endif%}
+  </div> -->
