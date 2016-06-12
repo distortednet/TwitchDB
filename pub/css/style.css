@@ -354,3 +354,7 @@ color: white !important;
 .feedback-row[data-read="true"] {
   opacity: .3;
 }
+.input-label {
+  color: #B9A3E3;
+  font-size: 0.9em;
+}

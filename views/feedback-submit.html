@@ -3,30 +3,31 @@
   <div class="row">
     <form class="col l12 m12 s12">
       <div class="input-field">
+        <span class="input-label"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</span>
         <textarea id="feedback_branding" class="materialize-textarea validate"></textarea>
-        <label for="feedback_branding"><strong>Branding</strong><br>What is {{data.twitchname}}'s branding like? IE: do they have consistent images/artwork/intro & outtro sequences? How could things be improved? What is the quality of their artwork for branding?</label>
       </div>
       <div class="input-field">
+        <span class="input-label"><strong>Overlay/Layout</strong><br>How is {{data.twitchname}}'s overlays? are they too much? too little? how about their alert notifications & sounds?</span>
         <textarea id="feedback_overlay" class="materialize-textarea validate"></textarea>
-        <label for="feedback_overlay"><strong>Overlay/Layout</strong><br>How is {{data.twitchname}}'s overlays? are they too much? too little? how about their alert notifications & sounds?</label>
       </div>
       <div class="input-field">
+        <span class="input-label"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s info panels neatly organized? do you find there is too much info? is there any more info they could be providing in the panels?</span>
         <textarea id="feedback_panels" class="materialize-textarea validate"></textarea>
-        <label for="feedback_panels"><strong>Info Panels</strong><br>Are {{data.twitchname}}'s info panels neatly organized? do you find there is too much info? is there any more info they could be providing in the panels?</label>
       </div>
       <div class="input-field">
+        <span class="input-label"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? what sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</span>
         <textarea id="feedback_game" class="materialize-textarea validate"></textarea>
-        <label for="feedback_game"><strong>Game Choices</strong><br>What are {{data.twitchname}}'s game choices that you like or dislike? what sort of games would you love to see more of, or think would mesh well with {{data.twitchname}}'s personality?</label>
       </div>
       <div class="input-field">
+        <span class="input-label"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? are they active on twitter? would you like to see them on another social platform? what about a chat service such as Discord?</span>
         <textarea id="feedback_social" class="materialize-textarea validate"></textarea>
-        <label for="feedback_social"><strong>Social Network Presence</strong><br>How is {{data.twitchname}}'s social networking? are they active on twitter? would you like to see them on another social platform? what about a chat service such as Discord?</label>
       </div>
       <div class="input-field">
+        <span class="input-label"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</span>
         <textarea id="feedback_other" class="materialize-textarea validate"></textarea>
-        <label for="feedback_other"><strong>Other ideas and features</strong><br>what other ideas would you have for {{data.twitchname}}? any words of praise or ways that you can think to improve the stream that hasn't already been covered?</label>
       </div>
       <div class="input-field col l1 m12 s12">
+        <span class="input-label">Audio Quality</span>
         <select id="feedback_audioquality">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -34,9 +35,9 @@
           <option value="4">4</option>
           <option value="5">5</option>
         </select>
-        <label>Audio Quality</label>
       </div>
       <div class="input-field col l1 m12 s12">
+        <span class="input-label">Video Quality</span>
         <select id="feedback_videoquality">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -44,9 +45,9 @@
           <option value="4">4</option>
           <option value="5">5</option>
         </select>
-        <label>Video Quality</label>
       </div>
       <div class="input-field col l1 m12 s12">
+        <span class="input-label">Chat Interaction</span>
         <select id="feedback_chatinteraction">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -54,10 +55,9 @@
           <option value="4">4</option>
           <option value="5">5</option>
         </select>
-        <label>Chat Interaction</label>
       </div>
       <div class="input-field col l2 m12 s12">
-        <input type="checkbox" id="feedback_anonymous" /><label for="feedback_anonymous">Make Anonymous</label>
+        <input type="checkbox" id="feedback_anonymous" /><span class="input-label">Make Anonymous</span>
       </div>
       <div class="input-field col l1 push-l6 m12 s12">
         <button class="btn waves-effect waves-purple grey darken-3 right feedback_submit" type="submit" name="action" data-touser="{{data.twitchname}}">Submit</button>

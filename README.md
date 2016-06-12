@@ -2,14 +2,14 @@ beta branch. no pull requests until this is live pls thanks
 
 
 Stuff that needs worked on
- - main index page tab menu overflows on small resolutions
- - schedule needs to autofill in the profile edit if user has selected a schedule already
- - certain input fields like db search, label overflows the input
- - add mod bio field
 
+
+ - main index page tab menu overflows on small resolutions
+ - add mod bio field
  - make hash tags in video titles on profile link to respective creative directories
  - maybe profile tag cloud for better content sorting in the future?
  - notification system of some sort (maybe issue notifications via whispers?)
+ - wider profile page
 
  some notes for beta stuff
 

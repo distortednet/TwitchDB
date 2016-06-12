@@ -89,11 +89,9 @@
           <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</div><br>
           <p style="font-weight: 200; font-size: 2em">schedule</p>
           <div style="font-weight: 300;">
-            {%if data.intro_data.intro_schedule%}
-              {%for schedule in data.intro_data.intro_schedule %}
-              {{schedule.day}} - From: {{schedule.start}} To: {{schedule.end}} <br>
-
-              {%endfor%}
+            {%if data.intro_data.intro_schedule  && data.intro_data.intro_schedule.length > 1 %}
+            Converted from streamer time zone to your time zone!
+            <div class="schedule-display"></div>
             {%else%}
               This user has not set a schedule
             {%endif%}

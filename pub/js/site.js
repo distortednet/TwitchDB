@@ -37,6 +37,8 @@ function shufflechildren(div, frompost) {
     parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
   }
 }
+var getreq = false; // hacky, sets to true after profile edit is populated with fields from db for schedule
+
 // Admin client side logic
 $('.admin-approve, .admin-reject').click(function(e) {
   e.preventDefault();
@@ -167,7 +169,17 @@ crossroads.addRoute('/games', function(id){
 });
 
 crossroads.addRoute('/user/{username}', function(username){
+
   $('ul.tabs').tabs('select_tab', 'profile');
+    $.get("/api/user/"+username, function(dbres) {
+      var clienttz = moment.tz.guess();
+      for(var i in dbres) {
+        var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+        var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+        $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
+      }
+      console.log(dbres);
+  });
 });
 crossroads.addRoute('/user/{username}/feedback', function(username){
   $('ul.tabs').tabs('select_tab', 'feedback');
@@ -233,7 +245,20 @@ crossroads.addRoute('/user/{username}/edit', function(username){
   });
   //schedule logic
   var template = '<select class="browser-default"></select>';
-  generatefields(template);
+  var twitchname = $("#profile_twitchname").val();
+  if(typeof(twitchname) != "undefined") {
+    $.get("/api/user/"+twitchname, function(dbresult) {
+      if(dbresult.length && dbresult.length > 1 && getreq == false) {
+        for(var i in dbresult) {
+            generatefields(template);
+            $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
+            $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
+            $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
+        }
+        getreq = true;
+      }
+    });
+  }
   $('.addfield').click(function(e) {
     e.preventDefault();
     fieldcount = $('.day').children().length;
@@ -247,13 +272,13 @@ crossroads.addRoute('/user/{username}/edit', function(username){
   $('.profile_edit').click(function(e) {
     e.preventDefault();
     var date = new Date();
-    var tzoffset = new Date().getTimezoneOffset();
+    var tzoffset = moment.tz.guess();
     var schedulearr = [];
     $.each($('.day select option:selected'), function(index, element) {
       var day = $(this).val();
       var starthour = $('.hour-start select option:selected').eq(index).val();
       var endhour = $('.hour-end select option:selected').eq(index).val();
-      schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'utcoffset': tzoffset});
+      schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'timezone': tzoffset});
     });
     var profile_object = {
       twitchname: $("#profile_twitchname").val(),

@@ -18,6 +18,11 @@ router.get('/search', (req, res, next) => {
     res.send(false);
   }
 });
+router.get('/user/:name', (req, res, next) => {
+  db.intro.select(req.params.name).then((result) => {
+    res.send(result[0].intro_data.intro_schedule);
+  });
+});
 router.post('/vote', helpers.middleware.checkAuth(), (req, res, next) => {
   db.intro.select(req.body.twitchname).then((data) => {
     var data = data[0];

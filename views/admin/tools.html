@@ -12,8 +12,8 @@
   <div class="col s12">
     <div class="row">
       <div class="input-field col s4 offset-s2">
+        <span class="input-label"><strong>Twitch Name OR reddit name</strong></span>
         <input id="admin_search" type="text" class="validate"  style="margin-top: 40px;">
-        <label for="admin_search"><strong>Twitch Name OR reddit name</strong></label>
       </div>
     </div>
     <div class="row">
@@ -27,36 +27,36 @@
 <div class="search-results row">
   <div class="row">
     <div class="input-field col s4 offset-s2">
+      <span class="input-label"><strong>Twitch name</strong></span>
       <input id="result_twitchname" type="text" style="margin-top: 40px;">
-      <label for="result_twitchname"><strong>Twitch name</strong></label>
     </div>
     <div class="input-field col s4">
+      <span class="input-label"><strong>Reddit Name</strong></span>
       <input id="result_redditname" type="text" class="validate"  style="margin-top: 40px;">
-      <label for="result_redditname"><strong>Reddit Name</strong></label>
     </div>
   </div>
 
   <div class="row">
     <div class="input-field col s4 offset-s2">
       <p>
+        <span class="input-label">Approve</span>
         <input name="searchgroup" type="radio" id="set_approved" value="approved"/>
-        <label for="set_approved">Approve</label>
       </p>
       <p>
+        <span class="input-label">Reject</span>
         <input name="searchgroup" type="radio" id="set_reject" value="rejected"/>
-        <label for="set_reject">Reject</label>
       </p>
       <p>
+        <span class="input-label">Pending</span>
         <input name="searchgroup" type="radio" id="set_pending" value="pending"/>
-        <label for="set_pending">Pending</label>
       </p>
       <p>
         <input name="searchgroup" type="radio" id="set_clear"  value="clear"/>
-        <label for="set_clear">Clear Intro</label>
+        <label for="set_clear">Clear Intro</span>
       </p>
       <p>
         <input class="with-gap" name="setadmin" type="checkbox" id="set_admin" />
-        <label for="set_admin">Set as site admin</label>
+        <label for="set_admin">Set as site admin</span>
       </p>
 
     </div>
@@ -75,55 +75,3 @@
   {% block footer %}
   <script src="../../js/site.js" charset="utf-8"></script>
   {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="row">
-  <form class="col s8 offset-s2">
-    <div class="row">
-      <div class="input-field col s12">
-        <textarea id="textarea1" class="materialize-textarea validate"></textarea>
-        <label for="textarea1"><strong>About Me</strong> - a brief summary of who you are and what you are about!</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s4">
-        <input id="first_name" type="text" class="validate"  style="margin-top: 40px;">
-        <label for="first_name"><strong>Schedule</strong> - When do you stream? What timezone?</label>
-      </div>
-      <div class="input-field col s4">
-        <input id="first_name" type="text" class="validate"  style="margin-top: 40px;">
-        <label for="first_name"><strong>Games</strong> - What sort of stuff do you stream?</label>
-      </div>
-      <div class="input-field col s4">
-        <input id="first_name" type="text" class="validate"  style="margin-top: 40px;">
-        <label for="first_name"><strong>Reddit Username</strong> - Optional...for /r/twitch flair!</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <textarea id="textarea1" class="materialize-textarea validate"></textarea>
-        <label for="textarea1"><strong>Goals</strong> - What sort of goals do you have? What unique "flair" do you have that would attract people?</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <textarea id="textarea1" class="materialize-textarea validate"></textarea>
-        <label for="textarea1"><strong>Background</strong> - What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?</label>
-      </div>
-    </div>
-    <button class="btn waves-effect waves-purple grey darken-3 right" type="submit" name="action">Submit</button>
-  </form>
-</div> -->
