@@ -2,8 +2,8 @@ beta branch. no pull requests until this is live pls thanks
 
 
 Stuff that needs worked on
-
-
+ - find way to make certain ajax calls (ie for populating schedule stuff) fire only once
+ 
  - main index page tab menu overflows on small resolutions
  - add mod bio field
  - make hash tags in video titles on profile link to respective creative directories

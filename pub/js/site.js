@@ -1,12 +1,4 @@
 $(document).ready(function() {
-  //live streams client side logic
-  $('.dropdown-button').dropdown({
-    inDuration: 500,
-    outDuration: 500,
-    hover: true,
-  }
-);
-
 //functions
 function inarray(value, array) {
   return array.indexOf(value) > -1;
@@ -37,53 +29,62 @@ function shufflechildren(div, frompost) {
     parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
   }
 }
-var getreq = false; // hacky, sets to true after profile edit is populated with fields from db for schedule
-
-// Admin client side logic
-$('.admin-approve, .admin-reject').click(function(e) {
-  e.preventDefault();
-  var twitchname = $(this).data("user");
-  var status = $(this).data("status");
-  $.post("/admin/submit", {"twitchname": twitchname, "intro_status": status}, function(data) {
-    $('.row-'+twitchname).fadeOut("slow");
-    Materialize.toast(data, 3000, 'rounded')
-  });
-});
-$('.admin-feedback-approve, .admin-feedback-reject').click(function(e) {
-  e.preventDefault();
-  var touser = $(this).data('touser');
-  var uuid = $(this).data('uuid');
-  var feedbackstatus = $(this).data('status');
-  $.post("/admin/submit/feedback", {"twitchname": touser, "uuid": uuid, "status": feedbackstatus}, function(data) {
-    $('.row-'+uuid).fadeOut("slow");
-    Materialize.toast(data, 3000, 'rounded')
-  });
-});
-
-$('.admin-submit-search').click(function(e) {
-  e.preventDefault();
-  var namesearch = $('#admin_search').val();
-  $.post("/admin/tools", {"username": namesearch}, function(data) {
-    $("#result_twitchname").val(data.twitchname);
-    $("#result_redditname").val(data.redditname);
-    $(".search-results").fadeIn(1500);
-  });
-});
-$('.admin-modify-user').click(function(e) {
-  e.preventDefault();
-  var status = $('input[name="searchgroup"]:checked').val();
-  var admin = $('input[name="setadmin"]').is(':checked');
-  var twitchname = $("#result_twitchname").val();
-  var redditname = $("#result_redditname").val();
-  $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin}, function(data) {
-    Materialize.toast(data, 3000, 'rounded')
-  });
+function generatehours(interval) {
+  var arr = [], i, j;
+  for(i=0; i<24; i++) {
+    if(i < 10) {
+      i = "0"+i;
+    }
+    arr.push(i+":00", i+":"+interval);
+  }
+  return arr;
+}
+$.fn.populate = function(type){
+  var element = this;
+  $(this).empty();
+  switch(type) {
+    case 'hours':
+      var hours = generatehours(30);
+      $.each(hours, function(index, hour) {
+        $(element).append('<option value="'+hour+'">'+hour+'</option>');
+      });
+    break;
+    case 'days':
+      var daysarr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      $.each(daysarr, function(index, day) {
+        $(element).append('<option value="'+day+'">'+day+'</option>');
+      });
+    break;
+  }
+  return $(element);
+};
+function generatefields(template) {
+  $(template).populate('days').appendTo('.day');
+  $(template).populate('hours').appendTo('.hour-start');
+  $(template).populate('hours').appendTo('.hour-end');
+  $('.day select:last, .hour-start select:last, .hour-end select:last').hide().fadeIn(100);
+}
+$('.dropdown-button').dropdown({
+  inDuration: 500,
+  outDuration: 500,
+  hover: true,
 });
 
+// add all our main client-side routes
+var index = crossroads.addRoute('/');
+var random = crossroads.addRoute('/random');
+var mature = crossroads.addRoute('/mature');
+var family = crossroads.addRoute('/family');
+var votes = crossroads.addRoute('/votes');
+var games = crossroads.addRoute('/games');
+var profile = crossroads.addRoute('/user/{username}');
+var feedback = crossroads.addRoute('/user/{username}/feedback');
+var feedbackview = crossroads.addRoute('/user/{username}/feedback/view');
+var editprofile = crossroads.addRoute('/user/{username}/edit');
+var vods = crossroads.addRoute('/user/{username}/vods');
 
-
-//main page routing
-crossroads.addRoute('/', function(id){
+//route logic
+index.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'top');
   $.get("/api/top", function(data) {
     $(data).hide().appendTo("#top").fadeIn(1000);
@@ -92,7 +93,8 @@ crossroads.addRoute('/', function(id){
     $(res).hide().appendTo("#top").fadeIn(1000);
   });
 });
-crossroads.addRoute('/random', function(id){
+
+random.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'random');
   $.get("/api/top", function(data) {
     $('#random').empty();
@@ -104,7 +106,8 @@ crossroads.addRoute('/random', function(id){
     $(res).hide().appendTo("#random").fadeIn(1000);
   });
 });
-crossroads.addRoute('/mature', function(id){
+
+mature.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'mature');
   $.get("/api/mature", function(data) {
     $('#mature').empty();
@@ -113,8 +116,8 @@ crossroads.addRoute('/mature', function(id){
   paginate("#mature", "/api/mature", function(res) {
     $(res).hide().appendTo("#mature").fadeIn(1000);
   });
-});
-crossroads.addRoute('/family', function(id){
+})
+family.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'family');
   $.get("/api/family", function(data) {
     $('#family').empty();
@@ -123,15 +126,15 @@ crossroads.addRoute('/family', function(id){
   paginate("#family", "/api/family", function(res) {
     $(res).hide().appendTo("#family").fadeIn(1000);
   });
-});
-crossroads.addRoute('/votes', function(id){
+})
+votes.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'votes');
   $.get("/api/votes", function(data) {
     $('#votes').empty();
     $(data).hide().appendTo("#votes").fadeIn(1000);
   })
-});
-crossroads.addRoute('/games', function(id){
+})
+games.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'games');
   $.get("/api/games", function(data) {
     $('#games').empty();
@@ -166,64 +169,27 @@ crossroads.addRoute('/games', function(id){
         }
     });
   });
-});
-
-crossroads.addRoute('/user/{username}', function(username){
-
+})
+profile.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'profile');
     $.get("/api/user/"+username, function(dbres) {
       var clienttz = moment.tz.guess();
-      for(var i in dbres) {
-        var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-        var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-        $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
-      }
-      console.log(dbres);
+      $('.schedule-display').empty();
+        for(var i in dbres) {
+          var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+          var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+          $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
+        }
   });
-});
-crossroads.addRoute('/user/{username}/feedback', function(username){
+})
+feedback.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'feedback');
-});
-crossroads.addRoute('/user/{username}/feedback/view', function(username){
+})
+feedbackview.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'feedback');
-});
-crossroads.addRoute('/user/{username}/edit', function(username){
+})
+editprofile.matched.add(function(username) {
   $('ul.tabs').tabs('select_tab', 'edit');
-  function generatehours(interval) {
-    var arr = [], i, j;
-    for(i=0; i<24; i++) {
-      if(i < 10) {
-        i = "0"+i;
-      }
-      arr.push(i+":00", i+":"+interval);
-    }
-    return arr;
-  }
-  $.fn.populate = function(type){
-    var element = this;
-    $(this).empty();
-    switch(type) {
-      case 'hours':
-        var hours = generatehours(30);
-        $.each(hours, function(index, hour) {
-          $(element).append('<option value="'+hour+'">'+hour+'</option>');
-        });
-      break;
-      case 'days':
-        var daysarr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        $.each(daysarr, function(index, day) {
-          $(element).append('<option value="'+day+'">'+day+'</option>');
-        });
-      break;
-    }
-    return $(element);
-  };
-  function generatefields(template) {
-    $(template).populate('days').appendTo('.day');
-    $(template).populate('hours').appendTo('.hour-start');
-    $(template).populate('hours').appendTo('.hour-end');
-    $('.day select:last, .hour-start select:last, .hour-end select:last').hide().fadeIn(100);
-  }
   //next step logic
   $('.next-step').click(function(e) {
     e.preventDefault();
@@ -243,31 +209,26 @@ crossroads.addRoute('/user/{username}/edit', function(username){
       $('.profile-step-1').show();
     }
   });
-  //schedule logic
-  var template = '<select class="browser-default"></select>';
-  var twitchname = $("#profile_twitchname").val();
-  if(typeof(twitchname) != "undefined") {
-    $.get("/api/user/"+twitchname, function(dbresult) {
-      if(dbresult.length && dbresult.length > 1 && getreq == false) {
-        for(var i in dbresult) {
-            generatefields(template);
-            $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
-            $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
-            $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
+    //schedule logic
+    var template = '<select class="browser-default"></select>';
+    var twitchname = $("#profile_twitchname").val();
+    if(typeof(twitchname) != "undefined") {
+      $.get("/api/user/"+twitchname, function(dbresult) {
+        if(dbresult.length && dbresult.length > 1) {
+          for(var i in dbresult) {
+              generatefields(template);
+              $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
+              $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
+              $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
+          }
         }
-        getreq = true;
-      }
-    });
-  }
-  $('.addfield').click(function(e) {
-    e.preventDefault();
-    fieldcount = $('.day').children().length;
-    if(fieldcount >= 20) {
-       Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
-    } else {
-      generatefields(template);
+      });
     }
-  });
+})
+vods.matched.add(function(username) {
+  $('ul.tabs').tabs('select_tab', 'vods');
+})
+
 //profile submit logic
   $('.profile_edit').click(function(e) {
     e.preventDefault();
@@ -309,18 +270,66 @@ crossroads.addRoute('/user/{username}/edit', function(username){
       });
     }
   })
-  //remove schedule field logic
+  //add schedule field logic
+  $('.addfield').click(function(e) {
+    e.preventDefault();
+    fieldcount = $('.day').children().length;
+    if(fieldcount >= 20) {
+       Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
+    } else {
+      generatefields(template);
+    }
+  });
+
+  // remove schedule field logic
   $('.removefield').click(function(e) {
     e.preventDefault();
     $('.day select:last, .hour-start select:last, .hour-end select:last').fadeOut(100, function() {
       $(this).remove();
     });
-  })
+  });
+
+//admin client logic
+$('.admin-approve, .admin-reject').click(function(e) {
+  e.preventDefault();
+  var twitchname = $(this).data("user");
+  var status = $(this).data("status");
+  $.post("/admin/submit", {"twitchname": twitchname, "intro_status": status}, function(data) {
+    $('.row-'+twitchname).fadeOut("slow");
+    Materialize.toast(data, 3000, 'rounded')
+  });
 });
-crossroads.addRoute('/user/{username}/vods', function(username){
-  $('ul.tabs').tabs('select_tab', 'vods');
+$('.admin-feedback-approve, .admin-feedback-reject').click(function(e) {
+  e.preventDefault();
+  var touser = $(this).data('touser');
+  var uuid = $(this).data('uuid');
+  var feedbackstatus = $(this).data('status');
+  $.post("/admin/submit/feedback", {"twitchname": touser, "uuid": uuid, "status": feedbackstatus}, function(data) {
+    $('.row-'+uuid).fadeOut("slow");
+    Materialize.toast(data, 3000, 'rounded')
+  });
+});
+$('.admin-submit-search').click(function(e) {
+  e.preventDefault();
+  var namesearch = $('#admin_search').val();
+  $.post("/admin/tools", {"username": namesearch}, function(data) {
+    $("#result_twitchname").val(data.twitchname);
+    $("#result_redditname").val(data.redditname);
+    $(".search-results").fadeIn(1500);
+  });
+});
+$('.admin-modify-user').click(function(e) {
+  e.preventDefault();
+  var status = $('input[name="searchgroup"]:checked').val();
+  var admin = $('input[name="setadmin"]').is(':checked');
+  var twitchname = $("#result_twitchname").val();
+  var redditname = $("#result_redditname").val();
+  $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin}, function(data) {
+    Materialize.toast(data, 3000, 'rounded')
+  });
 });
 
+//index page stream tab logic & url push state
 $('.streams-tab li a').click(function(e) {
   $(window).unbind("scroll");
   $('.livestream').hide().fadeIn(1000);
@@ -328,7 +337,7 @@ $('.streams-tab li a').click(function(e) {
   history.pushState(null, null, location);
   crossroads.parse(location);
 });
-
+//profile page tab logic & url push state
 $(".profile-tab li a").click(function(e) {
   var location = $(this).data('location')
   history.pushState(null, null, location);
@@ -425,8 +434,6 @@ $('.feedback_submit').click(function(e) {
       Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
     }
 });
-
-//feedback read logic
 $(document).on( "click", ".feedback-modal", function(e) {
   e.preventDefault();
   var readstate = $(this).data('read');
@@ -441,10 +448,8 @@ $(document).on( "click", ".feedback-modal", function(e) {
   }
 });
 
-
-//parse crossroads route
-crossroads.parse(document.location.pathname);
-// other shizz
+ //stuff that should hapepen at the end.
+ crossroads.parse(document.location.pathname);
  $('select').material_select();
  $('ul.tabs').tabs();
  $(".button-collapse").sideNav();
