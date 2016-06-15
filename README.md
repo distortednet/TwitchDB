@@ -3,7 +3,12 @@ beta branch. no pull requests until this is live pls thanks
 
 Stuff that needs worked on
  - find way to make certain ajax calls (ie for populating schedule stuff) fire only once
- 
+    this has been fixed, but through this discovered other weird bugs. crossroadsjs appears to batch logic inside of routes up when switching between SPA tabs. this causes
+    things to be executed more than once (ie clicking between most viewers and random several times will cause both of them to blink in and out for each time you've clicked the tab).
+    this effects other things too, such as click events, causing data to get submitted multiple times.
+    right now a temporary fix has been made, but I need to re consider a majority of my client side logic, it appears.
+
+
  - main index page tab menu overflows on small resolutions
  - add mod bio field
  - make hash tags in video titles on profile link to respective creative directories

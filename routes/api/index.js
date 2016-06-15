@@ -17,6 +17,11 @@ router.get('/top', (req, res, next) => {
     res.render('stream-partial', { streams: result});
   })
 });
+router.get('/random', (req, res, next) => {
+  db.cache.random(15).then((result) => {
+    res.render('stream-partial', { streams: result});
+  });
+});
 router.get('/mature', (req, res, next) => {
   if(req.query.start) {
     var start = parseInt(req.query.start);

@@ -201,6 +201,13 @@ var cache = {
 			})
 		});
 	},
+	random:(limit) => {
+		return new Promise(function(resolve, reject) {
+			CacheModel.without('id', '_links', {'channel' : '_links'}).sample(limit).run().then((streams) => {
+				resolve(streams);
+			});
+		});
+	},
 	maturefilter: (start, end, mature) => {
 		return new Promise(function(resolve, reject) {
 			CacheModel.without('id', '_links', {'channel' : '_links'}).filter({'channel': {'mature': mature}}).orderBy(r.desc('viewers')).slice(start, end).run().then((streams) => {

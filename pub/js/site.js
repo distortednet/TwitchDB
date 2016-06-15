@@ -18,16 +18,18 @@ function paginate(div, route, cb) {
     $(window).scroll(scrollFunction);
 };
 
-function shufflechildren(div, frompost) {
-  var parent = $(div);
-  if(frompost) {
-    var divs = parent.children().slice(-12);
-  } else {
-    var divs = parent.children();
-  }
-  while (divs.length) {
-    parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
-  }
+function uniquechildren(data) {
+  var old = [];
+  var unique = [];
+  $("#random").children().filter(function() {
+    old.push($(this).data('username'));
+  });
+  $(data).each(function() {
+    if($(this).data('username') && $.inArray($(this).data('username'), old) === -1) {
+      unique.push($(this));
+    }
+  })
+  return unique;
 }
 function generatehours(interval) {
   var arr = [], i, j;
@@ -64,393 +66,204 @@ function generatefields(template) {
   $(template).populate('hours').appendTo('.hour-end');
   $('.day select:last, .hour-start select:last, .hour-end select:last').hide().fadeIn(100);
 }
-$('.dropdown-button').dropdown({
-  inDuration: 500,
-  outDuration: 500,
-  hover: true,
-});
 
-// add all our main client-side routes
-var index = crossroads.addRoute('/');
-var random = crossroads.addRoute('/random');
-var mature = crossroads.addRoute('/mature');
-var family = crossroads.addRoute('/family');
-var votes = crossroads.addRoute('/votes');
-var games = crossroads.addRoute('/games');
-var profile = crossroads.addRoute('/user/{username}');
-var feedback = crossroads.addRoute('/user/{username}/feedback');
-var feedbackview = crossroads.addRoute('/user/{username}/feedback/view');
-var editprofile = crossroads.addRoute('/user/{username}/edit');
-var vods = crossroads.addRoute('/user/{username}/vods');
-
-//route logic
-index.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'top');
-  $.get("/api/top", function(data) {
-    $(data).hide().appendTo("#top").fadeIn(1000);
-  });
-  paginate("#top", "/api/top", function(res) {
-    $(res).hide().appendTo("#top").fadeIn(1000);
-  });
-});
-
-random.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'random');
-  $.get("/api/top", function(data) {
-    $('#random').empty();
-    $(data).hide().appendTo("#random").fadeIn(1000);
-    shufflechildren("#random", false);
-  });
-  paginate("#random", "/api/top", function(res) {
-    shufflechildren("#random", true);
-    $(res).hide().appendTo("#random").fadeIn(1000);
-  });
-});
-
-mature.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'mature');
-  $.get("/api/mature", function(data) {
-    $('#mature').empty();
-    $(data).hide().appendTo("#mature").fadeIn(1000);
-  });
-  paginate("#mature", "/api/mature", function(res) {
-    $(res).hide().appendTo("#mature").fadeIn(1000);
-  });
-})
-family.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'family');
-  $.get("/api/family", function(data) {
-    $('#family').empty();
-    $(data).hide().appendTo("#family").fadeIn(1000);
-  });
-  paginate("#family", "/api/family", function(res) {
-    $(res).hide().appendTo("#family").fadeIn(1000);
-  });
-})
-votes.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'votes');
-  $.get("/api/votes", function(data) {
-    $('#votes').empty();
-    $(data).hide().appendTo("#votes").fadeIn(1000);
-  })
-})
-games.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'games');
-  $.get("/api/games", function(data) {
-    $('#games').empty();
-    $(data).hide().appendTo("#games").fadeIn(1000);
-    $('.gridder').gridderExpander({
-        scroll: true,
-        scrollOffset: 400,
-        scrollTo: "panel",                  // panel or listitem
-        animationSpeed: 500,
-        animationEasing: "easeInOutExpo",
-        showNav: false,                      // Show Navigation
-        nextText: "Next",                   // Next button text
-        prevText: "Previous",               // Previous button text
-        closeText: "Close",                 // Close button text
-        onStart: function(e){
-        },
-        onContent: function(contentdiv){
-          var previousdiv = $(contentdiv).prev();
-          var game = $(contentdiv).prev().data('game');
-          $.get("/api/games", {game: game}, function(users) {
-            $(contentdiv).children().children().html(users);
-            $(contentdiv).children().children().prepend('<div class="progress"><div class="indeterminate"></div></div>');
-            $('.livestream').imagesLoaded().always( function( instance ) {
-              $('.progress').remove();
-            }).done( function( instance ) {
-              $('.livestream').fadeIn(1000);
-            })
-          });
-        },
-        onClosed: function(){
-            console.log("closed");
-        }
-    });
-  });
-})
-profile.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'profile');
-    $.get("/api/user/"+username, function(dbres) {
-      var clienttz = moment.tz.guess();
-      $('.schedule-display').empty();
-        for(var i in dbres) {
-          var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-          var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-          $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
-        }
-  });
-})
-feedback.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'feedback');
-})
-feedbackview.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'feedback');
-})
-editprofile.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'edit');
-  //next step logic
-  $('.next-step').click(function(e) {
-    e.preventDefault();
-    if($('.profile-step-1').is(':visible')) {
-      $('.next-step').text("Step 3");
-      $('.profile-step-1').hide();
-      $('.profile-step-2').show();
-      $('.previous-step').show();
-    } else if($('.profile-step-2').is(':visible')) {
-      $('.next-step').text("Back to step 1");
-      $('.profile-step-2').hide();
-      $('.profile-step-3').show();
-      $('.profile_edit').show();
-    } else if($('.profile-step-3').is(':visible')) {
-      $('.next-step').text("Step 2");
-      $('.profile-step-3').hide();
-      $('.profile-step-1').show();
-    }
-  });
-    //schedule logic
-    var template = '<select class="browser-default"></select>';
-    var twitchname = $("#profile_twitchname").val();
-    if(typeof(twitchname) != "undefined") {
-      $.get("/api/user/"+twitchname, function(dbresult) {
-        if(dbresult.length && dbresult.length > 1) {
-          for(var i in dbresult) {
-              generatefields(template);
-              $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
-              $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
-              $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
-          }
-        }
+  page('/', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'top');
+    } else {
+      $.get("/api/top", function(data) {
+        $(data).appendTo("#top").hide().fadeIn(1000);
+      });
+      paginate("#top", "/api/top", function(res) {
+        $(res).hide().appendTo("#top").fadeIn(1000);
       });
     }
-})
-vods.matched.add(function(username) {
-  $('ul.tabs').tabs('select_tab', 'vods');
-})
 
-//profile submit logic
-  $('.profile_edit').click(function(e) {
-    e.preventDefault();
-    var date = new Date();
-    var tzoffset = moment.tz.guess();
-    var schedulearr = [];
-    $.each($('.day select option:selected'), function(index, element) {
-      var day = $(this).val();
-      var starthour = $('.hour-start select option:selected').eq(index).val();
-      var endhour = $('.hour-end select option:selected').eq(index).val();
-      schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'timezone': tzoffset});
-    });
-    var profile_object = {
-      twitchname: $("#profile_twitchname").val(),
-      redditname: $("#profile_redditname").val(),
-      intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-      intro_data: {
-        intro_about: $("#profile_about").val(),
-        intro_schedule: schedulearr,
-        intro_games: $("#profile_games").val(),
-        intro_goals: $("#profile_goals").val(),
-        intro_background: $("#profile_background").val(),
-      },
-      social: {
-        facebook: $("#social_facebook").val(),
-        instagram: $("#social_instagram").val(),
-        youtube: $("#social_youtube").val(),
-        steam: $("#social_steam").val(),
-        twitter: $("#social_twitter").val(),
-      }
-    }
-    if(validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
-      Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
+  });
+  page('/random', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'random');
     } else {
-      $.post("/user/submit", profile_object, function(data) {
-        Materialize.toast(data, 3000, 'rounded', function() {
-          window.location.href = "/user/"+profile_object.twitchname;
+      $.get("/api/random", function(data) {
+        $(data).appendTo("#random");
+      });
+      paginate("#random", "/api/random", function(res) {
+        var newchildren = uniquechildren(res);
+        $(newchildren).each(function() {
+          $(this).appendTo("#random").hide().fadeIn(1000);
         })
       });
     }
-  })
-  //add schedule field logic
-  $('.addfield').click(function(e) {
-    e.preventDefault();
-    fieldcount = $('.day').children().length;
-    if(fieldcount >= 20) {
-       Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
-    } else {
-      generatefields(template);
-    }
+    //
+    // $.get("/api/top", function(data) {
+    //   $('#random').empty();
+    //   $(data).appendTo("#random").hide().fadeIn(1000);
+    //   shufflechildren("#random", false);
+    // });
+    // paginate("#random", "/api/top", function(res) {
+    //   shufflechildren("#random", true);
+    //   $(res).hide().appendTo("#random").fadeIn(1000);
+    // });
+  });
+  // page('/mature', function(ctx, next) {
+  // });
+  // page('/family', function(ctx, next) {
+  // });
+  // page('/votes', function(ctx, next) {
+  // });
+  // page('/games', function(ctx, next) {
+  // });
+  // page('/user/:username', function(ctx, next) {
+  //   var username = ctx.params.username;
+  // });
+  // page('/user/:username/feedback', function(ctx, next) {
+  // });
+  // page('/user/:username/feedback/view', function(ctx, next) {
+  // });
+  // page('/user/:username/edit', function(ctx, next) {
+  // });
+  // page('/user/:username/vods', function(ctx, next) {
+  // });
+  // page('', function(ctx, next) {
+  // });
+
+
+  $('.dropdown-button').dropdown({
+    inDuration: 500,
+    outDuration: 500,
+    hover: true,
   });
 
-  // remove schedule field logic
-  $('.removefield').click(function(e) {
-    e.preventDefault();
-    $('.day select:last, .hour-start select:last, .hour-end select:last').fadeOut(100, function() {
-      $(this).remove();
-    });
+  $('.streams-tab li a').click(function(e) {
+    $(window).unbind("scroll");
+    $('.livestream').hide().fadeIn(1000);
+    var location = $(this).data('location')
+    history.pushState(null, null, location);
+    page(location);
+  });
+  //
+  // $(".profile-tab li a").click(function(e) {
+  //   var location = $(this).data('location')
+  //   history.pushState(null, null, location);
+  //   // crossroads.parse(location);
+  // });
+
+  //database search logic
+  $('#searchdb').keypress(function(e) {
+      var keyvalue = $(this).val();
+      if(keyvalue.length >= 2 || e.which == 13) {
+        $.get("/api/search", {search: keyvalue}, function(data) {
+          if(data) {
+            $('.searchresults').empty();
+            $('.searchresults').html(data);
+          } else {
+            $('.searchresults').empty();
+          }
+        });
+      }
   });
 
-//admin client logic
-$('.admin-approve, .admin-reject').click(function(e) {
-  e.preventDefault();
-  var twitchname = $(this).data("user");
-  var status = $(this).data("status");
-  $.post("/admin/submit", {"twitchname": twitchname, "intro_status": status}, function(data) {
-    $('.row-'+twitchname).fadeOut("slow");
-    Materialize.toast(data, 3000, 'rounded')
-  });
-});
-$('.admin-feedback-approve, .admin-feedback-reject').click(function(e) {
-  e.preventDefault();
-  var touser = $(this).data('touser');
-  var uuid = $(this).data('uuid');
-  var feedbackstatus = $(this).data('status');
-  $.post("/admin/submit/feedback", {"twitchname": touser, "uuid": uuid, "status": feedbackstatus}, function(data) {
-    $('.row-'+uuid).fadeOut("slow");
-    Materialize.toast(data, 3000, 'rounded')
-  });
-});
-$('.admin-submit-search').click(function(e) {
-  e.preventDefault();
-  var namesearch = $('#admin_search').val();
-  $.post("/admin/tools", {"username": namesearch}, function(data) {
-    $("#result_twitchname").val(data.twitchname);
-    $("#result_redditname").val(data.redditname);
-    $(".search-results").fadeIn(1500);
-  });
-});
-$('.admin-modify-user').click(function(e) {
-  e.preventDefault();
-  var status = $('input[name="searchgroup"]:checked').val();
-  var admin = $('input[name="setadmin"]').is(':checked');
-  var twitchname = $("#result_twitchname").val();
-  var redditname = $("#result_redditname").val();
-  $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin}, function(data) {
-    Materialize.toast(data, 3000, 'rounded')
-  });
-});
 
-//index page stream tab logic & url push state
-$('.streams-tab li a').click(function(e) {
-  $(window).unbind("scroll");
-  $('.livestream').hide().fadeIn(1000);
-  var location = $(this).data('location')
-  history.pushState(null, null, location);
-  crossroads.parse(location);
-});
-//profile page tab logic & url push state
-$(".profile-tab li a").click(function(e) {
-  var location = $(this).data('location')
-  history.pushState(null, null, location);
-  crossroads.parse(location);
-});
-
-//database search logic
-$('#searchdb').keypress(function(e) {
+  //game view search filter logic
+  $(document).on( "keyup", "#gamefilter", function(e) {
     var keyvalue = $(this).val();
-    if(keyvalue.length >= 2 || e.which == 13) {
-      $.get("/api/search", {search: keyvalue}, function(data) {
-        if(data) {
-          $('.searchresults').empty();
-          $('.searchresults').html(data);
-        } else {
-          $('.searchresults').empty();
-        }
-      });
+    $('.gridder-show').hide();
+    var elementarray = $(".gridder-list");
+    for (var i = 0; i < elementarray.length; i++) {
+      var game = $(elementarray[i]).data('game');
+      if (game.toLowerCase().indexOf(keyvalue.toLowerCase()) > -1) {
+        $(elementarray[i]).show();
+      } else {
+        $(elementarray[i]).hide();
+      }
     }
-});
-
-
-//game view search filter logic
-$(document).on( "keyup", "#gamefilter", function(e) {
-  var keyvalue = $(this).val();
-  $('.gridder-show').hide();
-  var elementarray = $(".gridder-list");
-  for (var i = 0; i < elementarray.length; i++) {
-    var game = $(elementarray[i]).data('game');
-    if (game.toLowerCase().indexOf(keyvalue.toLowerCase()) > -1) {
-      $(elementarray[i]).show();
-    } else {
-      $(elementarray[i]).hide();
-    }
-  }
-});
-
-//game view poplarity filter logic
-$(document).on( "click", "#popular", function(e) {
-  if($(this).is(':checked')) {
-    var divlist = $(".gridder");
-    var sort = divlist.find('.gridder-list').sort(function(a, b) {
-        return -a.getAttribute('data-popularity') - -b.getAttribute('data-popularity');
-    })
-    $(".gridder").html(sort);
-  } else {
-    var divlist = $(".gridder");
-    var sort = divlist.find('.gridder-list').sort(function(a, b) {
-        var compA = a.getAttribute('data-game');
-        var compB = b.getAttribute('data-game');
-        return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-    })
-    $(".gridder").html(sort);
-  }
-});
-
-
-//vote logic
-$('.addvote').click(function(e) {
-  e.preventDefault();
-  var voter = $(this).data('voter');
-  var votetarget = $(this).data('votetarget');
-  console.log(votetarget);
-  $.post("/api/vote", {twitchname: votetarget, voter: voter}, function(data) {
-    Materialize.toast(data, 3000, 'rounded');
   });
-})
 
-//feedback submit logic
-$('.feedback_submit').click(function(e) {
-  e.preventDefault();
-    var date = new Date();
-    var feedback = {
-      data: {
-        branding: $('#feedback_branding').val(),
-        overlay: $('#feedback_overlay').val(),
-        panels: $('#feedback_panels').val(),
-        game: $('#feedback_game').val(),
-        social: $('#feedback_social').val(),
-        other: $('#feedback_other').val(),
-        audioquality: parseInt($('#feedback_audioquality').val()),
-        videoquality: parseInt($('#feedback_videoquality').val()),
-        chatinteraction: parseInt($('#feedback_chatinteraction').val()),
-        anonymous: $('#feedback_anonymous').is(':checked'),
-        date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-      },
-      touser: $('.feedback_submit').data('touser')
-    };
-    if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
-      $.post("/api/feedback", feedback, function(data) {
-        Materialize.toast(data, 3000, 'rounded');
-      });
+  //game view poplarity filter logic
+  $(document).on( "click", "#popular", function(e) {
+    if($(this).is(':checked')) {
+      var divlist = $(".gridder");
+      var sort = divlist.find('.gridder-list').sort(function(a, b) {
+          return -a.getAttribute('data-popularity') - -b.getAttribute('data-popularity');
+      })
+      $(".gridder").html(sort);
     } else {
-      Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
+      var divlist = $(".gridder");
+      var sort = divlist.find('.gridder-list').sort(function(a, b) {
+          var compA = a.getAttribute('data-game');
+          var compB = b.getAttribute('data-game');
+          return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+      })
+      $(".gridder").html(sort);
     }
-});
-$(document).on( "click", ".feedback-modal", function(e) {
-  e.preventDefault();
-  var readstate = $(this).data('read');
-  var modaltarget = $(this).data('modaltarget');
-  var uuid = $(this).data('uuid');
-  if(readstate == false) {
-    $('#'+modaltarget).openModal();
-    $(this).parent().parent().fadeTo('slow', 0.3);
-    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
-  } else {
-    $('#'+modaltarget).openModal();
-  }
-});
+  });
 
- //stuff that should hapepen at the end.
- crossroads.parse(document.location.pathname);
- $('select').material_select();
- $('ul.tabs').tabs();
- $(".button-collapse").sideNav();
-})
+
+  //vote logic
+  $('.addvote').click(function(e) {
+    e.preventDefault();
+    var voter = $(this).data('voter');
+    var votetarget = $(this).data('votetarget');
+    console.log(votetarget);
+    $.post("/api/vote", {twitchname: votetarget, voter: voter}, function(data) {
+      Materialize.toast(data, 3000, 'rounded');
+    });
+  })
+
+  //feedback submit logic
+  $('.feedback_submit').click(function(e) {
+    e.preventDefault();
+      var date = new Date();
+      var feedback = {
+        data: {
+          branding: $('#feedback_branding').val(),
+          overlay: $('#feedback_overlay').val(),
+          panels: $('#feedback_panels').val(),
+          game: $('#feedback_game').val(),
+          social: $('#feedback_social').val(),
+          other: $('#feedback_other').val(),
+          audioquality: parseInt($('#feedback_audioquality').val()),
+          videoquality: parseInt($('#feedback_videoquality').val()),
+          chatinteraction: parseInt($('#feedback_chatinteraction').val()),
+          anonymous: $('#feedback_anonymous').is(':checked'),
+          date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+        },
+        touser: $('.feedback_submit').data('touser')
+      };
+      if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
+        $.post("/api/feedback", feedback, function(data) {
+          Materialize.toast(data, 3000, 'rounded');
+        });
+      } else {
+        Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
+      }
+  });
+
+  $(document).on( "click", ".feedback-modal", function(e) {
+    e.preventDefault();
+    var readstate = $(this).data('read');
+    var modaltarget = $(this).data('modaltarget');
+    var uuid = $(this).data('uuid');
+    if(readstate == false) {
+      $('#'+modaltarget).openModal();
+      $(this).parent().parent().fadeTo('slow', 0.3);
+      $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
+    } else {
+      $('#'+modaltarget).openModal();
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+  $('select').material_select();
+  $('ul.tabs').tabs();
+  $(".button-collapse").sideNav();
+  page();
+});
