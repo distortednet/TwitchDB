@@ -72,10 +72,11 @@ function generatefields(template) {
       $('ul.tabs').tabs('select_tab', 'top');
     } else {
       $.get("/api/top", function(data) {
+        $('#top').empty();
         $(data).appendTo("#top").hide().fadeIn(1000);
       });
       paginate("#top", "/api/top", function(res) {
-        $(res).hide().appendTo("#top").fadeIn(1000);
+        $(res).appendTo("#top").fadeIn(1000);
       });
     }
 
@@ -85,47 +86,127 @@ function generatefields(template) {
       $('ul.tabs').tabs('select_tab', 'random');
     } else {
       $.get("/api/random", function(data) {
-        $(data).appendTo("#random");
+        $('#random').empty();
+        $(data).appendTo("#random").fadeIn(1000);
       });
       paginate("#random", "/api/random", function(res) {
         var newchildren = uniquechildren(res);
         $(newchildren).each(function() {
-          $(this).appendTo("#random").hide().fadeIn(1000);
+          $(this).appendTo("#random").fadeIn(1000);
         })
       });
     }
-    //
-    // $.get("/api/top", function(data) {
-    //   $('#random').empty();
-    //   $(data).appendTo("#random").hide().fadeIn(1000);
-    //   shufflechildren("#random", false);
-    // });
-    // paginate("#random", "/api/top", function(res) {
-    //   shufflechildren("#random", true);
-    //   $(res).hide().appendTo("#random").fadeIn(1000);
-    // });
   });
-  // page('/mature', function(ctx, next) {
-  // });
-  // page('/family', function(ctx, next) {
-  // });
-  // page('/votes', function(ctx, next) {
-  // });
-  // page('/games', function(ctx, next) {
-  // });
-  // page('/user/:username', function(ctx, next) {
-  //   var username = ctx.params.username;
-  // });
-  // page('/user/:username/feedback', function(ctx, next) {
-  // });
-  // page('/user/:username/feedback/view', function(ctx, next) {
-  // });
-  // page('/user/:username/edit', function(ctx, next) {
-  // });
-  // page('/user/:username/vods', function(ctx, next) {
-  // });
-  // page('', function(ctx, next) {
-  // });
+  page('/mature', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'mature');
+    } else {
+      $.get("/api/mature", function(data) {
+        $('#mature').empty();
+        $(data).appendTo("#mature").fadeIn(1000);
+      });
+      paginate("#mature", "/api/mature", function(res) {
+        $(res).appendTo("#mature").fadeIn(1000);
+      });
+    }
+  });
+  page('/family', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'family');
+    } else {
+      $.get("/api/family", function(data) {
+        $('#family').empty();
+        $(data).appendTo("#family").fadeIn(1000);
+      });
+      paginate("#family", "/api/family", function(res) {
+        $(res).appendTo("#family").fadeIn(1000);
+      });
+    }
+  });
+  page('/votes', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'votes');
+    } else {
+      $.get("/api/votes", function(data) {
+        $('#votes').empty();
+        $(data).appendTo("#votes").fadeIn(1000);
+      })
+    }
+  });
+  page('/games', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'games');
+    } else {
+      $.get("/api/games", function(data) {
+        $('#games').empty();
+        $(data).hide().appendTo("#games").fadeIn(1000);
+        $('.gridder').gridderExpander({
+            scroll: true,
+            scrollOffset: 400,
+            scrollTo: "panel",                  // panel or listitem
+            animationSpeed: 500,
+            animationEasing: "easeInOutExpo",
+            showNav: false,                      // Show Navigation
+            nextText: "Next",                   // Next button text
+            prevText: "Previous",               // Previous button text
+            closeText: "Close",                 // Close button text
+            onStart: function(e){
+            },
+            onContent: function(contentdiv){
+              var previousdiv = $(contentdiv).prev();
+              var game = $(contentdiv).prev().data('game');
+              $.get("/api/games", {game: game}, function(users) {
+                $(contentdiv).children().children().html(users);
+                $(contentdiv).children().children().prepend('<div class="progress"><div class="indeterminate"></div></div>');
+                $('.livestream').imagesLoaded().always( function( instance ) {
+                  $('.progress').remove();
+                }).done( function( instance ) {
+                  $('.livestream').fadeIn(1000);
+                })
+              });
+            }
+        });
+      });
+    }
+  });
+  page('/user/:username', function(ctx, next) {
+    var username = ctx.params.username;
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'profile');
+    } else {
+      $.get("/api/user/"+username, function(dbres) {
+        var clienttz = moment.tz.guess();
+          for(var i in dbres) {
+            var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+            var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+            $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
+          }
+    });
+    }
+  });
+  page('/user/:username/feedback', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'feedback');
+    }
+  });
+  page('/user/:username/feedback/view', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'feedback');
+    }
+  });
+  page('/user/:username/edit', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'edit');
+    } else {
+    }
+
+  });
+  page('/user/:username/vods', function(ctx, next) {
+    if(ctx.init) {
+      $('ul.tabs').tabs('select_tab', 'vods');
+    } else {
+    }
+  });
 
 
   $('.dropdown-button').dropdown({
@@ -141,12 +222,12 @@ function generatefields(template) {
     history.pushState(null, null, location);
     page(location);
   });
-  //
-  // $(".profile-tab li a").click(function(e) {
-  //   var location = $(this).data('location')
-  //   history.pushState(null, null, location);
-  //   // crossroads.parse(location);
-  // });
+
+  $(".profile-tab li a").click(function(e) {
+    var location = $(this).data('location')
+    history.pushState(null, null, location);
+    page(location);
+  });
 
   //database search logic
   $('#searchdb').keypress(function(e) {
@@ -261,9 +342,9 @@ function generatefields(template) {
 
 
 
-
+  page();
   $('select').material_select();
   $('ul.tabs').tabs();
   $(".button-collapse").sideNav();
-  page();
+
 });

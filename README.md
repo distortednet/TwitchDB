@@ -8,6 +8,9 @@ Stuff that needs worked on
     this effects other things too, such as click events, causing data to get submitted multiple times.
     right now a temporary fix has been made, but I need to re consider a majority of my client side logic, it appears.
 
+    - nav links appear to be non functional
+    - check boxes missing?
+    - clicking profile subnav causes schedule to duplicate data
 
  - main index page tab menu overflows on small resolutions
  - add mod bio field

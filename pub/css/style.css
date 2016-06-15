@@ -195,7 +195,7 @@ input:focus:not([readonly]) {
   padding-left: 2em !important;
 }
 .livestream {
-	/*display: none;*/
+	display: none;
 }
 .streams-tab {
   overflow: hidden;
