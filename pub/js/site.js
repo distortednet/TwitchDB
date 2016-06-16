@@ -167,6 +167,39 @@ function generatefields(template) {
             }
         });
       });
+      //game view search filter logic
+      $(document).on( "keyup", "#gamefilter", function(e) {
+        var keyvalue = $(this).val();
+        $('.gridder-show').hide();
+        var elementarray = $(".gridder-list");
+        for (var i = 0; i < elementarray.length; i++) {
+          var game = $(elementarray[i]).data('game');
+          if (game.toLowerCase().indexOf(keyvalue.toLowerCase()) > -1) {
+            $(elementarray[i]).show();
+          } else {
+            $(elementarray[i]).hide();
+          }
+        }
+      });
+
+      //game view poplarity filter logic
+      $(document).on( "click", "#popular", function(e) {
+        if($(this).is(':checked')) {
+          var divlist = $(".gridder");
+          var sort = divlist.find('.gridder-list').sort(function(a, b) {
+              return -a.getAttribute('data-popularity') - -b.getAttribute('data-popularity');
+          })
+          $(".gridder").html(sort);
+        } else {
+          var divlist = $(".gridder");
+          var sort = divlist.find('.gridder-list').sort(function(a, b) {
+              var compA = a.getAttribute('data-game');
+              var compB = b.getAttribute('data-game');
+              return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+          })
+          $(".gridder").html(sort);
+        }
+      });
     }
   });
   page('/user/:username', function(ctx, next) {
@@ -174,19 +207,49 @@ function generatefields(template) {
     if(ctx.init) {
       $('ul.tabs').tabs('select_tab', 'profile');
     } else {
-      $.get("/api/user/"+username, function(dbres) {
-        var clienttz = moment.tz.guess();
-          for(var i in dbres) {
-            var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-            var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-            $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
-          }
-    });
+      if( $('.schedule-display').is(':empty') ) {
+        $.get("/api/user/"+username, function(dbres) {
+          var clienttz = moment.tz.guess();
+            for(var i in dbres) {
+              var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+              var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+              $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
+            }
+        });
+      }
     }
   });
   page('/user/:username/feedback', function(ctx, next) {
     if(ctx.init) {
       $('ul.tabs').tabs('select_tab', 'feedback');
+    } else {
+      $('.feedback_submit').click(function(e) {
+        e.preventDefault();
+          var date = new Date();
+          var feedback = {
+            data: {
+              branding: $('#feedback_branding').val(),
+              overlay: $('#feedback_overlay').val(),
+              panels: $('#feedback_panels').val(),
+              game: $('#feedback_game').val(),
+              social: $('#feedback_social').val(),
+              other: $('#feedback_other').val(),
+              audioquality: parseInt($('#feedback_audioquality').val()),
+              videoquality: parseInt($('#feedback_videoquality').val()),
+              chatinteraction: parseInt($('#feedback_chatinteraction').val()),
+              anonymous: $('#feedback_anonymous').is(':checked'),
+              date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+            },
+            touser: $('.feedback_submit').data('touser')
+          };
+          if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
+            $.post("/api/feedback", feedback, function(data) {
+              Materialize.toast(data, 3000, 'rounded');
+            });
+          } else {
+            Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
+          }
+      });
     }
   });
   page('/user/:username/feedback/view', function(ctx, next) {
@@ -197,9 +260,7 @@ function generatefields(template) {
   page('/user/:username/edit', function(ctx, next) {
     if(ctx.init) {
       $('ul.tabs').tabs('select_tab', 'edit');
-    } else {
     }
-
   });
   page('/user/:username/vods', function(ctx, next) {
     if(ctx.init) {
@@ -207,7 +268,176 @@ function generatefields(template) {
     } else {
     }
   });
+  page('/search', function(ctx, next) {
+    $('#searchdb').keypress(function(e) {
+        var keyvalue = $(this).val();
+        if(keyvalue.length >= 2 || e.which == 13) {
+          $.get("/api/search", {search: keyvalue}, function(data) {
+            if(data) {
+              $('.searchresults').empty();
+              $('.searchresults').html(data);
+            } else {
+              $('.searchresults').empty();
+            }
+          });
+        }
+    });
+  });
 
+//app logic that is global or does not fit into routes. (at least until i figure out a better way.)
+
+
+//next step logic
+$('.next-step').click(function(e) {
+  e.preventDefault();
+  if($('.profile-step-1').is(':visible')) {
+    $('.next-step').text("Step 3");
+    $('.profile-step-1').hide();
+    $('.profile-step-2').show();
+    $('.previous-step').show();
+  } else if($('.profile-step-2').is(':visible')) {
+    $('.next-step').text("Back to step 1");
+    $('.profile-step-2').hide();
+    $('.profile-step-3').show();
+    $('.profile_edit').show();
+  } else if($('.profile-step-3').is(':visible')) {
+    $('.next-step').text("Step 2");
+    $('.profile-step-3').hide();
+    $('.profile-step-1').show();
+  }
+});
+  //schedule logic
+  var template = '<select class="browser-default"></select>';
+  var twitchname = $("#profile_twitchname").val();
+  if(typeof(twitchname) != "undefined") {
+    $.get("/api/user/"+twitchname, function(dbresult) {
+      if(dbresult.length && dbresult.length > 1) {
+        for(var i in dbresult) {
+            generatefields(template);
+            $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
+            $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
+            $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
+        }
+      }
+    });
+  }
+  $('.addfield').click(function(e) {
+    e.preventDefault();
+    fieldcount = $('.day').children().length;
+    if(fieldcount >= 20) {
+       Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
+    } else {
+      generatefields(template);
+    }
+  });
+//profile submit logic
+  $('.profile_edit').click(function(e) {
+    e.preventDefault();
+    var date = new Date();
+    var tzoffset = moment.tz.guess();
+    var schedulearr = [];
+    $.each($('.day select option:selected'), function(index, element) {
+      var day = $(this).val();
+      var starthour = $('.hour-start select option:selected').eq(index).val();
+      var endhour = $('.hour-end select option:selected').eq(index).val();
+      schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'timezone': tzoffset});
+    });
+    var profile_object = {
+      twitchname: $("#profile_twitchname").val(),
+      redditname: $("#profile_redditname").val(),
+      intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
+      intro_data: {
+        intro_about: $("#profile_about").val(),
+        intro_schedule: schedulearr,
+        intro_games: $("#profile_games").val(),
+        intro_goals: $("#profile_goals").val(),
+        intro_background: $("#profile_background").val(),
+      },
+      social: {
+        facebook: $("#social_facebook").val(),
+        instagram: $("#social_instagram").val(),
+        youtube: $("#social_youtube").val(),
+        steam: $("#social_steam").val(),
+        twitter: $("#social_twitter").val(),
+      }
+    }
+    if(validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
+      Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
+    } else {
+      $.post("/user/submit", profile_object, function(data) {
+        Materialize.toast(data, 3000, 'rounded', function() {
+          window.location.href = "/user/"+profile_object.twitchname;
+        })
+      });
+    }
+  })
+  //remove schedule field logic
+  $('.removefield').click(function(e) {
+    e.preventDefault();
+    $('.day select:last, .hour-start select:last, .hour-end select:last').fadeOut(100, function() {
+      $(this).remove();
+    });
+  })
+
+
+
+
+
+  // Admin client side logic
+  $('.admin-approve, .admin-reject').click(function(e) {
+    e.preventDefault();
+    var twitchname = $(this).data("user");
+    var status = $(this).data("status");
+    $.post("/admin/submit", {"twitchname": twitchname, "intro_status": status}, function(data) {
+      $('.row-'+twitchname).fadeOut("slow");
+      Materialize.toast(data, 3000, 'rounded')
+    });
+  });
+  $('.admin-feedback-approve, .admin-feedback-reject').click(function(e) {
+    e.preventDefault();
+    var touser = $(this).data('touser');
+    var uuid = $(this).data('uuid');
+    var feedbackstatus = $(this).data('status');
+    $.post("/admin/submit/feedback", {"twitchname": touser, "uuid": uuid, "status": feedbackstatus}, function(data) {
+      $('.row-'+uuid).fadeOut("slow");
+      Materialize.toast(data, 3000, 'rounded')
+    });
+  });
+
+  $('.admin-submit-search').click(function(e) {
+    e.preventDefault();
+    var namesearch = $('#admin_search').val();
+    $.post("/admin/tools", {"username": namesearch}, function(data) {
+      $("#result_twitchname").val(data.twitchname);
+      $("#result_redditname").val(data.redditname);
+      $(".search-results").fadeIn(1500);
+    });
+  });
+  $('.admin-modify-user').click(function(e) {
+    e.preventDefault();
+    var status = $('input[name="searchgroup"]:checked').val();
+    var admin = $('input[name="setadmin"]').is(':checked');
+    var twitchname = $("#result_twitchname").val();
+    var redditname = $("#result_redditname").val();
+    $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin}, function(data) {
+      Materialize.toast(data, 3000, 'rounded')
+    });
+  });
+
+
+$(document).on( "click", ".feedback-modal", function(e) {
+  e.preventDefault();
+  var readstate = $(this).data('read');
+  var modaltarget = $(this).data('modaltarget');
+  var uuid = $(this).data('uuid');
+  if(readstate == false) {
+    $('#'+modaltarget).openModal();
+    $(this).parent().parent().fadeTo('slow', 0.3);
+    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
+  } else {
+    $('#'+modaltarget).openModal();
+  }
+});
 
   $('.dropdown-button').dropdown({
     inDuration: 500,
@@ -229,58 +459,6 @@ function generatefields(template) {
     page(location);
   });
 
-  //database search logic
-  $('#searchdb').keypress(function(e) {
-      var keyvalue = $(this).val();
-      if(keyvalue.length >= 2 || e.which == 13) {
-        $.get("/api/search", {search: keyvalue}, function(data) {
-          if(data) {
-            $('.searchresults').empty();
-            $('.searchresults').html(data);
-          } else {
-            $('.searchresults').empty();
-          }
-        });
-      }
-  });
-
-
-  //game view search filter logic
-  $(document).on( "keyup", "#gamefilter", function(e) {
-    var keyvalue = $(this).val();
-    $('.gridder-show').hide();
-    var elementarray = $(".gridder-list");
-    for (var i = 0; i < elementarray.length; i++) {
-      var game = $(elementarray[i]).data('game');
-      if (game.toLowerCase().indexOf(keyvalue.toLowerCase()) > -1) {
-        $(elementarray[i]).show();
-      } else {
-        $(elementarray[i]).hide();
-      }
-    }
-  });
-
-  //game view poplarity filter logic
-  $(document).on( "click", "#popular", function(e) {
-    if($(this).is(':checked')) {
-      var divlist = $(".gridder");
-      var sort = divlist.find('.gridder-list').sort(function(a, b) {
-          return -a.getAttribute('data-popularity') - -b.getAttribute('data-popularity');
-      })
-      $(".gridder").html(sort);
-    } else {
-      var divlist = $(".gridder");
-      var sort = divlist.find('.gridder-list').sort(function(a, b) {
-          var compA = a.getAttribute('data-game');
-          var compB = b.getAttribute('data-game');
-          return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-      })
-      $(".gridder").html(sort);
-    }
-  });
-
-
-  //vote logic
   $('.addvote').click(function(e) {
     e.preventDefault();
     var voter = $(this).data('voter');
@@ -289,60 +467,10 @@ function generatefields(template) {
     $.post("/api/vote", {twitchname: votetarget, voter: voter}, function(data) {
       Materialize.toast(data, 3000, 'rounded');
     });
-  })
-
-  //feedback submit logic
-  $('.feedback_submit').click(function(e) {
-    e.preventDefault();
-      var date = new Date();
-      var feedback = {
-        data: {
-          branding: $('#feedback_branding').val(),
-          overlay: $('#feedback_overlay').val(),
-          panels: $('#feedback_panels').val(),
-          game: $('#feedback_game').val(),
-          social: $('#feedback_social').val(),
-          other: $('#feedback_other').val(),
-          audioquality: parseInt($('#feedback_audioquality').val()),
-          videoquality: parseInt($('#feedback_videoquality').val()),
-          chatinteraction: parseInt($('#feedback_chatinteraction').val()),
-          anonymous: $('#feedback_anonymous').is(':checked'),
-          date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
-        },
-        touser: $('.feedback_submit').data('touser')
-      };
-      if(feedback.data.branding.length >= 40 && feedback.data.overlay.length >= 40 && feedback.data.panels.length >= 40 && feedback.data.game.length >= 40 && feedback.data.social.length >= 40 && feedback.data.other.length >= 20) {
-        $.post("/api/feedback", feedback, function(data) {
-          Materialize.toast(data, 3000, 'rounded');
-        });
-      } else {
-        Materialize.toast("minimum field lengths not met.", 3000, 'rounded');
-      }
-  });
-
-  $(document).on( "click", ".feedback-modal", function(e) {
-    e.preventDefault();
-    var readstate = $(this).data('read');
-    var modaltarget = $(this).data('modaltarget');
-    var uuid = $(this).data('uuid');
-    if(readstate == false) {
-      $('#'+modaltarget).openModal();
-      $(this).parent().parent().fadeTo('slow', 0.3);
-      $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
-    } else {
-      $('#'+modaltarget).openModal();
-    }
   });
 
 
-
-
-
-
-
-
-
-  page();
+  page({click: false});
   $('select').material_select();
   $('ul.tabs').tabs();
   $(".button-collapse").sideNav();
