@@ -21,7 +21,17 @@ router.get('/feedback/:type', (req, res, next) => {
 });
 
 router.get('/tools', (req, res, next) => {
-  res.render('admin/tools');
+  db.intro.sessions().then((sessions) => {
+    var loggedin = [];
+    for(var i in sessions) {
+      loggedin.push(JSON.parse(sessions[i]).name);
+    }
+    return loggedin;
+  }).then((loggedin) => {
+    console.log(loggedin)
+    res.render('admin/tools', {users: loggedin});
+  })
+
 });
 router.post('/tools', (req, res, next) => {
   db.intro.search(req.body.username, null, "intro_date").then((db) => {

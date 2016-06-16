@@ -29,6 +29,15 @@ var intro = {
 
     });
   },
+	sessions: () => {
+		return new Promise(function(resolve, reject) {
+			r.db(config.app.rethink.db).table('sessions')('session').run().then((db) => {
+				resolve(db);
+			}).catch(function(err) {
+				console.log('query error:' + err);
+			})
+		});
+	},
 	setstatus: (username, status) => {
 		return new Promise((resolve, reject) => {
 			UserModel.filter({'twitchname': username}).update({"intro_status": status}).run().then((db) => {

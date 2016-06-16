@@ -3,6 +3,12 @@ beta branch. no pull requests until this is live pls thanks
 
 Stuff that needs worked on
     - QA everything?!
+    - spam clicking profile sometimes shows profile of another authenticated user (wtf)
+    - read status field does not change when feedback is read.
+    - move materalize toast to left side
+    - feedback read view needs word wrapping
+    - admin tools page needs to pull in the current status of a user, including if they are already admin
+    - votes only update on refresh on profile
 
  - main index page tab menu overflows on small resolutions
  - add mod bio field

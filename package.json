@@ -9,6 +9,7 @@
     "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "express-session-rethinkdb": "^0.4.1",
     "method-override": "^2.3.5",
     "needle": "^1.0.0",
     "node-cron": "^1.1.1",

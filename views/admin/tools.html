@@ -68,7 +68,14 @@
     </div>
   </div>
 </div>
-
+<div class="row">
+  <div class="col l12">
+    <strong>There are {{users.length}} users logged in.</strong><br>
+    {%for user in users %}
+    {{user}} <br>
+    {%endfor%}
+  </div>
+</div>
 
   {% endblock %}
 
