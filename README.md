@@ -6,7 +6,6 @@ Stuff that needs worked on
  - feedback read view needs word wrapping
  - admin tools page needs to pull in the current status of a user, including if they are already admin
  - votes only update on refresh on profile
-
  - read status field does not change when feedback is read.
  - main index page tab menu overflows on small resolutions
  - add mod bio field
