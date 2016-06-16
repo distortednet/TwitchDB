@@ -28,7 +28,7 @@ var rethinkstore = new RDBStore({
   table: 'sessions',
   sessionTimeout: 86400000,
   flushInterval: 20000,
-  debug: true
+  debug: false
 });
 
 global.__base = __dirname + '/';
@@ -69,16 +69,30 @@ app.locals = {
 	authurl: config.twitch.authurl,
   rng: Math.floor((Math.random() * 100) + 1),
 };
-app.get('*', (req, res, next) => {
+
+app.use(function(req, res, next){
+  // res.locals.user = req.user;
+  // res.locals.authenticated = ! req.user.anonymous;
   if(req.session.token && req.session.name) {
-		app.locals.loggedin = true;
-		app.locals.name = req.session.name;
-    app.locals.isadmin = req.session.isadmin;
+		res.locals.loggedin = true;
+		res.locals.name = req.session.name;
+    res.locals.isadmin = req.session.isadmin;
 	} else {
-		app.locals.loggedin = false;
+		res.locals.loggedin = false;
 	}
-	next();
+  next();
 });
+
+// app.get('*', (req, res, next) => {
+//   if(req.session.token && req.session.name) {
+// 		app.locals.loggedin = true;
+// 		app.locals.name = req.session.name;
+//     app.locals.isadmin = req.session.isadmin;
+// 	} else {
+// 		app.locals.loggedin = false;
+// 	}
+// 	next();
+// });
 
 //routes
 
@@ -90,12 +104,6 @@ app.get('/logout', (req, res) => {
 	});
 });
 
-// app.get('/session', function (req, res, next) {
-//   sess.list((files) =>{
-//       console.log(files);
-//   })
-//   res.send('ok');
-// })
 app.use(function(err, req, res, next) {
   console.log(err);
   res.redirect('/');
