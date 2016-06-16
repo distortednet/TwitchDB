@@ -365,7 +365,7 @@ $('.next-step').click(function(e) {
       Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
     } else {
       $.post("/user/submit", profile_object, function(data) {
-        Materialize.toast(data, 3000, 'rounded', function() {
+        Materialize.toast(data, 2000, 'rounded', function() {
           window.location.href = "/user/"+profile_object.twitchname;
         })
       });
@@ -408,9 +408,13 @@ $('.next-step').click(function(e) {
     e.preventDefault();
     var namesearch = $('#admin_search').val();
     $.post("/admin/tools", {"username": namesearch}, function(data) {
+      if(data.admin) {
+        $('input[name="setadmin"]').prop( "checked", true );
+      }
+      $('input[value="'+data.intro_status+'"]').prop( "checked", true );
       $("#result_twitchname").val(data.twitchname);
       $("#result_redditname").val(data.redditname);
-      $(".search-results").fadeIn(1500);
+      $(".search-results").show();
     });
   });
   $('.admin-modify-user').click(function(e) {
@@ -431,9 +435,11 @@ $(document).on( "click", ".feedback-modal", function(e) {
   var modaltarget = $(this).data('modaltarget');
   var uuid = $(this).data('uuid');
   if(readstate == false) {
-    $('#'+modaltarget).openModal();
     $(this).parent().parent().fadeTo('slow', 0.3);
-    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
+    $('#'+modaltarget).openModal();
+    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {
+
+    });
   } else {
     $('#'+modaltarget).openModal();
   }

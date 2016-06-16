@@ -83,17 +83,6 @@ app.use(function(req, res, next){
   next();
 });
 
-// app.get('*', (req, res, next) => {
-//   if(req.session.token && req.session.name) {
-// 		app.locals.loggedin = true;
-// 		app.locals.name = req.session.name;
-//     app.locals.isadmin = req.session.isadmin;
-// 	} else {
-// 		app.locals.loggedin = false;
-// 	}
-// 	next();
-// });
-
 //routes
 
 require('./routes')(app);
