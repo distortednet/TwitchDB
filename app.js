@@ -27,8 +27,8 @@ var rethinkstore = new RDBStore({
   },
   table: 'sessions',
   sessionTimeout: 86400000,
-  flushInterval: 60000,
-  debug: false
+  flushInterval: 20000,
+  debug: true
 });
 
 global.__base = __dirname + '/';
