@@ -2,19 +2,17 @@ beta branch. no pull requests until this is live pls thanks
 
 
 Stuff that needs worked on
-    - QA everything?!
-    - spam clicking profile sometimes shows profile of another authenticated user (wtf)
-    - this only happens when two people are clicking the profile button at the same twitchname
-    - could be that requests are happening too fast and express.js fucks up?
-    - this causes an issue where non-admin users see the admin panel button
-    - appears http requests are colliding and causing session data to get mixed around. even if i F5 on any page, another user can hammer the profile button and get my session
-
-
-    - read status field does not change when feedback is read.
-    - move materalize toast to left side
-    - feedback read view needs word wrapping
-    - admin tools page needs to pull in the current status of a user, including if they are already admin
-    - votes only update on refresh on profile
+ - QA everything?!
+ - spam clicking profile sometimes shows profile of another authenticated user (wtf)
+ - this only happens when two people are clicking the profile button at the same twitchname
+ - could be that requests are happening too fast and express.js fucks up?
+ - this causes an issue where non-admin users see the admin panel button
+ - appears http requests are colliding and causing session data to get mixed around. even if i F5 on any page, another user can hammer the profile button and get my session
+ - read status field does not change when feedback is read.
+ - move materalize toast to left side
+ - feedback read view needs word wrapping
+ - admin tools page needs to pull in the current status of a user, including if they are already admin
+ - votes only update on refresh on profile
 
  - main index page tab menu overflows on small resolutions
  - add mod bio field
