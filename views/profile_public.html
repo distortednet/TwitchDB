@@ -36,7 +36,7 @@
               </div>
               {%if name == data.twitchname && loggedin %}
               <div class="col s4" style="border-right: 2px dotted #595959;">
-                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Status</p>
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Intro Status</p>
                 <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{{data.intro_status}}</p>
               </div>
               {%endif%}
@@ -44,7 +44,7 @@
             <div class="row">
               <div {%if name != data.twitchname %}class="col l6 m6 s6"{%else%}class="col l4 m4 s4"{%endif%}  style="border-right: 2px dotted #595959; border-left: 2px dotted #595959;">
                 <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{%if loggedin%}<a href="#" target="_blank" class="addvote" data-voter="{{name}}" data-votetarget="{{data.twitchname}}">Votes</a>{%else%}Votes{%endif%}</p>
-                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s votecount">{%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</p>
               </div>
               <div {%if name != data.twitchname %}class="col l6 m6 s6"{%else%}class="col l4 m4 s4"{%endif%}  style="border-right: 2px dotted #595959;">
                 <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Mature</p>

@@ -358,3 +358,10 @@ color: white !important;
   color: #B9A3E3;
   font-size: 0.9em;
 }
+.feedback-title {
+  font-weight: 100;
+  font-size: 17pt;
+}
+.feedback-text {
+  word-wrap: break-word;
+}

@@ -435,11 +435,10 @@ $(document).on( "click", ".feedback-modal", function(e) {
   var modaltarget = $(this).data('modaltarget');
   var uuid = $(this).data('uuid');
   if(readstate == false) {
-    $(this).parent().parent().fadeTo('slow', 0.3);
     $('#'+modaltarget).openModal();
-    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {
-
-    });
+    $(this).parent().parent().fadeTo('slow', 0.3);
+    $(this).parent().parent().children().eq(1).html("true");
+    $.post("/api/feedback/markstatus", {'uuid': uuid, 'read': true}, function(data) {});
   } else {
     $('#'+modaltarget).openModal();
   }
@@ -469,9 +468,13 @@ $(document).on( "click", ".feedback-modal", function(e) {
     e.preventDefault();
     var voter = $(this).data('voter');
     var votetarget = $(this).data('votetarget');
-    console.log(votetarget);
+
     $.post("/api/vote", {twitchname: votetarget, voter: voter}, function(data) {
       Materialize.toast(data, 3000, 'rounded');
+      if(data != "Sorry, you have already voted!") {
+        var currentcount = parseInt($('.votecount').text()) + 1;
+        $('.votecount').html(currentcount);
+      }
     });
   });
 

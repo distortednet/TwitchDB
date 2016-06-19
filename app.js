@@ -13,7 +13,6 @@ var express = require('express'),
   app = express();
   var RDBStore = require('express-session-rethinkdb')(session);
 // app config
-
 var rethinkstore = new RDBStore({
   connectOptions: {
     servers: [{ host: config.app.rethink.host, port: config.app.rethink.port }],

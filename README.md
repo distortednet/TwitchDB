@@ -3,16 +3,6 @@ beta branch. no pull requests until this is live pls thanks
 
 Stuff that needs worked on
 
- - feedback read view needs word wrapping
- - admin tools page needs to pull in the current status of a user, including if they are already admin
- - votes only update on refresh on profile
- - read status field does not change when feedback is read.
- - main index page tab menu overflows on small resolutions
- - add mod bio field
- - make hash tags in video titles on profile link to respective creative directories
- - maybe profile tag cloud for better content sorting in the future?
- - notification system of some sort (maybe issue notifications via whispers?)
- - wider profile page
 
  some notes for beta stuff
 

@@ -35,9 +35,9 @@ var twitch = {
 	auth: (client_id, client_secret, grant_type, redirect_uri, code) => {
 	  return new Promise((resolve, reject) => {
 	    var request_object = {client_id: client_id,client_secret: client_secret,grant_type: grant_type, redirect_uri: redirect_uri, code: code };
-	    needle.post('https://api.twitch.tv/kraken/oauth2/token', request_object, (err, resp, body) => {
+	    needle.post('https://api.twitch.tv/kraken/oauth2/token',request_object, config.twitch.header, (err, resp, body) => {
 	      if(!err) {
-	        needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, (err, data) => {
+	        needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, config.twitch.header, (err, data) => {
 	          if(!err && data.statusCode == 200) {
 							db.intro.select(data.body.name).then((db) => {
 								if(db.length > 0 && db[0].admin && db[0].admin == true) {
@@ -60,7 +60,7 @@ var twitch = {
 	},
 	profile: (username) => {
 		return new Promise(function(resolve, reject) {
-			needle.get("https://api.twitch.tv/kraken/channels/"+username, (err, data) => {
+			needle.get("https://api.twitch.tv/kraken/channels/"+username, config.twitch.header, (err, data) => {
 				if(err) {
 					resolve(err);
 				} else {
@@ -75,7 +75,7 @@ var twitch = {
 	},
 	videos: (username, limit, type) => {
 		return new Promise(function(resolve, reject) {
-			needle.get('https://api.twitch.tv/kraken/channels/'+username+'/videos?limit='+limit+"&broadcasts="+type, (err, data) => {
+			needle.get('https://api.twitch.tv/kraken/channels/'+username+'/videos?limit='+limit+"&broadcasts="+type, config.twitch.header, (err, data) => {
 				if(err) {
 					resolve(err);
 				} else {
@@ -101,7 +101,7 @@ var general = {
 		users = item.map((item) => {
 			return item.twitchname;
 		}).join(',')
-		needle.get('https://api.twitch.tv/kraken/streams?channel='+users, (err, data) => {
+		needle.get('https://api.twitch.tv/kraken/streams?channel='+users, config.twitch.header, (err, data) => {
 			var online = []
 			for(var i in data.body.streams) { // data.body occasionally errors, possibly when a connection to the twitch api fails
 				online.push(data.body.streams[i]);
