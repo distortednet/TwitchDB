@@ -8,7 +8,6 @@ module.exports = (app) => {
     app.use('/profile',  require('./routes/legacy'));
   app.use('/faq',  require('./routes/faq'));
   app.use('/about',  require('./routes/about'));
-  app.use('/disclaimer',  require('./routes/disclaimer'));
   app.use('/surf',  require('./routes/surf'));
   app.use('/search',  require('./routes/search'));
   app.use('/user',  require('./routes/user'));

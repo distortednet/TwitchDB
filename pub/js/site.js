@@ -66,7 +66,17 @@ function generatefields(template) {
   $(template).populate('hours').appendTo('.hour-end');
   $('.day select:last, .hour-start select:last, .hour-end select:last').hide().fadeIn(100);
 }
-
+function throttle(f, delay){
+    var timer = null;
+    return function(){
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = window.setTimeout(function(){
+            f.apply(context, args);
+        },
+        delay || 500);
+    };
+}
   page('/', function(ctx, next) {
     if(ctx.init) {
       $('ul.tabs').tabs('select_tab', 'top');
@@ -269,24 +279,30 @@ function generatefields(template) {
     }
   });
   page('/search', function(ctx, next) {
-    $('#searchdb').keypress(function(e) {
-        var keyvalue = $(this).val();
-        if(keyvalue.length >= 2 || e.which == 13) {
-          $.get("/api/search", {search: keyvalue}, function(data) {
-            if(data) {
-              $('.searchresults').empty();
-              $('.searchresults').html(data);
-            } else {
-              $('.searchresults').empty();
-            }
-          });
-        }
-    });
+    $('#searchdb').keyup(throttle(function(e){
+      var keyvalue = $(this).val();
+        $.get("/api/search", {search: keyvalue}, function(data) {
+          if(data) {
+            $('.searchresults').empty();
+            $('.searchresults').html(data);
+          } else {
+            $('.searchresults').empty();
+          }
+        });
+    }));
   });
 
 //app logic that is global or does not fit into routes. (at least until i figure out a better way.)
 
-
+//about page logic
+if ($('.aboutprofile').length != 0) {
+  var aboutprofile = $('.aboutprofile');
+  aboutprofile.each(function() {
+    $.get("/api/about/", {twitchname: $(this).data('username')}, function(result) {
+      $('.aboutprofile[data-username="'+result.twitchname+'"]').html('<img src="'+result.logo+'" alt="" class="circle responsive-img">');
+    });
+  });
+}
 //next step logic
 $('.next-step').click(function(e) {
   e.preventDefault();

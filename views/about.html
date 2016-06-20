@@ -1,4 +1,40 @@
 {% extends 'template.html' %}
-
 {% block content %}
+
+
+<div class="row">
+  <div class="col l6 offset-l3 m12 s12">
+  <p>TwitchDB is a project developed to help and enable streamers to better their craft. For any questions on how to use the site, see the FAQ.</p>
+  <p style="font-weight: 300;">
+  The Twitch Subreddit started very humble and we stored our intro database in a Google Documents file. This worked for a while, but as the subreddit grew that file became larger and harder to manage.<br>
+  Because of that, we needed a better way to manage everything. In addition, we can now provide a platform that will help promote streamers and recieve feedback on how to improve their streams.<br>
+  This site will also be a resource for other tools that will be developed and added in the "stream resources" section as time goes on. The stream resource section will also be a quick, one stop shop for some of the most common tools a streamer may need to get the ball rolling.
+  <br><br><strong>Disclaimer: TwitchDB.tv is not affiliated and does not represent Twitch.tv</strong>
+  </p>
+  </div>
+</div>
+<div class="row">
+  {%for admin in admins%}
+    <div class="col l4 m4 s12">
+      <div class="card-panel grey darken-4 z-depth-0">
+        <div class="row valign-wrapper">
+          <div class="col l2 m2 s2 aboutprofile" data-username="{{admin.twitchname}}">
+
+          </div>
+          <div class="col l10 m10 s10">
+            <div class="row">
+              <span class="white-text"><strong><a href="/user/{{admin.twitchname}}" target="_blank">{{admin.twitchname}}</a></strong></span>
+            </div>
+            <div class="row">
+              {{admin.intro_data.intro_about}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%endfor%}
+</div>
+
+
+
 {% endblock %}

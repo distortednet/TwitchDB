@@ -25,7 +25,7 @@ var rethinkstore = new RDBStore({
     timeoutError: 1000
   },
   table: 'sessions',
-  sessionTimeout: 86400000,
+  sessionTimeout: 860000,
   flushInterval: 20000,
   debug: false
 });
@@ -53,6 +53,7 @@ app.use(session({
   secret: config.app.cookie,
   resave: false,
   saveUninitialized: false,
+  cookie: {maxAge: 860000},
   store: rethinkstore
 }));
 app.use(bodyParser.json());
@@ -70,8 +71,6 @@ app.locals = {
 };
 
 app.use(function(req, res, next){
-  // res.locals.user = req.user;
-  // res.locals.authenticated = ! req.user.anonymous;
   if(req.session.token && req.session.name) {
 		res.locals.loggedin = true;
 		res.locals.name = req.session.name;

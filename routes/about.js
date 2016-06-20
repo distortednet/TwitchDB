@@ -1,10 +1,13 @@
 var express = require('express'),
   config = require('../config'),
+  db = require('../db'),
+  helpers = require('../helpers'),
   router = express.Router();
 
-/* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('disclaimer', { title: 'Express' });
+  db.intro.selectadmins().then((dbres) => {
+    res.render('about', {admins: dbres});
+  })
 });
 
 module.exports = router;

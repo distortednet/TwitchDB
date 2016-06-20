@@ -56,6 +56,13 @@ var intro = {
 			})
 		});
 	},
+	selectadmins:() => {
+		return new Promise(function(resolve, reject) {
+			UserModel.filter({'admin': true}).run().then((db) => {
+				resolve(db);
+			})
+		});
+	},
 	select: (username) => {
 		return new Promise((resolve, reject) => {
       UserModel.filter({'twitchname': username}).run().then((db) => {

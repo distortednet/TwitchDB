@@ -2,19 +2,19 @@
   <table class="admintable">
     <thead>
       <tr>
-        <th>Date</th>
-        <th>TwitchDB Profile</th>
         <th>Twitch Name</th>
+        <th>TwitchDB Profile</th>
         <th>Games</th>
+        <th>Date</th>
       </tr>
     </thead>
     <tbody>
     {%for user in data %}
       <tr>
-        <td>{{user.intro_date}}</td>
-        <td><a href="/user/{{user.twitchname}}" target="_blank">View Profile</a></td>
         <td><a href="http://www.twitch.tv/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
+        <td><a href="/user/{{user.twitchname}}" target="_blank">View Profile</a></td>
         <td style="width: 60%;">{{user.intro_data.intro_games}}</td>
+        <td>{{user.intro_date}}</td>
       </tr>
     {%endfor%}
     </tbody>

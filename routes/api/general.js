@@ -18,6 +18,11 @@ router.get('/search', (req, res, next) => {
     res.send(false);
   }
 });
+router.get('/about', (req, res, next) => {
+  helpers.twitch.profile(req.query.twitchname).then((result) => {
+    res.send({twitchname: result.name, logo: result.logo});
+  })
+})
 router.get('/user/:name', (req, res, next) => {
   db.intro.select(req.params.name).then((result) => {
     res.send(result[0].intro_data.intro_schedule);
