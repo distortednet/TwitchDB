@@ -53,7 +53,6 @@ app.use(session({
   secret: config.app.cookie,
   resave: false,
   saveUninitialized: false,
-  cookie: {maxAge: 860000},
   store: rethinkstore
 }));
 app.use(bodyParser.json());
