@@ -1,0 +1,22 @@
+<div class="col l8 offset-l2">
+  <table class="admintable">
+    <thead>
+      <tr>
+        <th>Twitch Name</th>
+        <th>TwitchDB Profile</th>
+        <th>Games</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for user in data %}
+      <tr>
+        <td><a href="http://www.twitch.tv/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
+        <td><a href="/user/{{user.twitchname}}" target="_blank">View Profile</a></td>
+        <td style="width: 60%;">{{user.intro_data.intro_games}}</td>
+        <td>{{user.intro_date}}</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+</div>

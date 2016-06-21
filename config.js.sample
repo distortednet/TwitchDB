@@ -1,52 +1,27 @@
-var args = process.argv.slice(2);
 var config = {};
 
 config.app = {};
 config.twitch = {};
 config.app.rethink = {};
 
-/*
-the only thing you'll have to configure while developing twitchdb is the stuff in the 'dev' section, everything else is not relevant.
-CID = twitch app client id
-Secret = Twitch client secret
-For development, leave cache off.
 
-Add yourself in the mod array (twitch username) if you need to play with the moderation panel for development, this can't be merged to master, so remove before pushing to git
+config.app.port = 8080;
+config.app.baseurl = "http://localhost:"+config.app.port;
+config.app.cookie = " ";
 
-*/
-switch (args[0]) {
-	case 'dev':
-		config.app.port = ""; // port that nodejs should run on
-		config.app.baseurl = "http://localhost:"+config.app.port+"/"; // can be changed, be sure your twitch app settings reflect the correct path for authentication
-		config.app.rethink.host = ""; // host that rethinkdb runs on, default localhost
-		config.app.rethink.port = ""; // port that rethinkdb runs on, default 28015
-		config.app.cache = false; // expressjs app cache
-		config.app.cachetype = false; // cache type, can be false or memory
-		config.twitch.cid = ""; // twitch app client id
-		config.twitch.secret = ""; // twitch app secret
-	break;
-	default:
-		throw "must select dev, beta, or production";
-	break;
-}
-var	thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
-	r = thinky.r,
-	type = thinky.type,
-	Query = thinky.Query;
-
-config.app.rethink.schema =  {
-	twitchname: type.string(),
-	redditname: type.string(),
-	intro_approved: type.boolean(),
-	intro_rejected: type.boolean(),
-	intro_date:  type.string(),
-	profile_data: type.object()
-};
-config.app.rethink.pk = {pk: "twitchname"};
-
+config.app.rethink.host = "192.168.70.128";
+config.app.rethink.port = "28015";
 config.app.rethink.db = "introdb";
-config.twitch.mods = ["distortednet", "shannonzkiller", "boomliam", "tarfu", "kanthes", "mellownebula", "bigpace"]; // add yourself as a mod here for dev if need be
-config.twitch.callback = config.app.baseurl + "auth"; // pretty sure this isnt even used??
+
+config.twitch.grant = 'authorization_code';
+config.twitch.redirect = config.app.baseurl+"/auth/";
+
+config.twitch.cid = " ";
+config.twitch.secret = " ";
+config.twitch.authurl = 'https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id='+config.twitch.cid+'&redirect_uri='+config.twitch.redirect+'&scope=user_read';
+
+config.twitch.mods = ["distortednet"];
+
 
 
 module.exports = config;

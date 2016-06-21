@@ -1,0 +1,60 @@
+<div id="feedbackmodal-{{feedback.uuid}}" class="modal grey darken-3" style="color: white;">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col l1 m1 s1 hide-on-med-and-down">
+        {%if feedback.anonymous%}
+        <img class="responsive-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png"/>
+        {%else%}
+        <a href="/user/{{feedback.fromuser}}" target="_blank">
+          <img class="responsive-img" src="{{feedback.logo}}"/>
+        </a>
+        {%endif%}
+      </div>
+      <div class="col l10 m10 s10">
+        {%if feedback.anonymous%}Anonymous{%else%}<a href="/user/{{feedback.fromuser}}" target="_blank">{{feedback.fromuser}}</a>{%endif%}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col l4 m4 s12 center">
+        <span class="feedback-title">Audio Quality<br>{{feedback.audioquality}} out of 5</span>
+      </div>
+      <div class="col l4 m4 s12 center">
+        <span class="feedback-title">Chat Interaction<br>{{feedback.chatinteraction}} out of 5</span>
+      </div>
+      <div class="col l4 m4 s12 center">
+        <span class="feedback-title">Video Quality<br>{{feedback.videoquality}} out of 5</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col l6 m6 s12">
+        <p class="feedback-title">Branding</p>
+        <p class="feedback-text">{% marked %}{{feedback.branding}}{% endmarked %}</p>
+      </div>
+      <div class="col l6 m6 s12">
+        <p class="feedback-title">Game Choices</p>
+        <p class="feedback-text">{% marked %}{{feedback.game}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p class="feedback-title">Overlay</p>
+        <p class="feedback-text">{% marked %}{{feedback.overlay}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p class="feedback-title">Social</p>
+        <p class="feedback-text">{% marked %}{{feedback.social}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p class="feedback-title">Panels</p>
+        <p class="feedback-text">{% marked %}{{feedback.panels}}{% endmarked %}</p>
+      </div>
+
+      <div class="col l6 m6 s12">
+        <p class="feedback-title">Other</p>
+        <p class="feedback-text">{% marked %}{{feedback.social}}{% endmarked %}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

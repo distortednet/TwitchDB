@@ -1,20 +1,24 @@
-{% include "./header.html" %}
-<div class="container-fluid" style="height: 93%">
+{% extends 'template.html' %}
+{% block content %}
+<style> body {overflow: hidden !important; }</style>
 
-  <object data="//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf" type="application/x-shockwave-flash" class="surfplayer">
-    <param name="allowFullScreen" value="true" />
-    <param name="allowNetworking" value="all" />
-    <param name="allowScriptAccess" value="always" />
-    <param name="movie" value="//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf" />
-    <param name="flashvars" value="channel={{randomstream}}&auto_play=true&start_volume=5" />
-  </object>
-
-<iframe frameborder="0" scrolling="no" class="chat_embed" src="http://www.twitch.tv/{{randomstream}}/chat">
-</iframe>
-<a href="/surf" class="btn btn-default" role="button">Random Stream</a>
-<a href="/profile/u/{{randomstream}}" class="btn btn-default" role="button" target="_Blank">View Intro</a>
-<a href="//twitch.tv/{{randomstream}}" class="btn btn-default" role="button" target="_Blank">View On Twitch</a>
+<div class="row">
+  <div class="col l10 m12 s12" style="padding: 0px !important; margin: 0px !important;">
+    <div class="video-wrapper">
+      <div class="surf-overlay hide-on-med-and-down">
+        <a href="/user/{{user.channel.name}}" target="_blank"><i class="material-icons small" title="Twitch Profile">assignment_ind</i></a>
+        <a href="/user/{{user.channel.name}}/feedback" target="_blank" title="Give feedback"><i class="material-icons small">subject</i></a>
+        <a href="/surf"><i class="material-icons small" title="New Stream!">shuffle</i></a>
+        {%if loggedin%}<a href="#" target="_blank" class="addvote" data-voter="{{name}}" data-votetarget="{{user.channel.name}}"><i class="material-icons small" title="Vote up">thumb_up</i></a>{%endif%}
+      </div>
+      <iframe src="http://player.twitch.tv/?channel={{user.channel.name}}" frameborder="0" scrolling="no" volume="0" allowfullscreen="true"></iframe>
+    </div>
+  </div>
+  <div class="col l2 m2 s2 hide-on-small-and-down" style="padding: 0px !important; margin: 0px !important;">
+    <div class="chat-wrapper">
+      <iframe frameborder="0" scrolling="no" src="http://www.twitch.tv/{{user.channel.name}}/chat"></iframe>
+    </div>
+  </div>
 </div>
 
-<script src="/js/surf.js?r={{rng}}"></script>
-{% include "./footer.html" %}
+{% endblock %}

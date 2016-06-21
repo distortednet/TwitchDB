@@ -1,0 +1,83 @@
+{% extends '../template.html' %}
+{% block head %}
+<link rel="stylesheet" href="../../css/materialize.min.css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="../../css/style.css" media="screen" title="no title" charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="../../js/materialize.min.js" charset="utf-8"></script>
+<script src="https://cdn.rawgit.com/visionmedia/page.js/master/page.js"></script>
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col s12">
+    <div class="row">
+      <div class="input-field col s4 offset-s2">
+        <span class="input-label"><strong>Twitch Name OR reddit name</strong></span>
+        <input id="admin_search" type="text" class="validate"  style="margin-top: 40px;">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4 offset-s2">
+        <button class="admin-submit-search btn waves-effect waves-purple grey darken-3" type="submit" name="action">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="search-results row">
+  <div class="row">
+    <div class="input-field col s4 offset-s2">
+      <span class="input-label"><strong>Twitch name</strong></span>
+      <input id="result_twitchname" type="text" style="margin-top: 40px;">
+    </div>
+    <div class="input-field col s4">
+      <span class="input-label"><strong>Reddit Name</strong></span>
+      <input id="result_redditname" type="text" class="validate"  style="margin-top: 40px;">
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s6 offset-s2">
+      <p>
+        <input name="searchgroup" type="radio" id="set_approved" value="approved"/>
+        <label for="set_approved" class="input-label">Approve</label>
+      </p>
+      <p>
+        <input name="searchgroup" type="radio" id="set_reject" value="rejected"/>
+        <label for="set_reject" class="input-label">Reject</label>
+      </p>
+      <p>
+        <input name="searchgroup" type="radio" id="set_pending" value="pending"/>
+        <label for="set_pending" class="input-label">Pending</label>
+      </p>
+      <p>
+        <input name="searchgroup" type="radio" id="set_clear"  value="clear"/>
+        <label for="set_clear">Clear Intro</span>
+      </p>
+      <p>
+        <input class="with-gap" name="setadmin" type="checkbox" id="set_admin" />
+        <label for="set_admin">Set Admin</label>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s4 offset-s2">
+      <button class="admin-modify-user btn waves-effect waves-purple grey darken-3" type="submit" name="action">Submit Changes</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col l12">
+    <strong>There are {{users.length}} users logged in.</strong><br>
+    {%for user in users %}
+    {{user}} <br>
+    {%endfor%}
+  </div>
+</div>
+
+  {% endblock %}
+
+
+  {% block footer %}
+  <script src="../../js/site.js?random={{rng}}" charset="utf-8"></script>
+  {% endblock %}

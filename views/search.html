@@ -1,0 +1,17 @@
+{% extends 'template.html' %}
+
+{% block content %}
+
+<div class="row">
+  <div class="input-field col l8 offset-l2 m12 s12">
+    <span class="input-label">Search via game or username</span>
+    <input id="searchdb" type="text">
+
+  </div>
+</div>
+
+<div class="row searchresults">
+  {% include "./search-partial.html" %}
+</div>
+
+{% endblock %}

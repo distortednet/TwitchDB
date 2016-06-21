@@ -1,0 +1,26 @@
+
+<table class="admintable centered">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Twitch Name</th>
+      <th>Reddit Name</th>
+      {% if type == "pending" %}<th>Action</th>{%endif%}
+    </tr>
+  </thead>
+  <tbody>
+  {%for user in data %}
+    <tr class="row-{{user.twitchname}}">
+        <td>{{user.intro_date}}</td>
+        <td><a href="/user/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
+        <td><a href="http://www.reddit.com/u/{{user.redditname}}" target="_blank">{{user.redditname}}</a></td>
+        {% if type == "pending" %}
+          <td>
+            <a href="" class="admin-approve" data-user="{{user.twitchname}}" data-status="approved"><i class="material-icons Medium">done</i></a>
+            <a href="" class="admin-reject" data-user="{{user.twitchname}}" data-status="rejected"><i class="material-icons Medium">not_interested</i></a>
+          </td>
+        {%endif%}
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>

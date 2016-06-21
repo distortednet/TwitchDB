@@ -1,0 +1,32 @@
+<table class="admintable centered">
+  <thead>
+    <tr>
+      <th>From</th>
+      <th>To</th>
+      <th>Anonymous</th>
+      {% if type == "approved" %}<th>Read Status</th>{%endif%}
+      {% if type == "pending" %}<th>Action</th>{%endif%}
+    </tr>
+  </thead>
+  <tbody>
+  {%for feedback in data %}
+    <tr class="row-{{feedback.uuid}}">
+        <td><a class="feedback-modal" href="#feedbackmodal-{{feedback.uuid}}" data-modaltarget="feedbackmodal-{{feedback.uuid}}" data-uuid="{{feedback.uuid}}" data-read="true">{{feedback.fromuser}}</a></td>
+        <td>{{feedback.touser}}</td>
+        <td>{{feedback.anonymous}}</td>
+        {% if type == "approved" %}<td>{{feedback.read}}</td>{%endif%}
+        {% if type == "pending" %}
+          <td>
+            <a href="" class="admin-feedback-approve" data-fromuser="{{feedback.fromuser}}" data-touser="{{feedback.touser}}"  data-uuid="{{feedback.uuid}}" data-status="approved"><i class="material-icons Medium">done</i></a>
+            <a href="" class="admin-feedback-reject"  data-fromuser="{{feedback.fromuser}}" data-touser="{{feedback.touser}}"  data-uuid="{{feedback.uuid}}" data-status="rejected"><i class="material-icons Medium">not_interested</i></a>
+          </td>
+        {%endif%}
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+
+
+{%for feedback in data %}
+{% include "../feedback-modal.html" %}
+{%endfor%}

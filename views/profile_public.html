@@ -1,0 +1,150 @@
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="row">
+  <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
+    <div class="card-content">
+        <div class="row">
+          <div class="col l6 m6 s12">
+            <div class="col l3 m3 s3">
+              <img src="{{api.logo}}" class="circle responsive-img"/>
+            </div>
+            <div class="col l9 m9 s9">
+              <p style="font-weight: 200;" class="responsive-title-l responsive-title-m responsive-title-s"><a href="http://www.twitch.tv/{{data.twitchname}}" target="_blank">{{api.display_name}}</a></p>
+              <p class="truncate">{%if api.game == "Creative" %}Was being {%else%}Last Played: {%endif%} {{api.game}}</p>
+              <p class="truncate">{{lastbroadcast.title}}</p>
+              <div class="social-nav">
+                <ul  style="margin-top: 18px; margin-bottom: 18px;">
+                  {%if data.social.twitter%}<li><a href="http://twitter.com/{{data.social.twitter}}" target="_blank"><span class="fa fa-twitter fa-2x"></span></a></li>{%endif%}
+                  {%if data.social.steam%}<li><a href="http://steamcommunity.com/id/{{data.social.steam}}" target="_blank"><span class="fa fa-steam fa-2x"></span></a></li>{%endif%}
+                  {%if data.social.youtube%}<li><a href="http://youtube.com/user/{{data.social.youtube}}" target="_blank"><span class="fa fa-youtube fa-2x"></span></a></li>{%endif%}
+                  {%if data.social.facebook%}<li><a href="http://facebook.com/{{data.social.facebook}}" target="_blank"><span class="fa fa-facebook fa-2x"></span></a></li>{%endif%}
+                  {%if data.social.instagram%}<li><a href="http://instagram.com/{{data.social.instagram}}" target="_blank"><span class="fa fa-instagram fa-2x"></span></a></li>{%endif%}
+              </ul>
+            </div>
+            </div>
+          </div>
+          <div class="col l6 m6 s12" style="margin-top: 2.5%;">
+            <div class="row">
+              <div {%if name != data.twitchname %}class="col l6 m6 s6"{%else%}class="col l4 m4 s4"{%endif%}   style="border-right: 2px dotted #595959; border-left: 2px dotted #595959;">
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Followers</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{{api.followers}}</p>
+              </div>
+              <div {%if name != data.twitchname %}class="col l6 m6 s6"{%else%}class="col l4 m4 s4"{%endif%}  style="border-right: 2px dotted #595959;">
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Views</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{{api.views}}</p>
+              </div>
+              {%if name == data.twitchname && loggedin %}
+              <div class="col s4" style="border-right: 2px dotted #595959;">
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Intro Status</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{{data.intro_status}}</p>
+              </div>
+              {%endif%}
+            </div>
+            <div class="row">
+              <div {%if name != data.twitchname %}class="col l6 m6 s6"{%else%}class="col l4 m4 s4"{%endif%}  style="border-right: 2px dotted #595959; border-left: 2px dotted #595959;">
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{%if loggedin%}<a href="#" target="_blank" class="addvote" data-voter="{{name}}" data-votetarget="{{data.twitchname}}">Votes</a>{%else%}Votes{%endif%}</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s votecount">{%if data.votes%}{{data.votes.length}}{%else%}0{%endif%}</p>
+              </div>
+              <div {%if name != data.twitchname %}class="col l6 m6 s6"{%else%}class="col l4 m4 s4"{%endif%}  style="border-right: 2px dotted #595959;">
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Mature</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{%if api.mature%}Yes{%else%}No{%endif%}</p>
+              </div>
+              {%if name == data.twitchname && loggedin %}
+              <div class="col s4" style="border-right: 2px dotted #595959;">
+                <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Feedback</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{%if data.feedback_data.length%}{{data.feedback_data.length}}{%else%}0{%endif%}</p>
+              </div>
+              {%endif%}
+
+            </div>
+          </div>
+        </div>
+        <div class="card-action">
+          <ul class="tabs profile-tab grey darken-3" style="overflow: hidden">
+            <li class="tab"><a href="#profile" data-tabtype="profile" data-location="/user/{{data.twitchname}}">Profile</a></li>
+            <li class="tab"><a href="#vods" data-tabtype="vods" data-location="/user/{{data.twitchname}}/vods">VODS</a></li>
+            {%if name == data.twitchname && loggedin %}
+              <li class="tab"><a href="#feedback" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback/">view Feedback</a></li>
+            {%else%}
+              <li class="tab"><a href="#feedback" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback">Submit Feedback</a></li>
+            {%endif%}
+            {%if name == data.twitchname && loggedin %}
+              <li class="tab"><a href="#edit" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/edit">Edit Profile</a></li>
+            {%endif%}
+          </ul>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="profile">
+  <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
+    <div class="card-content">
+      <div class="row">
+        <div class="col l12 m12 s12">
+          <p style="font-weight: 200; font-size: 2em">About</p>
+          <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_about}}{% endmarked %}</div><br>
+          <p style="font-weight: 200; font-size: 2em">Goals</p>
+          <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_goals}}{% endmarked %}</div><br>
+          <p style="font-weight: 200; font-size: 2em">schedule</p>
+          <div style="font-weight: 300;">
+            {%if data.intro_data.intro_schedule  && data.intro_data.intro_schedule.length > 1 %}
+            Converted from streamer time zone to your time zone!
+            <div class="schedule-display"></div>
+            {%else%}
+              This user has not set a schedule
+            {%endif%}
+          </div><br>
+          <p style="font-weight: 200; font-size: 2em">games</p>
+          <div style="font-weight: 300;">{{data.intro_data.intro_games}}</div><br>
+          <p style="font-weight: 200; font-size: 2em">background</p>
+          <div style="font-weight: 300;">{% marked %}{{data.intro_data.intro_background}}{% endmarked %}</div><br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="vods">
+  <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
+    <div class="card-content">
+      <div class="row">
+        {%if videos.length %}
+          {%for videos in videos%}
+            {%if videos.broadcast_type == "highlight"%}
+              <div class="col l6 m12 s12"><iframe src="https://player.twitch.tv/?video={{videos._id}}&autoplay=false" frameborder="0" scrolling="no" volume="0" allowfullscreen="true" style="width: 100%; height: 348px; margin-bottom: 10px;"></iframe></div>
+            {%endif%}
+          {%endfor%}
+        {%else%}
+        <p style="font-weight: 200; font-size: 2em; text-align: center;">No vods at this time <br> :(</p>
+        {%endif%}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="feedback">
+  <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
+      {%if name == data.twitchname && loggedin %}
+        {% include "./profile_feedback.html" %}
+      {%else%}
+        {% include "./feedback-submit.html" %}
+      {%endif%}
+  </div>
+</div>
+
+{%if name == data.twitchname && loggedin %}
+<div class="row" id="edit">
+  <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
+    {% include "./profile_edit.html" %}
+  </div>
+</div>
+{%endif%}
+
+
+
+
+
+{% endblock %}

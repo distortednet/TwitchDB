@@ -1,0 +1,66 @@
+<div class="row">
+  <form class="col l12 m12 s12">
+    <div class="profile-step-1">
+      <div class="row">
+          <div class="input-field col l12 m12 s12">
+            <span class="input-label"><strong>About Me</strong> - a brief summary of who you are and what you are about!</span>
+            <textarea id="profile_about" class="materialize-textarea validate">{{data.intro_data.intro_about}}</textarea>
+          </div>
+      </div>
+      <div class="row">
+        <div class="input-field col l12 m12 s12">
+          <span class="input-label"><strong>Goals</strong> - What sort of goals do you have? What unique "flair" do you have that would attract people?</span>
+          <textarea id="profile_goals" class="materialize-textarea validate">{{data.intro_data.intro_goals}}</textarea>
+        </div>
+      </div>
+      <div class="row">
+          <div class="input-field col l12 m12 s12">
+            <span class="input-label"><strong>Background</strong> - What is your sweet nerd creds? hobbies? gaming history? Anything else that might be relevant?</span>
+            <textarea id="profile_background" class="materialize-textarea validate">{{data.intro_data.intro_background}}</textarea>
+          </div>
+      </div>
+    </div>
+    <div class="profile-step-2" style="display: none;">
+      <div class="row">
+        <div class="input-field col l12 m12 s12">
+          <span class="input-label"><strong>Games</strong> - What sort of stuff do you stream?</span>
+          <input id="profile_games" type="text" class="validate"  style="margin-top: 40px;" value="{{data.intro_data.intro_games}}">
+        </div>
+        <div class="input-field col l2 m12 s12">
+          <span class="input-label"><strong>Reddit Username</strong> - Optional...for /r/twitch flair!</span>
+          <input id="profile_redditname" type="text" class="validate"  style="margin-top: 40px;"  value="{{data.redditname}}">
+        </div>
+        <div class="input-field col l2 m12 s12">
+          <span class="input-label"><strong>Facebook</strong> <br> (ex: distortednet)</span>
+          <input id="social_facebook" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.facebook}}">
+        </div>
+        <div class="input-field col l2 m12 s12">
+          <span class="input-label"><strong>Twitter</strong> <br> (ex: distortednet)</span>
+          <input id="social_twitter" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.twitter}}">
+        </div>
+        <div class="input-field col l2 m12 s12">
+          <span class="input-label"><strong>Instagram</strong> <br> (ex: distortednet)</span>
+          <input id="social_instagram" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.instagram}}">
+        </div>
+        <div class="input-field col l2 m12 s12">
+          <span class="input-label"><strong>YouTube</strong> <br> (ex: distortednet)</span>
+          <input id="social_youtube" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.youtube}}">
+        </div>
+        <div class="input-field col l2 m12 s12">
+          <span class="input-label"><strong>Steam</strong> <br> (ex: distortednet)</span>
+          <input id="social_steam" type="text" class="validate"  style="margin-top: 40px;" value="{{data.social.steam}}">
+        </div>
+      </div>
+    </div>
+    <div class="profile-step-3" style="display: none">
+      {% include "./schedule-edit-partial.html" %}
+    </div>
+    <div class="row">
+      <div class="col l12 m12 s12">
+        <button class="btn waves-effect waves-purple grey darken-3 next-step right">Step 2</button>
+        <input id="profile_twitchname" type="hidden" class="validate"  value="{{name}}">
+        <button class="btn waves-effect waves-purple grey darken-3 profile_edit left" type="submit" name="action" style="display: none;">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
