@@ -6,7 +6,7 @@ var express = require('express'),
 
 router.get('/', (req, res, next) => {
   db.intro.mostrecent(0, 20).then((db) => {
-    res.render('search', { data: db});
+    res.render('search', {data: db, page: 'Search'});
   })
 });
 

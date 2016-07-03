@@ -4,7 +4,7 @@ var express = require('express'),
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('faq', { title: 'Express' });
+  res.render('faq', { title: 'Express', page: 'FAQ' });
 });
 
 module.exports = router;

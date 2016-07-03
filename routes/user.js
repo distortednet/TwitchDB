@@ -16,7 +16,7 @@ var express = require('express'),
         if(result[0][0] === undefined) {
           res.redirect('/');
         } else {
-          res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2], lastbroadcast: result[3][0]});
+          res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2], lastbroadcast: result[3][0], page: result[0][0].twitchname});
         }
       })
     });

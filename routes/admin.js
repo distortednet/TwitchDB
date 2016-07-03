@@ -5,18 +5,18 @@ var express = require('express'),
   router = express.Router();
 
 router.get('/', (req, res, next) => {
-  res.render('profile', { title: 'Express' });
+  res.render('profile', { title: 'Express', page: "Admin" });
 });
 
 router.get('/intros/:type', (req, res, next) => {
   db.intro.filter(req.params.type).then((db) => {
-    res.render('admin/intros', {type: req.params.type, data: db });
+    res.render('admin/intros', {type: req.params.type, data: db, page: 'Admin | Intros (' + req.params.type + ')'});
   });
 });
 
 router.get('/feedback/:type', (req, res, next) => {
   db.feedback.filterstatus(req.params.type).then(function(db) {
-    res.render('admin/feedback', {type: req.params.type, data: db });
+    res.render('admin/feedback', {type: req.params.type, data: db, page: 'Admin | Feedback (' + req.params.type + ')' });
   });
 });
 
@@ -29,7 +29,7 @@ router.get('/tools', (req, res, next) => {
     return loggedin;
   }).then((loggedin) => {
     console.log(loggedin)
-    res.render('admin/tools', {users: loggedin});
+    res.render('admin/tools', {users: loggedin, page: 'Admin | Tools'});
   })
 
 });
