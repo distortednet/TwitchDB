@@ -1,34 +1,36 @@
-var cron = require('node-cron'),
-config = require('./config'),
-helpers = require('./helpers'),
-db = require('./db'),
-schema = require('./schema'),
-thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
-r = thinky.r,
-type = thinky.type,
-Query = thinky.Query;
-CacheModel = thinky.createModel('onlinecache', schema.cache);
+const cron = require('node-cron');
+const config = require('./config');
+const helpers = require('./helpers');
+const db = require('./db');
+const schema = require('./schema');
+const thinky = require('thinky')({
+    host: config.app.rethink.host,
+    port: config.app.rethink.port,
+    db: config.app.rethink.db,
+});
+const r = thinky.r;
+const type = thinky.type;
+const Query = thinky.Query;
+const CacheModel = thinky.createModel('onlinecache', schema.cache);
 
-var task = cron.schedule('*/5 * * * *', function() {
+const task = cron.schedule('*/5 * * * *', function() {
 	CacheModel.delete().then(() => {
-		console.log("executing task");
+		console.log('executing task');
+
 		return db.cache.approved();
-	}).then((approvedusers) => {
-		return mapusers = helpers.general.chunks(approvedusers, 100).map(function(user){
-			csv = user.map((usr) => {
-				return usr.twitchname;
-			}).join(',');
+	}).then((approvedUsers) => {
+		return mapusers = helpers.general.chunks(approvedUsers, 100).map(user => {
+			csv = user.map(usr => usr.twitchname).join(',');
+
 			return csv;
 		});
-	}).then((userlist) => {
-		userlist.forEach((userarr) => {
-			helpers.twitch.getstreams(userarr).then((onlineusers) => {
-				return CacheModel.save(onlineusers);
-			})
-		})
-	}).then((done) => {
-		console.log("task completed");
-	})
+	}).then(userlist => {
+		userlist.forEach(userArray => {
+			helpers.twitch.getstreams(userArray).then(onlineUsers => CacheModel.save(onlineUsers));
+		});
+	}).then(done => {
+		console.log('task completed');
+	});
 });
 
 task.start();
