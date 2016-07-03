@@ -87,6 +87,13 @@ var twitch = {
 				}
 			})
 		});
+	},
+	getstreams: (listarr) => {
+		return new Promise(function(resolve, reject) {
+			needle.get('https://api.twitch.tv/kraken/streams?channel='+listarr, config.twitch.header, (err, data) => {
+				resolve(data.body.streams);
+			});
+		});
 	}
 }
 var general = {
@@ -96,18 +103,6 @@ var general = {
 			results.push(array.splice(0, size));
 		}
 		return results;
-	},
-	transform: (item, cb) => {
-		users = item.map((item) => {
-			return item.twitchname;
-		}).join(',')
-		needle.get('https://api.twitch.tv/kraken/streams?channel='+users, config.twitch.header, (err, data) => {
-			var online = []
-			for(var i in data.body.streams) { // data.body occasionally errors, possibly when a connection to the twitch api fails
-				online.push(data.body.streams[i]);
-			}
-			cb(null, online);
-		});
 	},
 	random: (input) => {
 		for(var n = 0; n < input.length - 1; n++) {
