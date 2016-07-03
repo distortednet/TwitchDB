@@ -4,6 +4,7 @@ function inarray(value, array) {
   return array.indexOf(value) > -1;
 }
 
+//this stopped working in beta, not sure how to fix. cant be bothered.
 function paginate(div, route, cb) {
     var scrollFunction = function(){
         if ($(window).scrollTop() + $(window).height() == $(document).height()) {
