@@ -6,7 +6,7 @@ var express = require('express'),
 /* GET home page. */
 router.get('/', (req, res, next) => {
   db.intro.randomintro().then((db) => {
-    res.render('surf', { 'user': db[0]});
+    res.render('surf', {'user': db[0], page: 'Channel Surf: ' + db[0].channel.name});
   });
 });
 
