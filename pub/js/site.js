@@ -3,11 +3,9 @@ $(document).ready(function() {
 function inarray(value, array) {
   return array.indexOf(value) > -1;
 }
-
-//this stopped working in beta, not sure how to fix. cant be bothered.
 function paginate(div, route, cb) {
     var scrollFunction = function(){
-        if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
             $(window).unbind("scroll");
             totaldivs = $(div+" .livestream").size();
             $.get(route, {start: totaldivs, end: totaldivs + 12}, function(data) {
@@ -18,7 +16,6 @@ function paginate(div, route, cb) {
     };
     $(window).scroll(scrollFunction);
 };
-
 function uniquechildren(data) {
   var old = [];
   var unique = [];
