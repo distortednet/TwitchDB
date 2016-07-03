@@ -25,8 +25,8 @@ var rethinkstore = new RDBStore({
     timeoutError: 1000
   },
   table: 'sessions',
-  sessionTimeout: 860000,
-  flushInterval: 20000,
+  sessionTimeout: 86400000,
+  flushInterval: 86400000,
   debug: false
 });
 
