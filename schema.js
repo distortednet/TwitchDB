@@ -12,6 +12,7 @@
 
   schema.users = {
   	twitchname: type.string(),
+    twitchname_legacy: type.string(),
   	redditname: type.string(),
   	intro_status: type.string(),
   	intro_date:  type.string(),

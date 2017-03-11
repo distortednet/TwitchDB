@@ -90,7 +90,7 @@ var twitch = {
 	},
 	getstreams: (listarr) => {
 		return new Promise(function(resolve, reject) {
-			needle.get('https://api.twitch.tv/kraken/streams?channel='+listarr, config.twitch.header, (err, data) => {
+			needle.get('https://api.twitch.tv/kraken/streams/?channel='+listarr, config.twitch.header, (err, data) => {
 				resolve(data.body.streams);
 			});
 		});

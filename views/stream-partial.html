@@ -1,4 +1,6 @@
 {%for user in streams %}
+<pre>
+</pre>
 <div class="col l3 m6 livestream" data-username="{{user.channel.name}}">
   <div class="panel">
     <header>
@@ -7,7 +9,7 @@
           <ul>
             <li><a href="http://www.twitch.tv/{{user.channel.name}}" target="_blank"><span class="fa fa-desktop"></span> View</a></li>
             <li><a href="http://player.twitch.tv/?volume=3&channel={{user.channel.name}}" target="_blank"><span class="fa fa-external-link"></span> Popout</a></li>
-            <li><a href="/user/{{user.channel.name}}" target="_blank"><span class="fa fa-user"></span> Intro</a></li>
+            <li><a href="/user/{{user.channel._id}}" target="_blank"><span class="fa fa-user"></span> Intro</a></li>
             <li><a href="https://twitter.com/intent/tweet?text=Come%20watch%20this%20stream%20with%20me!%0A%0Ahttp%3A%2F%2Fwww.twitch.tv%2F{{user.channel.name}}%0A%0Avia%20http%3A%2F%2Fwww.twitchdb.tv" target="_blank"><span class="fa fa-twitter"></span> Tweet</a></li>
           </ul>
         </div>

@@ -9,7 +9,7 @@ type = thinky.type,
 Query = thinky.Query;
 CacheModel = thinky.createModel('onlinecache', schema.cache);
 
-var task = cron.schedule('*/5 * * * *', function() {
+// var task = cron.schedule('*/5 * * * *', function() {
 	CacheModel.delete().then(() => {
 		console.log("executing task");
 		return db.cache.approved();
@@ -29,6 +29,6 @@ var task = cron.schedule('*/5 * * * *', function() {
 	}).then((done) => {
 		console.log("task completed");
 	})
-});
+// });
 
-task.start();
+// task.start();

@@ -7,7 +7,7 @@ var needle = require('needle'),
 	r = thinky.r,
 	type = thinky.type,
 	Query = thinky.Query;
-  UserModel = thinky.createModel('users', schema.users, schema.primarykey.users);
+  UserModel = thinky.createModel('users_v5', schema.users, schema.primarykey.users);
 	CacheModel = thinky.createModel('onlinecache', schema.cache);
 
 var intro = {
@@ -38,9 +38,9 @@ var intro = {
 			})
 		});
 	},
-	setstatus: (username, status) => {
+	setstatus: (userid, status) => {
 		return new Promise((resolve, reject) => {
-			UserModel.filter({'twitchname': username}).update({"intro_status": status}).run().then((db) => {
+			UserModel.filter({'twitchname': userid}).update({"intro_status": status}).run().then((db) => {
 				resolve(db);
 			}).catch(function(err) {
 				console.log("query error:" + err);
@@ -63,26 +63,26 @@ var intro = {
 			})
 		});
 	},
-	select: (username) => {
+	select: (userid) => {
 		return new Promise((resolve, reject) => {
-      UserModel.filter({'twitchname': username}).run().then((db) => {
+      UserModel.filter({'twitchname': userid}).run().then((db) => {
         resolve(db);
       }).catch(function(err) {
 				console.log("query error:" + err);
 			})
     });
 	},
-	create: (username) => {
+	create: (userid) => {
 		return new Promise((resolve, reject) => {
-			UserModel.get(username).run().then((db) => {
+			UserModel.get(userid).run().then((db) => {
 				var logindate = new Date();
 				console.log(logindate);
-				UserModel.filter({'twitchname': username}).update({"lastlogin": logindate}).run().then((dbres) => {
+				UserModel.filter({'twitchname': userid}).update({"lastlogin": logindate}).run().then((dbres) => {
 					resolve("profile_exists");
 				});
 			}).catch(thinky.Errors.DocumentNotFound, (err) => {
 				var logindate = new Date();
-				var UserData = new UserModel({twitchname: username, lastlogin: logindate});
+				var UserData = new UserModel({twitchname: userid, lastlogin: logindate});
 				UserData.save((err) => {
 					if(err) { reject(err) };
 					resolve("profile_created");
@@ -92,9 +92,9 @@ var intro = {
 			})
 		});
 	},
-	search: (username, game, orderby) => {
+	search: (userid, game, orderby) => {
 		return new Promise((resolve, reject) => {
-			UserModel.filter(r.row("twitchname").eq(username).or(r.row("redditname").eq(username)).or(r.row("intro_data")("intro_games").match("(?i)"+game))).orderBy(orderby).run().then((db) => {
+			UserModel.filter(r.row("twitchname").eq(userid).or(r.row("redditname").eq(userid)).or(r.row("intro_data")("intro_games").match("(?i)"+game))).orderBy(orderby).run().then((db) => {
 				if(db.length) {
 					resolve(db)
 				} else {
@@ -134,36 +134,36 @@ var intro = {
 	},
 }
 var feedback = {
-	send: (username, object) => {
+	send: (userid, object) => {
 		return new Promise(function(resolve, reject) {
-			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row("feedback_data").default([]).append(object)}).run().then((db) => {
+			UserModel.filter({'twitchname': userid}).update({'feedback_data': r.row("feedback_data").default([]).append(object)}).run().then((db) => {
 				resolve(db);
 			}).catch(function(err) {
 				console.log("query error:" + err);
 			})
 		});
 	},
-	generateuuid:(username, timestamp) => {
+	generateuuid:(userid, timestamp) => {
 		return new Promise(function(resolve, reject) {
-			r.uuid(username + " " + timestamp).then((result) => {
+			r.uuid(userid + " " + timestamp).then((result) => {
 				resolve(result);
 			}).catch(function(err) {
 				console.log("query error:" + err);
 			})
 		});
 	},
-	setreadstatus:(username, uuid, readstatus) => {
+	setreadstatus:(userid, uuid, readstatus) => {
 		return new Promise(function(resolve, reject) {
-			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({read: readstatus}),msg)})}).run().then((db) => {
+			UserModel.filter({'twitchname': userid}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({read: readstatus}),msg)})}).run().then((db) => {
 				resolve(db);
 			}).catch(function(err) {
 				console.log("query error:" + err);
 			})
 		});
 	},
-	setfeedbackstatus:(username, uuid, feedbackstatus) => {
+	setfeedbackstatus:(userid, uuid, feedbackstatus) => {
 		return new Promise(function(resolve, reject) {
-			UserModel.filter({'twitchname': username}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({status: feedbackstatus}),msg)})}).run().then((db) => {
+			UserModel.filter({'twitchname': userid}).update({'feedback_data': r.row('feedback_data').map(function (msg) {return r.branch(msg('uuid').eq(uuid),msg.merge({status: feedbackstatus}),msg)})}).run().then((db) => {
 				resolve(db);
 			}).catch(function(err) {
 				console.log("query error:" + err);

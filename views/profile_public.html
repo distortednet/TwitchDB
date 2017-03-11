@@ -63,12 +63,12 @@
         <div class="card-action">
           <ul class="tabs profile-tab grey darken-3" style="overflow: hidden">
             <li class="tab"><a href="#profile" data-tabtype="profile" data-location="/user/{{data.twitchname}}">Profile</a></li>
-            <li class="tab"><a href="#vods" data-tabtype="vods" data-location="/user/{{data.twitchname}}/vods">VODS</a></li>
-            {%if name == data.twitchname && loggedin %}
+            <!-- <li class="tab"><a href="#vods" data-tabtype="vods" data-location="/user/{{data.twitchname}}/vods">VODS</a></li> -->
+            <!-- {%if name == data.twitchname && loggedin %}
               <li class="tab"><a href="#feedback" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback/">view Feedback</a></li>
             {%else%}
               <li class="tab"><a href="#feedback" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/feedback">Submit Feedback</a></li>
-            {%endif%}
+            {%endif%} -->
             {%if name == data.twitchname && loggedin %}
               <li class="tab"><a href="#edit" data-tabtype="feedback" data-location="/user/{{data.twitchname}}/edit">Edit Profile</a></li>
             {%endif%}
@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<div class="row" id="vods">
+<!-- <div class="row" id="vods">
   <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
     <div class="card-content">
       <div class="row">
@@ -123,9 +123,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="row" id="feedback">
+<!-- <div class="row" id="feedback">
   <div class="card grey darken-3 col l6 offset-l3 col m12 s12">
       {%if name == data.twitchname && loggedin %}
         {% include "./profile_feedback.html" %}
@@ -133,7 +133,7 @@
         {% include "./feedback-submit.html" %}
       {%endif%}
   </div>
-</div>
+</div> -->
 
 {%if name == data.twitchname && loggedin %}
 <div class="row" id="edit">
