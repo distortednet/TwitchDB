@@ -39,13 +39,13 @@ var twitch = {
 	      if(!err) {
 	        needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, config.twitch.header, (err, data) => {
 	          if(!err && data.statusCode == 200) {
-							db.intro.select(data.body.name).then((db) => {
+							db.intro.select(data.body._id).then((db) => {
 								if(db.length > 0 && db[0].admin && db[0].admin == true) {
 									var modstatus = true;
 								} else {
 									var modstatus = false;
 								}
-								resolve({'name': data.body.name, 'token': body.access_token, 'modstatus': modstatus});
+								resolve({'name': data.body._id, 'token': body.access_token, 'modstatus': modstatus});
 							})
 
 	          } else {

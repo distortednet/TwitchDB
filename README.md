@@ -1,6 +1,6 @@
 TwitchDB - please see the wiki for site usage.
 
- (testing new dev enviroment with git stuff)
+todo - create new db field that holds current uuid's display name
 - rethink 2.2.6 (?) does not work with the latest python driver. pip install rethinkdb==2.2.0.post6
 
 
