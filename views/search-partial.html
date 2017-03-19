@@ -11,8 +11,8 @@
     <tbody>
     {%for user in data %}
       <tr>
-        <td><a href="http://www.twitch.tv/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
-        <td><a href="/user/{{user.twitchname}}" target="_blank">View Profile</a></td>
+        <td><a href="http://www.twitch.tv/{{user.display_name|lower}}" target="_blank">{{user.display_name}}</a></td>
+        <td><a href="/user/{{user.display_name|lower}}" target="_blank">View Profile</a></td>
         <td style="width: 60%;">{{user.intro_data.intro_games}}</td>
         <td>{{user.intro_date}}</td>
       </tr>

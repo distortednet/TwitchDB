@@ -12,7 +12,7 @@
   {%for user in data %}
     <tr class="row-{{user.twitchname}}">
         <td>{{user.intro_date}}</td>
-        <td><a href="/user/{{user.twitchname}}" target="_blank">{{user.twitchname}}</a></td>
+        <td><a href="/user/{{user.twitchname}}" target="_blank">{{user.display_name}}</a></td>
         <td><a href="http://www.reddit.com/u/{{user.redditname}}" target="_blank">{{user.redditname}}</a></td>
         {% if type == "pending" %}
           <td>
