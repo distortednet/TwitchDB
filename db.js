@@ -75,7 +75,6 @@ var intro = {
 	create: (userid) => {
 		return new Promise((resolve, reject) => {
 			UserModel.get(userid).run().then((db) => {
-				console.log(db);
 				var logindate = new Date();
 				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
@@ -85,6 +84,7 @@ var intro = {
 				});
 
 			}).catch(thinky.Errors.DocumentNotFound, (err) => {
+				console.log("err");
 				var logindate = new Date();
 				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
