@@ -90,8 +90,11 @@ var intro = {
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
 					var UserData = new UserModel({twitchname: api._id, lastlogin: logindate, display_name: api.display_name});
 					UserData.save((err) => {
-						if(err) { reject(err) };
-						resolve("profile_created");
+						if(err) {
+							reject("butts")
+						} else {
+							resolve("profile_created");
+						}
 					});
 				})
 
