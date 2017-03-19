@@ -79,6 +79,7 @@ var intro = {
 				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
 					UserModel.get(api._id).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
+						console.log(dbres);
 						resolve("profile_exists");
 					});
 				});
