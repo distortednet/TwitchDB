@@ -36,7 +36,7 @@ var twitch = {
 	  return new Promise((resolve, reject) => {
 	    var request_object = {client_id: client_id,client_secret: client_secret,grant_type: grant_type, redirect_uri: redirect_uri, code: code };
 	    needle.post('https://api.twitch.tv/kraken/oauth2/token',request_object, config.twitch.header, (err, resp, body) => {
-	      if(!err) {
+			  if(!err) {
 	        needle.get('https://api.twitch.tv/kraken/user?oauth_token=' + body.access_token, config.twitch.header, (err, data) => {
 	          if(!err && data.statusCode == 200) {
 							db.intro.select(data.body._id).then((db) => {
@@ -49,11 +49,11 @@ var twitch = {
 							})
 
 	          } else {
-	            reject(err);
+	            console.log(err);
 	          }
 	        });
 	      } else {
-	        reject(err);
+	        console.log(err);
 	      }
 	    });
 	  });

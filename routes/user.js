@@ -12,13 +12,16 @@ var express = require('express'),
   ];
   routearr.forEach(function(route) {
     router.get(route, (req, res, next) => {
-      Promise.all([db.intro.select(req.params.username.toLowerCase()), helpers.twitch.profile(req.params.username.toLowerCase()), helpers.twitch.videos(req.params.username.toLowerCase(), 6, false), helpers.twitch.videos(req.params.username.toLowerCase(), 1, true)]).then((result) => {
-        if(result[0][0] === undefined) {
+      Promise.all([db.intro.select(req.params.username), helpers.twitch.profile(req.params.username)]).then((result) => {
+        if(result === undefined && result[0][0] === undefined && result[1] === undefined && result[3][0] === undefined) {
           res.redirect('/');
         } else {
-          res.render('profile_public', { data: result[0][0], api: result[1], videos: result[2], lastbroadcast: result[3][0], page: result[0][0].twitchname});
+          res.render('profile_public', { data: result[0][0], api: result[1], page: result[0][0].twitchname});
         }
-      })
+      }).catch(reason => {
+        res.redirect('/');
+        // console.log(reason);
+      });
     });
   });
 
