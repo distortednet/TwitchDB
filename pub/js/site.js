@@ -215,16 +215,16 @@ function throttle(f, delay){
     if(ctx.init) {
       $('ul.tabs').tabs('select_tab', 'profile');
     } else {
-      if( $('.schedule-display').is(':empty') ) {
-        $.get("/api/user/"+username, function(dbres) {
-          var clienttz = moment.tz.guess();
-            for(var i in dbres) {
-              var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-              var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
-              $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
-            }
-        });
-      }
+      // if( $('.schedule-display').is(':empty') ) {
+      //   $.get("/api/user/"+username, function(dbres) {
+      //     var clienttz = moment.tz.guess();
+      //       for(var i in dbres) {
+      //         var start = moment.tz("2000-01-01 "+dbres[i].start, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+      //         var end = moment.tz("2000-01-01 "+dbres[i].end, dbres[i].timezone).clone().tz(clienttz).format('HH:ss');
+      //         $('.schedule-display').append(dbres[i].day + " From: " + start + " To: " + end + "<br>");
+      //       }
+      //   });
+      // }
     }
   });
   page('/user/:username/feedback', function(ctx, next) {
@@ -321,48 +321,48 @@ $('.next-step').click(function(e) {
   }
 });
   //schedule logic
-  var template = '<select class="browser-default"></select>';
-  var twitchname = $("#profile_twitchname").val();
-  if(typeof(twitchname) != "undefined") {
-    $.get("/api/user/"+twitchname, function(dbresult) {
-      if(dbresult.length && dbresult.length > 1) {
-        for(var i in dbresult) {
-            generatefields(template);
-            $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
-            $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
-            $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
-        }
-      }
-    });
-  }
-  $('.addfield').click(function(e) {
-    e.preventDefault();
-    fieldcount = $('.day').children().length;
-    if(fieldcount >= 20) {
-       Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
-    } else {
-      generatefields(template);
-    }
-  });
+  // var template = '<select class="browser-default"></select>';
+  // var twitchname = $("#profile_twitchname").val();
+  // if(typeof(twitchname) != "undefined") {
+  //   $.get("/api/user/"+twitchname, function(dbresult) {
+  //     if(dbresult.length && dbresult.length > 1) {
+  //       for(var i in dbresult) {
+  //           generatefields(template);
+  //           $('.day > select:eq('+i+') > option[value="'+dbresult[i].day+'"]').prop('selected', true);
+  //           $('.hour-start > select:eq('+i+') > option[value="'+dbresult[i].start+'"]').prop('selected', true);
+  //           $('.hour-end > select:eq('+i+') > option[value="'+dbresult[i].end+'"]').prop('selected', true);
+  //       }
+  //     }
+  //   });
+  // }
+  // $('.addfield').click(function(e) {
+  //   e.preventDefault();
+  //   fieldcount = $('.day').children().length;
+  //   if(fieldcount >= 20) {
+  //      Materialize.toast('you have too many fields, pls remove a few! D:', 4000);
+  //   } else {
+  //     generatefields(template);
+  //   }
+  // });
 //profile submit logic
   $('.profile_edit').click(function(e) {
     e.preventDefault();
     var date = new Date();
     var tzoffset = moment.tz.guess();
-    var schedulearr = [];
-    $.each($('.day select option:selected'), function(index, element) {
-      var day = $(this).val();
-      var starthour = $('.hour-start select option:selected').eq(index).val();
-      var endhour = $('.hour-end select option:selected').eq(index).val();
-      schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'timezone': tzoffset});
-    });
+    // var schedulearr = [];
+    // $.each($('.day select option:selected'), function(index, element) {
+    //   var day = $(this).val();
+    //   var starthour = $('.hour-start select option:selected').eq(index).val();
+    //   var endhour = $('.hour-end select option:selected').eq(index).val();
+    //   schedulearr.push({'day': day, 'start': starthour, 'end': endhour, 'timezone': tzoffset});
+    // });
     var profile_object = {
       twitchname: $("#profile_twitchname").val(),
       redditname: $("#profile_redditname").val(),
       intro_date: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear(),
       intro_data: {
         intro_about: $("#profile_about").val(),
-        intro_schedule: schedulearr,
+        // intro_schedule: schedulearr,
         intro_games: $("#profile_games").val(),
         intro_goals: $("#profile_goals").val(),
         intro_background: $("#profile_background").val(),
@@ -386,12 +386,12 @@ $('.next-step').click(function(e) {
     }
   })
   //remove schedule field logic
-  $('.removefield').click(function(e) {
-    e.preventDefault();
-    $('.day select:last, .hour-start select:last, .hour-end select:last').fadeOut(100, function() {
-      $(this).remove();
-    });
-  })
+  // $('.removefield').click(function(e) {
+  //   e.preventDefault();
+  //   $('.day select:last, .hour-start select:last, .hour-end select:last').fadeOut(100, function() {
+  //     $(this).remove();
+  //   });
+  // })
 
 
 
