@@ -74,34 +74,50 @@ var intro = {
 	},
 	create: (userid) => {
 		return new Promise((resolve, reject) => {
-			UserModel.get(userid).run().then((db) => {
 				var logindate = new Date();
 				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
-					UserModel.get(api._id).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
-						console.log(dbres);
-						resolve("profile_exists");
-					});
-				});
-
-			}).catch(thinky.Errors.DocumentNotFound, (err) => {
-				console.log("err");
-				var logindate = new Date();
-				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
-				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
-					var UserData = new UserModel({twitchname: api._id, lastlogin: logindate, display_name: api.display_name});
+					var UserData = new UserModel({twitchname: userid, lastlogin: logindate, display_name: api.display_name});
 					UserData.save((err) => {
 						if(err) {
-							reject("butts")
+							UserModel.get(api._id).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
+								resolve("profile_exists");
+							});
 						} else {
 							resolve("profile_created");
 						}
 					});
 				})
 
-			}).catch(function(err) {
-				console.log("query error:" + err);
-			})
+
+			// UserModel.get(userid).run().then((db) => {
+			// 	var logindate = new Date();
+			// 	var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
+			// 	r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
+			// 		UserModel.get(api._id).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
+			// 			console.log(dbres);
+			// 			resolve("profile_exists");
+			// 		});
+			// 	});
+			//
+			// }).catch(thinky.Errors.DocumentNotFound, (err) => {
+			// 	console.log("err");
+			// 	var logindate = new Date();
+			// 	var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
+			// 	r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
+			// 		var UserData = new UserModel({twitchname: api._id, lastlogin: logindate, display_name: api.display_name});
+			// 		UserData.save((err) => {
+			// 			if(err) {
+			// 				reject("butts")
+			// 			} else {
+			// 				resolve("profile_created");
+			// 			}
+			// 		});
+			// 	})
+			//
+			// }).catch(function(err) {
+			// 	console.log("query error:" + err);
+			// })
 		});
 	},
 	search: (userid, game, orderby) => {
