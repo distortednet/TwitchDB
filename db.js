@@ -78,13 +78,12 @@ var intro = {
 				var logindate = new Date();
 				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
-					UserModel.filter({'twitchname': api._id}).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
+					UserModel.get(api._id).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
 						resolve("profile_exists");
 					});
 				});
 
 			}).catch(thinky.Errors.DocumentNotFound, (err) => {
-				console.log("hello");
 				var logindate = new Date();
 				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
 				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
