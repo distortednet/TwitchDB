@@ -99,3 +99,8 @@ app.use(function(err, req, res, next) {
 var server = app.listen(config.app.port, () => {
 	console.log('listening on:' + config.app.port);
 });
+
+process.on('unhandledRejection', function(reason, p){
+    console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+    // application specific logging here
+});
