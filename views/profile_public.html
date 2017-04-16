@@ -10,7 +10,7 @@
               <img src="{{api.logo}}" class="circle responsive-img"/>
             </div>
             <div class="col l9 m9 s9">
-              <p style="font-weight: 200;" class="responsive-title-l responsive-title-m responsive-title-s"><a href="http://www.twitch.tv/{{data.twitchname}}" target="_blank">{{api.display_name}}</a></p>
+              <p style="font-weight: 200;" class="responsive-title-l responsive-title-m responsive-title-s"><a href="http://www.twitch.tv/{{api.display_name}}" target="_blank">{{api.display_name}}</a></p>
               <p class="truncate">{%if api.game == "Creative" %}Was being {%else%}Last Played: {%endif%} {{api.game}}</p>
               <p class="truncate">{{lastbroadcast.title}}</p>
               <div class="social-nav">

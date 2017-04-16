@@ -28,7 +28,6 @@ router.get('/tools', (req, res, next) => {
     }
     return loggedin;
   }).then((loggedin) => {
-    console.log(loggedin)
     res.render('admin/tools', {users: loggedin, page: 'Admin | Tools'});
   })
 
@@ -51,7 +50,7 @@ router.post('/tools/update', (req, res, next) => {
 router.post('/submit', (req, res, next) => {
   db.intro.setstatus(req.body.twitchname, req.body.intro_status).then((dbres) => {
     if(req.body.intro_status == 'approved' && dbres[0].redditname) {
-      return helpers.general.setredditflair(dbres[0].redditname, dbres[0].twitchname, config.reddit.auth, config.reddit.oauth);
+      return helpers.general.setredditflair(dbres[0].redditname, dbres[0].display_name, config.reddit.auth, config.reddit.oauth);
     } else {
       return false;
     }
