@@ -7,7 +7,7 @@ var express = require('express'),
 router.get('/', (req, res, next) => {
   db.intro.selectadmins().then((dbres) => {
     res.render('about', {admins: dbres, page: 'About'});
-  })
+  });
 });
 
 module.exports = router;

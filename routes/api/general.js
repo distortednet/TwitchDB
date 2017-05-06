@@ -20,7 +20,7 @@ router.get('/search', (req, res, next) => {
 });
 router.get('/about', (req, res, next) => {
   helpers.twitch.profile(req.query.twitchname).then((result) => {
-    res.send({twitchname: result.name, logo: result.logo});
+    res.send({twitchname: result._id, logo: result.logo});
   })
 })
 // router.get('/user/:name', (req, res, next) => {

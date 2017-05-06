@@ -16,8 +16,8 @@
         <td><a href="http://www.reddit.com/u/{{user.redditname}}" target="_blank">{{user.redditname}}</a></td>
         {% if type == "pending" %}
           <td>
-            <a href="" class="admin-approve" data-user="{{user.twitchname}}" data-status="approved"><i class="material-icons Medium">done</i></a>
-            <a href="" class="admin-reject" data-user="{{user.twitchname}}" data-status="rejected"><i class="material-icons Medium">not_interested</i></a>
+            <a href="" class="admin-approve" data-user="{{user.twitchname}}" data-display="{{user.display_name}}" data-status="approved"><i class="material-icons Medium">done</i></a>
+            <a href="" class="admin-reject" data-user="{{user.twitchname}}" data-display="{{user.display_name}}" data-status="rejected"><i class="material-icons Medium">not_interested</i></a>
           </td>
         {%endif%}
     </tr>

@@ -2,10 +2,11 @@ var helpers = require('./helpers');
 
 module.exports = (app) => {
   app.use('/',  require('./routes/index'));
+  app.use('/api/intro',  require('./routes/api/intro'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/index'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/feedback'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/general'));
-    app.use('/profile',  require('./routes/legacy'));
+  app.use('/profile',  require('./routes/legacy'));
   app.use('/faq',  require('./routes/faq'));
   app.use('/about',  require('./routes/about'));
   app.use('/surf',  require('./routes/surf'));

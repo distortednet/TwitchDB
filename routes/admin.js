@@ -24,7 +24,7 @@ router.get('/tools', (req, res, next) => {
   db.intro.sessions().then((sessions) => {
     var loggedin = [];
     for(var i in sessions) {
-      loggedin.push(JSON.parse(sessions[i]).name);
+      loggedin.push({ id: JSON.parse(sessions[i]).name, name: JSON.parse(sessions[i]).display_name });
     }
     return loggedin;
   }).then((loggedin) => {
@@ -44,22 +44,25 @@ router.post('/tools/update', (req, res, next) => {
   }
   req.body.admin = (req.body.admin == "true");
   db.intro.update(req.body).then((db) => {
-    res.send("updated profile for " + req.body.twitchname);
+    res.send("updated profile for " + req.body.display_name);
   });
 });
+
 router.post('/submit', (req, res, next) => {
   db.intro.setstatus(req.body.twitchname, req.body.intro_status).then((dbres) => {
-    if(req.body.intro_status == 'approved' && dbres[0].redditname) {
-      return helpers.general.setredditflair(dbres[0].redditname, dbres[0].display_name, config.reddit.auth, config.reddit.oauth);
-    } else {
-      return false;
-    }
+    // if(req.body.intro_status == 'approved' && dbres[0].redditname) {
+    //   return helpers.general.setredditflair(dbres[0].redditname, dbres[0].display_name, config.reddit.auth, config.reddit.oauth);
+    // } else {
+    //   return false;
+    // }
+    return true;
   }).then(function(final) {
-    if(final && final.status == true) {
-      res.send(req.body.twitchname + " has been " + req.body.intro_status);
-    } else {
-      res.send(req.body.twitchname + " has been " + req.body.intro_status);
-    }
+    // if(final && final.status == true) {
+      // res.send(req.body.twitchname + " has been " + req.body.intro_status);
+    // }
+    // else {
+      res.send(req.body.display_name + " has been " + req.body.intro_status);
+    // }
   })
 });
 router.post('/submit/feedback', (req, res, next) => {
