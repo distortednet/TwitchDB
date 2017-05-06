@@ -3,7 +3,7 @@
 
 
 <div class="row">
-  <div class="col l6 offset-l3 m12 s12">
+  <div class="col l10 offset-l1 m12 s12">
   <p>TwitchDB is a project developed to help and enable streamers to better their craft. For any questions on how to use the site, see the FAQ.</p>
   <p style="font-weight: 300;">
   The Twitch Subreddit started very humble and we stored our intro database in a Google Documents file. This worked for a while, but as the subreddit grew that file became larger and harder to manage.<br>
@@ -22,11 +22,8 @@
 
           </div>
           <div class="col l10 m10 s10">
-            <div class="row">
-              <span class="white-text"><strong><a href="/user/{{admin.twitchname}}" target="_blank">{{admin.twitchname}}</a></strong></span>
-            </div>
-            <div class="row">
-              {{admin.intro_data.intro_about}}
+              <h5 class="white-text"><strong><a href="/user/{{admin.twitchname}}" target="_blank">{{admin.display_name}}</a></strong></h5>
+              <p>{% marked %}{{admin.intro_data.intro_about}}{% endmarked %}</p>
             </div>
           </div>
         </div>
@@ -34,7 +31,5 @@
     </div>
   {%endfor%}
 </div>
-
-
 
 {% endblock %}

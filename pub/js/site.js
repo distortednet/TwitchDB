@@ -377,7 +377,11 @@ $('.next-step').click(function(e) {
     }
     if(validator.matches(profile_object.redditname, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.redditname) || validator.isURL(profile_object.redditname) || validator.matches(profile_object.social.facebook, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.facebook) || validator.isURL(profile_object.social.facebook) || validator.matches(profile_object.social.instagram, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.instagram) || validator.isURL(profile_object.social.instagram) || validator.matches(profile_object.social.youtube, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.youtube) || validator.isURL(profile_object.social.youtube) || validator.matches(profile_object.social.steam, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.steam) || validator.isURL(profile_object.social.steam) || validator.matches(profile_object.social.twitter, /(\/)|(\\)/gi) || validator.isFQDN(profile_object.social.twitter) || validator.isURL(profile_object.social.twitter)) {
       Materialize.toast("you cannot use a URL in social networks or reddit username fields", 3000, 'rounded')
-    } else {
+    }
+    else if (profile_object.intro_data.intro_about.length < 200 || profile_object.intro_data.intro_games.length < 50, profile_object.intro_data.intro_goals.length < 200, profile_object.intro_data.intro_background.length < 200) {
+      Materialize.toast("You have not filled all fields out in sufficient detail.", 3000, 'rounded')
+    }
+    else {
       $.post("/user/submit", profile_object, function(data) {
         Materialize.toast(data, 2000, 'rounded', function() {
           window.location.href = "/user/"+profile_object.twitchname;
@@ -402,7 +406,8 @@ $('.next-step').click(function(e) {
     e.preventDefault();
     var twitchname = $(this).data("user");
     var status = $(this).data("status");
-    $.post("/admin/submit", {"twitchname": twitchname, "intro_status": status}, function(data) {
+    var display_name = $(this).data("display");
+    $.post("/admin/submit", {"twitchname": twitchname, "intro_status": status, "display_name": display_name}, function(data) {
       $('.row-'+twitchname).fadeOut("slow");
       Materialize.toast(data, 3000, 'rounded')
     });
@@ -427,7 +432,10 @@ $('.next-step').click(function(e) {
       }
       $('input[value="'+data.intro_status+'"]').prop( "checked", true );
       $("#result_twitchname").val(data.twitchname);
+      $("#result_displayname").val(data.display_name);
       $("#result_redditname").val(data.redditname);
+      $(".admin-modify-user").data("twitch", data.twitchname);
+      $(".admin-modify-user").data("display", data.display_name);
       $(".search-results").show();
     });
   });
@@ -435,9 +443,10 @@ $('.next-step').click(function(e) {
     e.preventDefault();
     var status = $('input[name="searchgroup"]:checked').val();
     var admin = $('input[name="setadmin"]').is(':checked');
-    var twitchname = $("#result_twitchname").val();
+    var twitchname = $(this).data("twitch");
     var redditname = $("#result_redditname").val();
-    $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin}, function(data) {
+    var display_name = $(this).data("display");
+    $.post("/admin/tools/update", {"twitchname": twitchname, "redditname": redditname, "intro_status": status, "admin": admin, "display_name": display_name}, function(data) {
       Materialize.toast(data, 3000, 'rounded')
     });
   });

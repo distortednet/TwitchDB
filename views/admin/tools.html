@@ -27,13 +27,17 @@
 
 <div class="search-results row">
   <div class="row">
-    <div class="input-field col s4 offset-s2">
-      <span class="input-label"><strong>Twitch name</strong></span>
+    <div class="input-field col s2 offset-s2">
+      <span class="input-label"><strong>Twitch Name</strong></span>
       <input id="result_twitchname" type="text" style="margin-top: 40px;">
+    </div>
+    <div class="input-field col s2">
+      <span class="input-label"><strong>Display Name</strong></span>
+      <input id="result_displayname" type="text" style="margin-top: 40px;">
     </div>
     <div class="input-field col s4">
       <span class="input-label"><strong>Reddit Name</strong></span>
-      <input id="result_redditname" type="text" class="validate"  style="margin-top: 40px;">
+      <input id="result_redditname" type="text" style="margin-top: 40px;">
     </div>
   </div>
   <div class="row">
@@ -70,7 +74,7 @@
   <div class="col l12">
     <strong>There are {{users.length}} users logged in.</strong><br>
     {%for user in users %}
-    {{user}} <br>
+    {{user.name}} ({{user.id}})<br>
     {%endfor%}
   </div>
 </div>

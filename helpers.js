@@ -45,7 +45,7 @@ var twitch = {
 								} else {
 									var modstatus = false;
 								}
-								resolve({'name': data.body._id, 'token': body.access_token, 'modstatus': modstatus});
+								resolve({'name': data.body._id, 'token': body.access_token, 'modstatus': modstatus, 'display_name': data.body.display_name});
 							})
 
 	          } else {

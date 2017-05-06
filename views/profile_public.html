@@ -15,6 +15,7 @@
               <p class="truncate">{{lastbroadcast.title}}</p>
               <div class="social-nav">
                 <ul  style="margin-top: 18px; margin-bottom: 18px;">
+                  {%if data.redditname%}<li><a href="http://reddit.com/u/{{data.social.twitter}}" target="_blank"><span class="fa fa-reddit fa-2x"></span></a></li>{%endif%}
                   {%if data.social.twitter%}<li><a href="http://twitter.com/{{data.social.twitter}}" target="_blank"><span class="fa fa-twitter fa-2x"></span></a></li>{%endif%}
                   {%if data.social.steam%}<li><a href="http://steamcommunity.com/id/{{data.social.steam}}" target="_blank"><span class="fa fa-steam fa-2x"></span></a></li>{%endif%}
                   {%if data.social.youtube%}<li><a href="http://youtube.com/user/{{data.social.youtube}}" target="_blank"><span class="fa fa-youtube fa-2x"></span></a></li>{%endif%}
@@ -37,7 +38,7 @@
               {%if name == data.twitchname && loggedin %}
               <div class="col s4" style="border-right: 2px dotted #595959;">
                 <p style="font-weight: 400; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">Intro Status</p>
-                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{{data.intro_status}}</p>
+                <p style="font-weight: 300; text-align: center;" class="responsive-text-l responsive-text-m responsive-text-s">{% if data.intro_status %}{{data.intro_status|capitalize}}{% else %}Not Submitted{% endif %}</p>
               </div>
               {%endif%}
             </div>

@@ -1,13 +1,13 @@
 var cron = require('node-cron'),
-config = require('./config'),
-helpers = require('./helpers'),
-db = require('./db'),
-schema = require('./schema'),
-thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
-r = thinky.r,
-type = thinky.type,
-Query = thinky.Query;
-CacheModel = thinky.createModel('onlinecache', schema.cache);
+		config = require('./config'),
+		helpers = require('./helpers'),
+		db = require('./db'),
+		schema = require('./schema'),
+		thinky = require('thinky')({host:config.app.rethink.host, port:config.app.rethink.port, db: config.app.rethink.db}),
+		r = thinky.r,
+		type = thinky.type,
+		Query = thinky.Query;
+		CacheModel = thinky.createModel('onlinecache', schema.cache);
 
 	CacheModel.delete().then(() => {
 		console.log("executing task");

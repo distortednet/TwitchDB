@@ -7,7 +7,7 @@ var needle = require('needle'),
 	r = thinky.r,
 	type = thinky.type,
 	Query = thinky.Query;
-  UserModel = thinky.createModel('users_v5', schema.users, schema.primarykey.users);
+  UserModel = thinky.createModel('users_v5', schema.users, { pk: schema.primarykey.users });
 	CacheModel = thinky.createModel('onlinecache', schema.cache);
 
 var intro = {
@@ -75,19 +75,22 @@ var intro = {
 	create: (userid) => {
 		return new Promise((resolve, reject) => {
 				var logindate = new Date();
-				var options = {header: {'Accept': 'application/vnd.twitchtv.v5+json','Client-ID': '7646suk4fa2q15qucez2323y0b4laqg'}}
-				r.http('https://api.twitch.tv/kraken/users/'+userid, options).run().then((api) => {
+				var options = config.twitch.header;
+				needle.get('https://api.twitch.tv/kraken/users/' + userid, config.twitch.header, (err, api) => {
+					api = api.body;
 					var UserData = new UserModel({twitchname: userid, lastlogin: logindate, display_name: api.display_name});
-					UserData.save((err) => {
-						if(err) {
-							UserModel.get(api._id).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
+					UserModel.filter({'twitchname': userid}).run().then((dbres) => {
+						if (dbres[0]) {
+							UserModel.filter({'twitchname': userid}).update({"lastlogin": logindate, 'display_name': api.display_name}).run().then((dbres) => {
 								resolve("profile_exists");
 							});
-						} else {
+						}
+						else {
+							UserData.save();
 							resolve("profile_created");
 						}
 					});
-				})
+				});
 
 
 			// UserModel.get(userid).run().then((db) => {
