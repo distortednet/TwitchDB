@@ -2,6 +2,7 @@ var helpers = require('./helpers');
 
 module.exports = (app) => {
   app.use('/',  require('./routes/index'));
+  app.use('/twoos',  require('./routes/twoos'));
   app.use('/api/intro',  require('./routes/api/intro'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/index'));
   app.use('/api',  helpers.middleware.checkxhr(), require('./routes/api/feedback'));
