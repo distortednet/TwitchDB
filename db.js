@@ -31,7 +31,7 @@ var intro = {
   },
 	twoos: (twitchid) => {
 		return new Promise(function(resolve, reject) {
-			UserModel.filter({'twitchname': twitchid}).pluck(['display_name', 'intro_date', 'twitchname', 'intro_data']).run().then((db) => {
+			UserModel.filter({'twitchname': twitchid}).pluck(['display_name', 'intro_date', 'twitchname', 'intro_data', 'intro_status']).run().then((db) => {
 				resolve(db);
 			}).catch(function(err) {
 				console.log("query error:" + err);
