@@ -1,70 +1,35 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>TwitchDB{%if page %} | {{page}}{% endif %}</title>
-  {% block head %}
-    <link rel="stylesheet" href="/css/materialize.min.css" media="screen" title="no title" charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/style.css" media="screen" title="no title" charset="utf-8">
-    <link rel="shortcut icon" href="/img/icon.png">
+  <head>
+    <title>TwitchDB</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="/js/materialize.min.js" charset="utf-8"></script>
-    <script src="https://cdn.rawgit.com/visionmedia/page.js/master/page.js"></script>
-    <script src="/js/validator.min.js" charset="utf-8"></script>
-    <script src="/js/moment.min.js" charset="utf-8"></script>
-    <script src="/js/moment.years.js" charset="utf-8"></script>
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  {% endblock %}
-  {% block headaddons %}
-  {% endblock %}
-</head>
-<body>
-
-  <nav>
-    <div class="nav-wrapper grey darken-3">
-      <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons" style="line-height: 50px;">menu</i></a>
-      <ul class="left hide-on-med-and-down">
-        <li><a href="/">Streams</a></li>
-        <li><a href="/faq">FAQ</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/surf">Channel Surf</a></li>
-        <li><a href="/search">DB Search</a></li>
-        <li><a href="https://github.com/distortednet/TwitchDB/commits/Beta/" target="_blank">Commit Log</a></li>
-      </ul>
-      <ul class="right hide-on-med-and-down">
-        {%if loggedin && isadmin %}<li><a class="dropdown-button" href="#!" data-activates="navdropdown">Admin</a></li>{% endif %}
-        {%if loggedin%}<li><a href="/user/{{name}}">Profile</a></li>{%endif%}
-        <li>{%if loggedin%}<a href="/logout">Logout</a>{%else%}<a href="{{authurl}}">Login Via Twitch</a>{%endif%}</li>
-      </ul>
-      <ul class="side-nav grey darken-3" id="mobile">
-        <li><a href="/">Streams</a></li>
-        <li><a href="/faq">FAQ</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/surf">Channel Surf</a></li>
-        <li><a href="/search">DB Search</a></li>
-        <li><a href="#">Commit Log</a></li>
-        {%if loggedin%}<li><a href="/user/{{name}}">Profile</a></li>{%endif%}
-        <li>{%if loggedin%}<a href="/logout">Logout</a>{%else%}<a href="{{authurl}}">Login Via Twitch</a>{%endif%}</li>
-    </ul>
-    </div>
-  </nav>
-  {%if loggedin && isadmin %}
-    <ul id="navdropdown" class="dropdown-content grey darken-3" style="margin-top: 50px !important;">
-      <li><a href="/admin/tools" class="center" >Tools</a></li>
-      <li class="divider"></li>
-      <li><a href="/admin/intros/pending" class="center">Pending Intros</a></li>
-      <li><a href="/admin/intros/approved" class="center" >Approved Intros</a></li>
-      <li><a href="/admin/intros/rejected" class="center" >Rejected Intros</a></li>
-    </ul>
-  {%endif%}
-{% block content %}{% endblock %}
-
-
-</body>
-{% block footer %}
-<script src="/js/site.js?random={{rng}}" charset="utf-8"></script>
-{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  </head>
+  <body>
+        <style>
+        .custom-text.text-lighten-1 {
+            color: #7D58C1 !important;
+        }
+        .custom-text.text-darken-1 {
+            color: #392D5D !important;
+        }
+        .custom.lighten-1:not(.disabled) {
+            background-color: #7D58C1 !important;
+        }
+        .custom.darken-1:not(.disabled) {
+            background-color: #392D5D !important;
+        }
+        </style>
+        <div class="row custom lighten-1 valign-wrapper" style="margin: 0; height: 100%">
+          <div class="col s12 m10 offset-m1 l8 offset-l2" style="padding: 0;">
+            <h2 class="custom lighten-1 white-text center" style="font-weight: 300; margin: 0;">We're Moving...</h2>
+            <br /><br /><br />
+            <h4 class="custom lighten-1 white-text center" style="font-weight: 300; margin: 0;">Thank you for supporting TwitchDB so far. We want to make it even better by combining it with Twoos and /r/Twitch Advertisement Requests!</h4>
+            <br /><br /><br />
+            <div class="center">
+              <a href="https://purple.plus" class="btn btn-large waves-effect white custom-text text-darken-1">Go to Purple+</a>
+            </div>
+          </div>
+        </div>
+  </body>
 </html>
